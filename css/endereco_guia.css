@@ -1,0 +1,87 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../image/captura-login2.jpeg'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+    border-style: none;
+  }
+
+  .tab.active {
+    background-color: #1a1a1a;
+    color: white;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    width: 200px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+
+  .form-group input,
+  .form-group select {
+    flex: 1;
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="number"] {
+    background-color: white;
+    color: black;
+  }
+
+  .input-group {
+    display: flex;
+    gap: 5px;
+    flex: 1;
+  }
+
+  .required {
+    color: red;
+    margin-left: 3px;
+  }
+
+  .info-link {
+    color: #1e90ff;
+    text-decoration: none;
+    font-weight: bold;
+  }

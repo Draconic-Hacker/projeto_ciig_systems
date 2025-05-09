@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Interativo</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+    h1 { text-align: center; color: #333; }
+    .grafico { margin: 40px auto; max-width: 900px; }
+  </style>
+</head>
+<body>
+  <h1>Dashboard de Despesas</h1>
+  
+  <div class="grafico" id="graficoBarra"></div>
+  <div class="grafico" id="graficoPizza"></div>
+  <div class="grafico" id="graficoLinha"></div>
+
+  <script>
+    const dados = {
+      categorias: ["Alimentação", "Transporte", "Educação", "Saúde"],
+      valores: [500, 300, 400, 250],
+      datas: ["2024-01-31", "2024-02-29", "2024-03-31", "2024-04-30"]
+    };
+
+    // Gráfico de Barras
+    Plotly.newPlot("graficoBarra", [{
+      x: dados.categorias,
+      y: dados.valores,
+      type: 'bar',
+      marker: { color: 'rgb(26, 118, 255)' }
+    }], {
+      title: 'Despesas por Categoria (Barra)'
+    });
+
+    // Gráfico de Pizza
+    Plotly.newPlot("graficoPizza", [{
+      labels: dados.categorias,
+      values: dados.valores,
+      type: 'pie'
+    }], {
+      title: 'Distribuição das Despesas (Pizza)'
+    });
+
+    // Gráfico de Linha
+    Plotly.newPlot("graficoLinha", [{
+      x: dados.datas,
+      y: dados.valores,
+      type: 'scatter',
+      mode: 'lines+markers',
+      line: { color: 'green' }
+    }], {
+      title: 'Evolução das Despesas (Linha)'
+    });
+  </script>
+</body>
+</html>

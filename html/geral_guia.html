@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Empresa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../css/geral_guia.css">
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" onclick="window.location.href='geral_guia.html'">GERAL</button>
+      <button class="tab" onclick="window.location.href='endereco_guia.html'">ENDEREÇO</button>
+      <button class="tab" onclick="window.location.href='naturezas_guia.html'">NATUREZAS</button>
+      <button class="tab" onclick="window.location.href='menu_home.html'">HOME</button>
+    </div>
+
+    <div class="form">
+      <div class="form-group">
+        <label>Cooperativa:</label>
+        <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Razão Social:<span class="required">*</span></label>
+        <input type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Razão Abreviada:<span class="required">*</span></label>
+        <input type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Empresa Matriz:</label>
+        <input type="text"> 🔍
+      </div>
+
+      <div class="form-group">
+        <label>Razão Social Completa:</label>
+        <textarea rows="2"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Número de Proprietários:<span class="required">*</span></label>
+        <input type="number">
+      </div>
+
+      <div class="form-group">
+        <label>Usar como Razão Social o campo:</label>
+        <select>
+          <option>Não se aplica</option>
+          <option>Nome Fantasia</option>
+          <option>Principal Titular</option>
+        </select>
+        <span title="Ajuda sobre o campo">❔</span>
+      </div>
+
+      <div class="form-group">
+        <label>Principal Titular:</label>
+        <input type="text">
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

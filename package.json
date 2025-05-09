@@ -1,0 +1,21 @@
+{
+  "name": "template_startup",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:cadastro": "node --experimental-vm-modules node_modules/jest/bin/jest.js __tests__/cadastro.test.js",
+    "test:login": "node --experimental-vm-modules node_modules/jest/bin/jest.js __tests__/login.test.js",
+    "cy:open": "cypress open"
+  },
+  "keywords": [],
+  "author": "CIIG - SOC GLOBAL",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^14.3.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "type": "module"
+}
