@@ -63,7 +63,7 @@ form{ width: 100%; }
     box-shadow: 0 0 10px rgb(0, 0, 0);
     display: flex;
     align-items: center;
-    color: #333;
+    color: white;
     text-align: center;
     padding: 40px;
     z-index: 1;
@@ -108,7 +108,7 @@ form{ width: 100%; }
 .forgot-link{ margin: -15px 0 15px; }
     .forgot-link a{
         font-size: 14.5px;
-        color: #333;
+        color: white;
     }
 
 .btn{
@@ -135,7 +135,7 @@ form{ width: 100%; }
         border: 2px solid #ccc;
         border-radius: 8px;
         font-size: 24px;
-        color: #333;
+        color: #7b7b7b;
         margin: 0 8px;
     }
 
@@ -152,7 +152,7 @@ form{ width: 100%; }
         width: 300%;
         height: 100%;
         background: 
-            linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), /* Reduziu a opacidade para clarear */
             url('../image/captura-login.png.jpeg');
         background-size: cover;
         background-position: center;
