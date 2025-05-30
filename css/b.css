@@ -4,9 +4,12 @@
   box-sizing: border-box;
 }
 
+html {
+  background: linear-gradient(135deg, #000000, #2b2bb2); /* Degradê diagonal sinistrão */
+}
+
 body, html {
   height: 100%;
-  background-color: #f9f9f9;
   font-family: 'Arial', sans-serif;
   display: flex;
   align-items: center;
@@ -23,7 +26,7 @@ body, html {
   font-size: 2em;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
+  color: #fff; /* Branco pra destacar no fundo escuro */
 }
 
 .logo {
@@ -38,7 +41,7 @@ body, html {
 .slogan {
   margin-top: 20px;
   font-size: 1.2em;
-  color: #666;
+  color: #ccc; /* Cinza claro pra destacar */
 }
 
 @keyframes fadeInZoom {
