@@ -11,7 +11,7 @@ export function login() {
 
     if (userFound) {
         // Login válido: redirecionar para a próxima página
-        window.location.href = "../html/menu_home.html";
+        window.location.href = "../html/menu-home.html";
     } else {
         // Login inválido: mostrar erro
         errorMsg.style.color = "red";

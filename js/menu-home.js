@@ -3,5 +3,5 @@ function material_click(){
 }
 
 function perfil_click(){
-    window.location.href = "../html/geral_guia.html"
+    window.location.href = "../html/geral-guia.html"
 }
