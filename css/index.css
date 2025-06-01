@@ -1,109 +1,56 @@
 * {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-background-image: url('../image/captura-login.png.jpeg');
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-background-attachment: fixed;
-color: white;
-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+html {
+  background: linear-gradient(135deg, #000000, #2b2bb2); /* Degradê diagonal sinistrão */
 }
 
-.title {
-text-align: center;
-margin-bottom: 20px;
-text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+body, html {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.title h1 {
-font-size: 2.5rem;
-letter-spacing: 2px;
+.splash-screen {
+  text-align: center;
+  opacity: 0;
+  animation: fadeInZoom 2s forwards;
 }
 
-.title p {
-font-size: 0.9rem;
-letter-spacing: 1px;
+.company-name {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff; /* Branco pra destacar no fundo escuro */
 }
 
-.login-box {
-background: rgba(0, 0, 0, 0.7);
-padding: 30px;
-border-radius: 15px;
-text-align: center;
-width: 300px;
-box-shadow: 0 0 10px rgba(0,0,0,0.7);
+.logo {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  background-color: #ff69b4; /* Rosa temporário, substitua por uma imagem se quiser */
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.login-box img {
-width: 80px;
-margin-bottom: 20px;
+.slogan {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #ccc; /* Cinza claro pra destacar */
 }
 
-.login-box input {
-width: 100%;
-padding: 10px;
-margin: 10px 0;
-border-radius: 10px;
-border: none;
-outline: none;
-font-size: 1rem;
-}
-
-.login-box .login-btn {
-background: #28a745;
-color: white;
-font-size: 1rem;
-padding: 10px;
-margin-top: 10px;
-width: 100%;
-border: none;
-border-radius: 10px;
-cursor: pointer;
-transition: background 0.3s ease;
-}
-
-.login-box .login-btn:hover {
-background: #218838;
-}
-
-.forgot {
-font-size: 0.75rem;
-margin-top: 5px;
-color: #ccc;
-cursor: pointer;
-}
-
-.footer {
-position: absolute;
-bottom: 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-font-size: 0.9rem;
-gap: 5px;
-text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
-}
-
-.forgot a {
-    color: #00bfff;
-    text-decoration: none;
-    margin: 0 5px;
-}
-
-.forgot a:hover {
-    text-decoration: underline;
-}
-
-.footer i {
-margin-right: 5px;
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
