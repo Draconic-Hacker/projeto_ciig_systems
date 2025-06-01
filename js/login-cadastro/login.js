@@ -6,8 +6,10 @@ export function login() {
     // Carrega usuários do localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Procura o usuário
-    const userFound = users.find(user => user.username === username && user.password === password);
+    // Procura o usuário por username ou email
+    const userFound = users.find(user =>
+        (user.username === username || user.email === username) && user.password === password
+    );
 
     if (userFound) {
         // Login válido: redirecionar para a próxima página
@@ -19,10 +21,3 @@ export function login() {
         setTimeout(() => errorMsg.textContent = "", 2000);
     }
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-    const botao = document.getElementById('btnLogin');
-    if (botao) {
-      botao.addEventListener('click', login);
-    }
-  });

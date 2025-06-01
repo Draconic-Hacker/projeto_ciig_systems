@@ -31,12 +31,16 @@ body::before {
     filter: blur(8px) brightness(0.6);
 }
 
+.cor-icon{
+    color: black;
+}
+
 .container{
     position: relative;
     width: 850px;
-    height: 550px;
+    height: 530px;
     background: rgb(0, 0, 0);
-    margin: 20px;
+    margin: 0px;
     border-radius: 30px;
     box-shadow: 0 0 30px rgb(0, 0, 0);
     overflow: hidden;
@@ -105,6 +109,8 @@ form{ width: 100%; }
         font-size: 20px;
     }
 
+.error-msg { margin: -15px 0 15px; }
+
 .forgot-link{ margin: -15px 0 15px; }
     .forgot-link a{
         font-size: 14.5px;
@@ -127,6 +133,8 @@ form{ width: 100%; }
 .social-icons{
     display: flex;
     justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
     .social-icons a{
