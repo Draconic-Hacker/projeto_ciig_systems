@@ -1,3 +1,4 @@
+import { removeActiveClass} from "./Toggle-Form.js"; // Importa a função removeActiveClass
 // Carrega usuários do localStorage ou inicializa vazio
 let users = JSON.parse(localStorage.getItem("users")) || [];
 
@@ -65,4 +66,8 @@ export function register() {
     document.getElementById("username2").value = "";
     document.getElementById("password2").value = "";
     document.getElementById("email").value = "";
+
+    removeActiveClass(); // Remove a classe ativa do container para voltar ao formulário de login
+    document.getElementById("username").value = username; // Preenche o campo de usuário do login com o novo usuário
+    document.getElementById("password").value = password; // Preenche o campo de senha do login com a nova senha
 }
