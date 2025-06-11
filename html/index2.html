@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CIIG System - Chat & Suporte</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <!-- Botão para alternar tema -->
+    <button id="theme-toggle" aria-label="Alternar tema">Toggle Tema</button>
+
+    <!-- FAQ exemplo -->
+    <section class="faq">
+        <button class="faq-toggle" aria-expanded="false">
+            <span>Pergunta Frequente 1</span>
+            <span class="faq-icon">▼</span>
+        </button>
+        <div class="faq-content hidden">
+            <p>Resposta para a pergunta frequente 1.</p>
+        </div>
+    </section>
+
+    <!-- Botões abrir modais -->
+    <button id="open-auto-chat">Chat Automático</button>
+    <button id="open-human-chat">Chat Humano</button>
+    <button id="open-supplier-modal">Suporte Fornecedor</button>
+    <button id="open-employee-support">Suporte Funcionário</button>
+
+    <!-- Modal Auto Chat -->
+    <div id="auto-chat-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="auto-chat-title">
+        <button class="close-modal" aria-label="Fechar modal">X</button>
+        <h2 id="auto-chat-title">Chat Automático</h2>
+        <div id="auto-chat-messages" class="chat-messages"></div>
+        <input id="auto-chat-input" type="text" placeholder="Digite sua mensagem..." />
+        <button id="send-auto-chat">Enviar</button>
+
+        <div class="chat-suggestions">
+            <button class="suggestion-btn">Login</button>
+            <button class="suggestion-btn">Cadastrar produto</button>
+            <button class="suggestion-btn">Relatório</button>
+        </div>
+    </div>
+
+    <!-- Modal Human Chat -->
+    <div id="human-chat-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="human-chat-title">
+        <button class="close-modal" aria-label="Fechar modal">X</button>
+        <h2 id="human-chat-title">Chat Humano</h2>
+        <div id="human-chat-messages" class="chat-messages"></div>
+        <input id="human-chat-input" type="text" placeholder="Digite sua mensagem..." />
+        <button id="send-human-chat">Enviar</button>
+    </div>
+
+    <!-- Modal Supplier -->
+    <div id="supplier-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="supplier-title">
+        <button class="close-modal" aria-label="Fechar modal">X</button>
+        <h2 id="supplier-title">Suporte Fornecedor</h2>
+        <input id="supplier-search" type="text" placeholder="Buscar fornecedor..." aria-label="Buscar fornecedor" />
+        <div class="supplier-list">
+            <div class="supplier-item" tabindex="0">
+                <h4>Fornecedor A</h4>
+                <p>Categoria A</p>
+            </div>
+            <div class="supplier-item" tabindex="0">
+                <h4>Fornecedor B</h4>
+                <p>Categoria B</p>
+            </div>
+            <div class="supplier-item" tabindex="0">
+                <h4>Fornecedor C</h4>
+                <p>Categoria C</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Employee Support -->
+    <div id="employee-support-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="employee-support-title">
+        <button class="close-modal" aria-label="Fechar modal">X</button>
+        <h2 id="employee-support-title">Suporte Funcionário</h2>
+        <form id="employee-support-form">
+            <label for="employee-id">ID do Funcionário:</label>
+            <input id="employee-id" type="text" required />
+
+            <label for="support-category">Categoria:</label>
+            <select id="support-category" required>
+                <option value="">Selecione</option>
+                <option value="hardware">Hardware</option>
+                <option value="software">Software</option>
+                <option value="outros">Outros</option>
+            </select>
+
+            <label for="support-description">Descrição do problema:</label>
+            <textarea id="support-description" rows="4" required></textarea>
+
+            <label for="file-upload">Anexar arquivo (opcional):</label>
+            <input id="file-upload" type="file" />
+            <button type="button" id="submit-support">Enviar Solicitação</button>
+        </form>
+    </div>
+
+    <!-- Modal Success -->
+    <div id="success-modal" class="modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="success-title" aria-describedby="success-message">
+        <button class="close-modal close-success" aria-label="Fechar modal">X</button>
+        <h2 id="success-title"></h2>
+        <p id="success-message"></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
