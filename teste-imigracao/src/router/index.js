@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-// importa suas views
 import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
-import TelaLogin from '@/views/TelaDeLogin.vue'
+import TelaLogin from '@/views/TelaLogin.vue'
 
 const routes = [
   { path: '/', component: TelaDeEntrada },

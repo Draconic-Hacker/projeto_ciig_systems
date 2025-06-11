@@ -12,12 +12,12 @@
 import logo from '@/assets/ciig.png';
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
 
 setTimeout(() => {
-      router.push('/login')  // Redireciona para a rota de login após 4 segundos
-    }, 4000);
+  router.push('/login')  // Redireciona para a rota de login após 4 segundos
+}, 4000);
 
+const router = useRouter()
 </script>
 
 <style>
