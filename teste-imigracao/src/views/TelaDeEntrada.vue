@@ -9,17 +9,18 @@
 </template>
 
 <script setup>
-
 import logo from '@/assets/ciig.png';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 setTimeout(() => {
-      window.location.href = "/login.html";  // OU window.location.href se não tiver usando router ainda
+      router.push('/login')  // Redireciona para a rota de login após 4 segundos
     }, 4000);
 
 </script>
 
 <style>
-/* Cola aqui o conteúdo do seu index.css */
 * {
   margin: 0;
   padding: 0;

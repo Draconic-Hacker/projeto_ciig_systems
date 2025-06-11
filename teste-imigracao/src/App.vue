@@ -1,5 +1,6 @@
 <template>
   <TelaDeEntrada />
+  <router-view />
 </template>
 
 <script>
