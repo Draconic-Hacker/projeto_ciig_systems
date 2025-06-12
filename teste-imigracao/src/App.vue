@@ -1,14 +1,14 @@
 <template>
-  <!-- <TelaDeEntrada /> -->
   <router-view />
+   <!-- <TelaLogin /> -->
 </template>
 
 <script>
-// import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
+// import TelaLogin from '@/views/TelaLogin.vue'
 
 // export default {
 //   components: {
-//     TelaDeEntrada
+//     TelaLogin
 //   }
 // }
 </script>
