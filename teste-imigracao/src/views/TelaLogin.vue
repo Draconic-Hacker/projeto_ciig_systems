@@ -71,6 +71,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const isRegisterActive = ref(false)
 
@@ -96,6 +98,8 @@ function handleLogin() {
     }
     // Simulação de sucesso
     alert('Login realizado!')
+    isRegisterActive.value = false
+    router.push('/') // Redireciona para a página de login
 }
 
 function handleRegister() {
