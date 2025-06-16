@@ -1,4 +1,5 @@
 <template>
+    <div class="bg-login">
 <div class="container" :class="{ active: isRegisterActive }">
 
     <div class="form-box login">
@@ -67,6 +68,7 @@
     </div>
 
 </div>
+</div>
 </template>
 
 <script setup>
@@ -99,7 +101,7 @@ function handleLogin() {
     // Simulação de sucesso
     alert('Login realizado!')
     isRegisterActive.value = false
-    router.push('/') // Redireciona para a página de login
+    router.push('/ouvidoria') // Redireciona para a página de login
 }
 
 function handleRegister() {
@@ -115,6 +117,6 @@ function handleRegister() {
 }
 </script>
 
-<style>
+<style scoped>
 @import '@/assets/css/login.css';
 </style>

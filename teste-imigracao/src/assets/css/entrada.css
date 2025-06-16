@@ -4,16 +4,21 @@
   box-sizing: border-box;
 }
 
-html {
-  background: linear-gradient(135deg, #000000, #2b2bb2);
-}
-
-body, html {
-  height: 100%;
+.bg-entrada{
   font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #000000, #2b2bb2); /* Degradê diagonal sinistrão */
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed; /* ou absolute, se preferir */
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
 }
 
 .splash-screen {

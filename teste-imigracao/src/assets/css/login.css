@@ -9,7 +9,7 @@
     list-style: none;
 }
 
-body{
+.bg-login{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +17,7 @@ body{
     /* Plano de fundo com imagem, efeito de borrão e escurecido */
     position: relative;
 }
-body::before {
+.bg-login::before {
     content: "";
     position: fixed;
     inset: 0;
