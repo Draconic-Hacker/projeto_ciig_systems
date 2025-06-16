@@ -101,7 +101,7 @@ function handleLogin() {
     // Simulação de sucesso
     alert('Login realizado!')
     isRegisterActive.value = false
-    router.push('/ouvidoria') // Redireciona para a página de login
+    router.push('/home') // Redireciona para a página de login
 }
 
 function handleRegister() {

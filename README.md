@@ -1,3 +1,36 @@
+# Dependencias:
+copie e cole e execute no terminal, e sim, tem, deve e precisa executar todos os comandos em orgem
+
+1.
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/vue-fontawesome
+
+2.
+npm install -D tailwindcss postcss autoprefixer
+
+3.
+npx tailwindcss init -p
+
+4.
+npm audit fix
+
+5.
+npx tailwindcss init -p
+
+6.
+npm cache clean --force
+
+7.
+npx tailwindcss init -p
+
+8.
+npm install -g tailwindcss
+
+9.
+npx tailwindcss init -p
+
+10.
+npm install --save @fortawesome/free-brands-svg-icons @fortawesome/free-regular-svg-icons
+
 # Importante
 Aos que estão baixando este repositório localmente do GitHub, 
 para que os testes: Jest e Cypress Funcionem, precisa-se usar estes comandos no terminal 
