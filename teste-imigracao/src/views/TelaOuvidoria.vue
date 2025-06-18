@@ -1,5 +1,7 @@
 <template>
 <div class="ouvidoria-theme">
+<div class="font-sans bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+
 
 <div class="min-h-screen flex flex-col">
     <!-- Header -->
@@ -669,11 +671,12 @@
   </div>
 </div>
 </div>
+</div>
 
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick } from 'vue';
+import { ref, reactive, onMounted, nextTick, computed } from 'vue';
 
 // Tema escuro
 const isDark = ref(false);

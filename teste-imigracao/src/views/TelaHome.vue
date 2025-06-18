@@ -51,8 +51,8 @@
 
 <script setup>
 import('@/assets/js/fontawesome.js');
-import { useRoute } from 'vue-router';
-const router = useRoute();
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 function RedirectOuvidoria(){
     router.push('/ouvidoria')

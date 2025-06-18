@@ -14,15 +14,16 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
-    "tailwind": "^4.0.0",
+    "@tailwindcss/vite": "^4.1.10",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.10",
     "@vitejs/plugin-vue": "^5.2.3",
     "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.5",
-    "tailwindcss": "^4.1.10",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "vite": "^6.3.5"
   }
 }
