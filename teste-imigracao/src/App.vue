@@ -1,9 +1,9 @@
 <template>
-  <!-- <router-view /> -->
+  <router-view />
    <!-- <TelaLogin /> -->
-  <div class="bg-red-500 text-white p-4">
+  <!-- <div class="bg-red-500 text-white p-4">
     ZeroDay Teste: Div Vermelha funcionando 🔥
-  </div>
+  </div> -->
 </template>
 
 <script>
