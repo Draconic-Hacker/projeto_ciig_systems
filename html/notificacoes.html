@@ -1,0 +1,1167 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações | CIIG Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .notification-item:hover {
+            background-color: #f1f5f9;
+        }
+        .notification-unread {
+            border-left: 4px solid #2563eb;
+        }
+        .notification-urgent {
+            border-left: 4px solid #dc2626;
+        }
+        .priority-high {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        .priority-medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .priority-low {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        .category-pill {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+        }
+        .category-operational { background-color: #dbeafe; color: #1e40af; }
+        .category-stock { background-color: #dcfce7; color: #166534; }
+        .category-financial { background-color: #f3e8ff; color: #6b21a8; }
+        .category-logistics { background-color: #fef3c7; color: #92400e; }
+        .category-compliance { background-color: #fecaca; color: #991b1b; }
+        .category-system { background-color: #e0e7ff; color: #3730a3; }
+        .category-collaboration { background-color: #ffedd5; color: #9a3412; }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-unread { background-color: #2563eb; }
+        .status-read { background-color: #9ca3af; }
+        .status-urgent { background-color: #dc2626; }
+        .status-resolved { background-color: #16a34a; }
+        .status-pending { background-color: #f59e0b; }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+        
+        .emoji-picker {
+            display: none;
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            width: 250px;
+            height: 200px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        
+        .toolbar-button {
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .toolbar-button:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .format-toolbar {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+        
+        [contenteditable=true]:empty:before {
+            content: attr(placeholder);
+            color: #9ca3af;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200">
+            <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="text-blue-700 font-bold text-2xl mr-2">CIIG</div>
+                    <div class="text-gray-700 font-semibold text-xl">Systems</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button class="text-gray-500 hover:text-gray-700 relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">12</span>
+                    </button>
+                    <div class="flex items-center">
+                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="ml-2 text-gray-700 font-medium">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex">
+            <!-- Sidebar Filter Panel -->
+            <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
+                <div class="p-4">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
+                    
+                    <!-- Search -->
+                    <div class="mb-6">
+                        <div class="relative">
+                            <input type="text" id="search-input" placeholder="Buscar notificações..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter by Category -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Categoria</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Operacional</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Estoque</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Financeira</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Logística</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Compliance</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Sistema</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Colaboração</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter by Status -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Status</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Não lidas</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Lidas</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Urgentes</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Resolvidas</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Pendente de ação</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter by Date -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Data</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="date-filter" class="form-radio h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Hoje</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="date-filter" class="form-radio h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Últimas 24h</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="date-filter" class="form-radio h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Últimos 7 dias</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="date-filter" class="form-radio h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Período personalizado</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter by Priority -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Prioridade</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Alta</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Média</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Baixa</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter by Responsible -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Responsável</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Usuário atual</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Equipe Logística</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Equipe Financeira</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700">Fornecedores</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter by Entity Type -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Tipo de Entidade</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Pedido</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Produto</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Transportadora</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Cliente</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700">Fornecedor</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply Filters Button -->
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                        Aplicar Filtros
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Notification List -->
+            <div class="flex-1 flex flex-col">
+                <!-- Notification Header -->
+                <div class="bg-white border-b border-gray-200 p-4">
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-xl font-semibold text-gray-800">Notificações</h1>
+                        <div class="flex items-center space-x-2">
+                            <button id="filter-toggle-btn" class="md:hidden bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-lg flex items-center text-sm">
+                                <i class="fas fa-filter mr-2"></i> Filtros
+                            </button>
+                            <button id="mark-all-read-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-lg flex items-center text-sm">
+                                <i class="fas fa-check-double mr-2"></i> Marcar todas como lidas
+                            </button>
+                            <div class="relative">
+                                <button id="sort-dropdown-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-lg flex items-center text-sm">
+                                    <i class="fas fa-sort mr-2"></i> Ordenar
+                                </button>
+                                <div id="sort-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mais recentes primeiro</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mais antigas primeiro</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Por prioridade</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Por categoria</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notification List -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50" id="notification-list">
+                    <!-- Notification Item 1 -->
+                    <div class="notification-item notification-unread border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="1">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-unread"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-operational mr-2">Operacional</span>
+                                        <span class="category-pill priority-high">Alta Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Pedido #12345 atrasado</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">O pedido #12345 para o cliente Empresa ABC está com 2 dias de atraso. É necessária ação imediata para resolução.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>Hoje, 10:45</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Pedido</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe Logística</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Marcar como lida">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 2 -->
+                    <div class="notification-item notification-urgent border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="2">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-urgent"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-stock mr-2">Estoque</span>
+                                        <span class="category-pill priority-high">Alta Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Produto esgotado: Componente XYZ</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">O componente XYZ (SKU: 789123) está com estoque zerado. Há 5 pedidos pendentes que necessitam deste item.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>Hoje, 09:30</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Produto</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe de Compras</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Marcar como lida">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 3 -->
+                    <div class="notification-item notification-unread border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="3">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-unread"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-financial mr-2">Financeira</span>
+                                        <span class="category-pill priority-medium">Média Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Pagamento recebido: Fatura #F-2023-089</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">O pagamento da fatura #F-2023-089 no valor de R$ 15.750,00 foi confirmado. Cliente: Distribuidora Nacional Ltda.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>Hoje, 08:15</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Financeiro</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe Financeira</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Marcar como lida">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 4 -->
+                    <div class="notification-item border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="4">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-read"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-logistics mr-2">Logística</span>
+                                        <span class="category-pill priority-medium">Média Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Rota de transporte alterada: Entrega #TR-5678</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">A rota de transporte para a entrega #TR-5678 foi alterada devido a bloqueio na rodovia BR-101. Nova previsão de entrega: 15/07/2023.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>Ontem, 16:20</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Transportadora</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe Logística</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 5 -->
+                    <div class="notification-item border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="5">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-read"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-compliance mr-2">Compliance</span>
+                                        <span class="category-pill priority-medium">Média Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Certificação prestes a vencer: ISO 9001</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">A certificação ISO 9001 vencerá em 30 dias. É necessário iniciar o processo de renovação com a auditoria externa.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>Ontem, 14:45</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Compliance</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe de Qualidade</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 6 -->
+                    <div class="notification-item border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="6">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-read"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-system mr-2">Sistema</span>
+                                        <span class="category-pill priority-low">Baixa Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Nova atualização disponível: CIIG Systems v2.5.3</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">Uma nova atualização do sistema está disponível (v2.5.3). Inclui melhorias de desempenho e correções de bugs no módulo de relatórios.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>14/07/2023, 09:00</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Sistema</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe de TI</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 7 -->
+                    <div class="notification-item border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="7">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-pending"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-collaboration mr-2">Colaboração</span>
+                                        <span class="category-pill priority-medium">Média Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Solicitação de aprovação: Novo fornecedor</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">O fornecedor "Insumos Industriais Ltda" foi cadastrado e aguarda sua aprovação para iniciar operações. Documentação completa disponível para análise.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>13/07/2023, 15:30</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Fornecedor</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe de Compras</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Item 8 -->
+                    <div class="notification-item border-b border-gray-200 p-4 bg-white cursor-pointer" data-id="8">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 mt-1">
+                                    <span class="status-dot status-read"></span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <span class="category-pill category-stock mr-2">Estoque</span>
+                                        <span class="category-pill priority-low">Baixa Prioridade</span>
+                                    </div>
+                                    <h3 class="text-sm font-semibold text-gray-900">Novo lote de produto disponível: Produto ABC</h3>
+                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">Um novo lote do Produto ABC (SKU: 123456) foi recebido e está disponível no estoque. Quantidade: 500 unidades.</p>
+                                    <div class="flex items-center mt-2 text-xs text-gray-500">
+                                        <span>12/07/2023, 11:15</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Produto</span>
+                                        <span class="mx-2">•</span>
+                                        <span>Equipe de Estoque</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-gray-400 hover:text-gray-600 p-1" title="Mais opções">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification Detail Modal -->
+    <div id="notification-detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-gray-200 p-4">
+                <div class="flex items-center">
+                    <span class="category-pill category-operational mr-2">Operacional</span>
+                    <span class="category-pill priority-high">Alta Prioridade</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="notification-resolve-btn" class="text-sm bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-lg flex items-center">
+                        <i class="fas fa-check mr-2"></i> Resolver
+                    </button>
+                    <button id="notification-delegate-btn" class="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg flex items-center">
+                        <i class="fas fa-user-plus mr-2"></i> Delegar
+                    </button>
+                    <button id="notification-close-btn" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">Pedido #12345 atrasado</h2>
+                
+                <div class="flex items-center text-sm text-gray-500 mb-6">
+                    <span>Hoje, 10:45</span>
+                    <span class="mx-2">•</span>
+                    <span>Pedido</span>
+                    <span class="mx-2">•</span>
+                    <span>Equipe Logística</span>
+                </div>
+                
+                <div class="prose max-w-none text-gray-700">
+                    <p>O pedido #12345 para o cliente Empresa ABC está com 2 dias de atraso. É necessária ação imediata para resolução.</p>
+                    
+                    <h3 class="text-lg font-medium mt-6 mb-2">Detalhes do Pedido</h3>
+                    <ul>
+                        <li><strong>Cliente:</strong> Empresa ABC Ltda.</li>
+                        <li><strong>Data do Pedido:</strong> 10/07/2023</li>
+                        <li><strong>Data Prevista de Entrega:</strong> 13/07/2023</li>
+                        <li><strong>Status Atual:</strong> Em separação</li>
+                        <li><strong>Motivo do Atraso:</strong> Falta de estoque do item XYZ-789</li>
+                    </ul>
+                    
+                    <h3 class="text-lg font-medium mt-6 mb-2">Ações Recomendadas</h3>
+                    <ol>
+                        <li>Verificar disponibilidade do item XYZ-789 em outros armazéns</li>
+                        <li>Contatar o cliente para informar sobre o atraso</li>
+                        <li>Avaliar possibilidade de entrega parcial dos itens disponíveis</li>
+                        <li>Priorizar a expedição assim que o item estiver disponível</li>
+                    </ol>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    Este cliente é classificado como VIP e possui SLA de entrega contratual. O não cumprimento pode gerar penalidades financeiras.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Items -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-medium mb-4">Itens Relacionados</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-box text-blue-600"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Pedido #12345</h4>
+                                    <p class="text-xs text-gray-500">Ver detalhes completos do pedido</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user text-green-600"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Cliente: Empresa ABC Ltda.</h4>
+                                    <p class="text-xs text-gray-500">Ver perfil completo do cliente</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-cube text-purple-600"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Produto: XYZ-789</h4>
+                                    <p class="text-xs text-gray-500">Ver detalhes do produto</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="h-10 w-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-truck text-orange-600"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Transportadora: Logística Rápida</h4>
+                                    <p class="text-xs text-gray-500">Ver detalhes da transportadora</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-medium mb-4">Histórico</h3>
+                    
+                    <div class="relative border-l-2 border-gray-200 ml-3">
+                        <!-- Timeline Item 1 -->
+                        <div class="mb-6 ml-6">
+                            <div class="absolute -left-3">
+                                <div class="h-6 w-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-plus text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm mb-1">
+                                <span class="font-medium text-gray-900">Pedido Criado</span>
+                                <span class="ml-2 text-gray-500">10/07/2023, 14:30</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Pedido #12345 criado pelo cliente Empresa ABC Ltda. via Portal de Clientes.</p>
+                        </div>
+                        
+                        <!-- Timeline Item 2 -->
+                        <div class="mb-6 ml-6">
+                            <div class="absolute -left-3">
+                                <div class="h-6 w-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm mb-1">
+                                <span class="font-medium text-gray-900">Pedido Aprovado</span>
+                                <span class="ml-2 text-gray-500">10/07/2023, 15:45</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Pedido aprovado pelo departamento financeiro. Crédito verificado.</p>
+                        </div>
+                        
+                        <!-- Timeline Item 3 -->
+                        <div class="mb-6 ml-6">
+                            <div class="absolute -left-3">
+                                <div class="h-6 w-6 bg-yellow-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-exclamation text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm mb-1">
+                                <span class="font-medium text-gray-900">Problema Identificado</span>
+                                <span class="ml-2 text-gray-500">12/07/2023, 09:15</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Item XYZ-789 não disponível em estoque. Solicitação de reposição enviada ao fornecedor.</p>
+                        </div>
+                        
+                        <!-- Timeline Item 4 -->
+                        <div class="mb-6 ml-6">
+                            <div class="absolute -left-3">
+                                <div class="h-6 w-6 bg-red-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-bell text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm mb-1">
+                                <span class="font-medium text-gray-900">Alerta de Atraso</span>
+                                <span class="ml-2 text-gray-500">13/07/2023, 17:00</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Data de entrega prevista não cumprida. Sistema gerou alerta automático de atraso.</p>
+                        </div>
+                        
+                        <!-- Timeline Item 5 -->
+                        <div class="ml-6">
+                            <div class="absolute -left-3">
+                                <div class="h-6 w-6 bg-purple-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm mb-1">
+                                <span class="font-medium text-gray-900">Notificação Criada</span>
+                                <span class="ml-2 text-gray-500">Hoje, 10:45</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Notificação de atraso criada e atribuída à Equipe de Logística para resolução.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Message Thread -->
+            <div class="border-t border-gray-200 p-4">
+                <h3 class="text-sm font-medium text-gray-700 mb-3">Mensagens</h3>
+                
+                <div class="max-h-48 overflow-y-auto custom-scrollbar mb-4">
+                    <!-- Message 1 -->
+                    <div class="flex mb-3">
+                        <div class="flex-shrink-0 mr-3">
+                            <img src="https://ui-avatars.com/api/?name=Carlos+Silva&background=0D8ABC&color=fff" alt="Carlos Silva" class="h-8 w-8 rounded-full">
+                        </div>
+                        <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-gray-900 text-sm">Carlos Silva</span>
+                                <span class="ml-2 text-xs text-gray-500">13/07/2023, 17:30</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Entrei em contato com o fornecedor do item XYZ-789. Eles confirmaram que terão o item disponível amanhã pela manhã. Vamos priorizar a expedição assim que recebermos.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Message 2 -->
+                    <div class="flex mb-3 justify-end">
+                        <div class="bg-blue-100 rounded-lg p-3 max-w-[80%]">
+                            <div class="flex items-center justify-end mb-1">
+                                <span class="font-medium text-gray-900 text-sm">Você</span>
+                                <span class="ml-2 text-xs text-gray-500">13/07/2023, 17:45</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Obrigado pela atualização, Carlos. Por favor, mantenha o cliente informado sobre o novo prazo de entrega. Este é um cliente VIP e precisamos garantir sua satisfação.</p>
+                        </div>
+                        <div class="flex-shrink-0 ml-3">
+                            <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff" alt="Você" class="h-8 w-8 rounded-full">
+                        </div>
+                    </div>
+                    
+                    <!-- Message 3 -->
+                    <div class="flex mb-3">
+                        <div class="flex-shrink-0 mr-3">
+                            <img src="https://ui-avatars.com/api/?name=Carlos+Silva&background=0D8ABC&color=fff" alt="Carlos Silva" class="h-8 w-8 rounded-full">
+                        </div>
+                        <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-gray-900 text-sm">Carlos Silva</span>
+                                <span class="ml-2 text-xs text-gray-500">13/07/2023, 18:00</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Cliente já foi contatado. Oferecemos um desconto de 5% como compensação pelo atraso. Eles compreenderam a situação e aceitaram a nova data de entrega para 16/07.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Message Composer -->
+                <div class="border border-gray-300 rounded-lg">
+                    <!-- Format Toolbar -->
+                    <div class="format-toolbar flex items-center space-x-1 px-3 py-2 border-b border-gray-200">
+                        <button class="toolbar-button" title="Negrito">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button class="toolbar-button" title="Itálico">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button class="toolbar-button" title="Sublinhado">
+                            <i class="fas fa-underline"></i>
+                        </button>
+                        <span class="border-r border-gray-300 h-5 mx-1"></span>
+                        <button class="toolbar-button" title="Lista com marcadores">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <button class="toolbar-button" title="Lista numerada">
+                            <i class="fas fa-list-ol"></i>
+                        </button>
+                        <span class="border-r border-gray-300 h-5 mx-1"></span>
+                        <button class="toolbar-button" title="Anexar arquivo">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="toolbar-button emoji-button" title="Emojis">
+                            <i class="far fa-smile"></i>
+                        </button>
+                        <div class="emoji-picker">
+                            <div class="grid grid-cols-8 gap-1">
+                                <button class="p-1 hover:bg-gray-100 rounded">😀</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😃</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😄</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😁</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😆</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😅</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😂</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">🤣</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😊</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😇</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">🙂</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">🙃</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😉</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😌</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😍</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">🥰</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😘</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😗</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😙</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">😚</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">👍</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">👎</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">👏</button>
+                                <button class="p-1 hover:bg-gray-100 rounded">🙌</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message Input -->
+                    <div class="px-3 py-2">
+                        <div contenteditable="true" class="min-h-[80px] max-h-[150px] overflow-y-auto focus:outline-none text-sm" placeholder="Digite sua mensagem..."></div>
+                    </div>
+                    
+                    <!-- Message Actions -->
+                    <div class="flex items-center justify-between px-3 py-2 border-t border-gray-200">
+                        <div class="text-xs text-gray-500">
+                            Pressione Enter para enviar, Shift+Enter para nova linha
+                        </div>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-1 px-4 rounded-lg text-sm transition duration-200">
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Filter Sidebar -->
+    <div id="mobile-filter-sidebar" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden">
+        <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-lg transform transition-transform duration-300 translate-x-full">
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Filtros</h2>
+                    <button id="close-filter-btn" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- Mobile Filter Content (same as desktop sidebar) -->
+                <!-- Search -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <input type="text" placeholder="Buscar notificações..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filter by Category -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium text-gray-700 mb-2">Categoria</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Operacional</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Estoque</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Financeira</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Logística</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Compliance</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Sistema</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Colaboração</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Other filters (same as desktop) -->
+                <!-- Apply Filters Button -->
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                    Aplicar Filtros
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Notification Item Click
+            const notificationItems = document.querySelectorAll('.notification-item');
+            const notificationModal = document.getElementById('notification-detail-modal');
+            const closeModalBtn = document.getElementById('notification-close-btn');
+            
+            notificationItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    notificationModal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            closeModalBtn.addEventListener('click', function() {
+                notificationModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Sort Dropdown
+            const sortDropdownBtn = document.getElementById('sort-dropdown-btn');
+            const sortDropdown = document.getElementById('sort-dropdown');
+            
+            sortDropdownBtn.addEventListener('click', function() {
+                sortDropdown.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!sortDropdownBtn.contains(event.target) && !sortDropdown.contains(event.target)) {
+                    sortDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Mobile Filter Toggle
+            const filterToggleBtn = document.getElementById('filter-toggle-btn');
+            const mobileFilterSidebar = document.getElementById('mobile-filter-sidebar');
+            const closeFilterBtn = document.getElementById('close-filter-btn');
+            const mobileSidebarContent = mobileFilterSidebar.querySelector('.transform');
+            
+            filterToggleBtn.addEventListener('click', function() {
+                mobileFilterSidebar.classList.remove('hidden');
+                setTimeout(() => {
+                    mobileSidebarContent.classList.remove('translate-x-full');
+                }, 10);
+            });
+            
+            closeFilterBtn.addEventListener('click', function() {
+                mobileSidebarContent.classList.add('translate-x-full');
+                setTimeout(() => {
+                    mobileFilterSidebar.classList.add('hidden');
+                }, 300);
+            });
+            
+            // Mark all as read
+            const markAllReadBtn = document.getElementById('mark-all-read-btn');
+            
+            markAllReadBtn.addEventListener('click', function() {
+                const unreadItems = document.querySelectorAll('.notification-unread');
+                unreadItems.forEach(item => {
+                    item.classList.remove('notification-unread');
+                    const statusDot = item.querySelector('.status-dot');
+                    if (statusDot) {
+                        statusDot.classList.remove('status-unread');
+                        statusDot.classList.add('status-read');
+                    }
+                });
+            });
+            
+            // Emoji Picker Toggle
+            const emojiButton = document.querySelector('.emoji-button');
+            const emojiPicker = document.querySelector('.emoji-picker');
+            
+            emojiButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                emojiPicker.style.display = emojiPicker.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // Close emoji picker when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!emojiButton.contains(event.target) && !emojiPicker.contains(event.target)) {
+                    emojiPicker.style.display = 'none';
+                }
+            });
+            
+            // Add emoji to message
+            const emojiButtons = document.querySelectorAll('.emoji-picker button');
+            const messageInput = document.querySelector('[contenteditable=true]');
+            
+            emojiButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const emoji = this.textContent;
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    const textNode = document.createTextNode(emoji);
+                    range.insertNode(textNode);
+                    range.setStartAfter(textNode);
+                    range.setEndAfter(textNode);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    emojiPicker.style.display = 'none';
+                });
+            });
+            
+            // Mark individual notification as read
+            const markReadButtons = document.querySelectorAll('.notification-item button[title="Marcar como lida"]');
+            
+            markReadButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const notificationItem = this.closest('.notification-item');
+                    notificationItem.classList.remove('notification-unread');
+                    const statusDot = notificationItem.querySelector('.status-dot');
+                    if (statusDot) {
+                        statusDot.classList.remove('status-unread');
+                        statusDot.classList.add('status-read');
+                    }
+                });
+            });
+            
+            // Resolve notification
+            const resolveBtn = document.getElementById('notification-resolve-btn');
+            
+            resolveBtn.addEventListener('click', function() {
+                alert('Notificação marcada como resolvida!');
+            });
+            
+            // Delegate notification
+            const delegateBtn = document.getElementById('notification-delegate-btn');
+            
+            delegateBtn.addEventListener('click', function() {
+                alert('Abrir modal de delegação para outro usuário ou equipe');
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const notificationItems = document.querySelectorAll('.notification-item');
+                
+                notificationItems.forEach(item => {
+                    const title = item.querySelector('h3').textContent.toLowerCase();
+                    const content = item.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9525e9bfd4ccd070',t:'MTc1MDM2NjM3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
