@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
-import Sidebar from '@/components/Dashboard/Sidebar.vue'
-import TopNav from '@/components/Dashboard/TopNav.vue'
+import Sidebar from '@/components/layout/Sidebar.vue'
+import TopNav from '@/components/layout/TopNav.vue'
 import QuickStats from '@/components/Dashboard/QuickStats.vue'
 import InventoryChart from '@/components/Dashboard/InventoryChart.vue'
 import SupplierChart from '@/components/Dashboard/SupplierChart.vue'

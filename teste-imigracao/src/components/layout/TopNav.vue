@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import ThemeToggle from '@/components/Dashboard/ThemeToggle.vue'
+import ThemeToggle from '@/components/Common/ThemeToggle.vue'
 </script>
 
 <style scoped>

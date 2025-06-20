@@ -32,11 +32,9 @@
       </div>
     </div>
   </header>
-  <!-- <ThemeToggle /> -->
 </template>
 
 <script setup>
-// import ThemeToggle from '@/components/Ouvidoria/ThemeToggle.vue'
 
 import { useRouter } from 'vue-router';
 const router = useRouter();

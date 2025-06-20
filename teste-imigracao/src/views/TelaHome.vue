@@ -33,7 +33,7 @@
                 <span>NOTIFICAÇÃO</span>
             </button>
 
-            <button class="menu-item">
+            <button @click="RedirectPerfil" class="menu-item">
                 <i class="fas fa-user-circle"></i>
                 <span>PERFIL</span>
             </button>
@@ -60,6 +60,10 @@ function RedirectOuvidoria(){
 
 function RedirectDashboard(){
     router.push('/dashboard')
+}
+
+function RedirectPerfil(){
+    router.push('/perfil')
 }
 
 </script>
