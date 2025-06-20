@@ -3,9 +3,12 @@ import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
 import TelaLogin from '@/views/TelaLogin.vue'
 import TelaOuvidoria from '@/views/TelaOuvidoria.vue'
 import HomeMenu from '@/views/TelaHome.vue'
+import teste from '@/components/MainOuvidoria.vue'
 
 const routes = [
-  { path: '/', component: TelaDeEntrada },
+  { path: '/', component: teste },
+  // { path: '/', component: TelaOuvidoria },
+  // { path: '/', component: TelaDeEntrada },
   { path: '/login', component: TelaLogin },
   { path: '/home', component: HomeMenu },
   { path: '/ouvidoria', component: TelaOuvidoria },
