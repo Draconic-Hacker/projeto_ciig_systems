@@ -3,7 +3,9 @@
     :class="['sidebar w-64 flex-shrink-0 bg-gradient-to-b from-[#1a3a6d] to-[#0f2952] dark:from-[#0f172a] dark:to-[#0c1322]', { hidden: isHidden }]"
   >
     <div class="flex items-center justify-center h-16 border-b border-gray-700">
-      <h2 class="text-xl font-bold text-white">CIIG Global</h2>
+      <button @click="RedirectHome">
+        <h2 class="text-xl font-bold text-white">CIIG Global</h2>
+      </button>
     </div>
     <div class="px-4 py-6">
       <div class="flex items-center mb-6">
@@ -31,9 +33,11 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import { ref } from 'vue'
 import { Home, Box, ShoppingBag, Users, Calendar, BarChart2, Settings } from 'lucide-vue-next'
 
+const router = useRouter();
 const isHidden = ref(false)
 
 const menu = [
@@ -45,6 +49,37 @@ const menu = [
   { label: 'Relatórios', icon: BarChart2 },
   { label: 'Configurações', icon: Settings }
 ]
+
+function RedirectHome(){
+    router.push('/home')
+}
+function RedirectDashboard() {
+  router.push('/dashboard')
+}
+function RedirectFornecedores() {
+  router.push('/fornecedores')
+}
+function RedirectNotificacoes() {
+  router.push('/notificacoes')
+}
+
+// Adiciona um método para lidar com o clique no menu
+function handleMenuClick(label) {
+  switch (label) {
+    case 'Dashboard':
+      RedirectDashboard();
+      break;
+    case 'Pedidos':
+      router.push('/pedidos');
+      break;
+    case 'Fornecedores':
+      RedirectFornecedores();
+      break;
+    default:
+      // Adicione outros casos conforme necessário
+      break;
+  }
+}
 </script>
 
 <style scoped>

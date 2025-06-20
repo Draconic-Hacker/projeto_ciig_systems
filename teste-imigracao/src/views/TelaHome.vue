@@ -28,7 +28,7 @@
                 <span>OUVIDORIA GERAL</span>
             </button>
 
-            <button class="menu-item">
+            <button @click="RedirectNotificacoes" class="menu-item">
                 <i class="fas fa-bell"></i>
                 <span>NOTIFICAÇÃO</span>
             </button>
@@ -68,6 +68,10 @@ function RedirectPerfil(){
 
 function RedirectFornecedores(){
     router.push('/fornecedores')
+}
+
+function RedirectNotificacoes(){
+    router.push('/notificacoes')
 }
 
 </script>

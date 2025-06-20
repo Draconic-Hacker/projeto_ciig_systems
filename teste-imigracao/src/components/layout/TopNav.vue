@@ -21,7 +21,7 @@
       <div class="flex items-center space-x-4">
         <ThemeToggle />
         <div class="relative">
-          <button class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white relative">
+          <button @click="RedirectNotificacoes" class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white relative">
             🔔
             <span class="notification-badge bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center absolute -top-2 -right-2">3</span>
           </button>
@@ -34,7 +34,9 @@
         </div>
         <div class="border-l pl-4 border-gray-300 dark:border-gray-600 flex items-center space-x-2">
           <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">AG</div>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Admin Gestor</span>
+          <button @click="RedirectPerfil">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Admin Gestor</span>
+          </button>
         </div>
       </div>
     </div>
@@ -42,7 +44,17 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import ThemeToggle from '@/components/Common/ThemeToggle.vue'
+const router = useRouter();
+
+function RedirectNotificacoes(){
+    router.push('/notificacoes')
+}
+
+function RedirectPerfil(){
+    router.push('/perfil')
+}
 </script>
 
 <style scoped>

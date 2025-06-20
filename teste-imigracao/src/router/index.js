@@ -6,6 +6,7 @@ import HomeMenu from '@/views/TelaHome.vue'
 import TelaDashboard from '@/views/TelaDashboard.vue'
 import TelaPerfil from '@/views/TelaPerfil.vue'
 import TelaFornecedores from '@/views/TelaFornecedores.vue'
+import TelaNotificacoes from '@/views/TelaNotificacoes.vue'
 
 const routes = [
   // { path: '/', component: TelaOuvidoria },
@@ -16,6 +17,7 @@ const routes = [
   { path: '/ouvidoria', component: TelaOuvidoria },
   { path: '/dashboard', component: TelaDashboard },
   { path: '/fornecedores', component: TelaFornecedores },
+  { path: '/notificacoes', component: TelaNotificacoes },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
