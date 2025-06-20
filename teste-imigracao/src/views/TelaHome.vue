@@ -18,7 +18,7 @@
                 <span>DESCONTOS</span>
             </button>
 
-            <button class="menu-item">
+            <button @click="RedirectFornecedores" class="menu-item">
                 <i class="fas fa-store"></i>
                 <span>FORNECEDORES</span>
             </button>
@@ -64,6 +64,10 @@ function RedirectDashboard(){
 
 function RedirectPerfil(){
     router.push('/perfil')
+}
+
+function RedirectFornecedores(){
+    router.push('/fornecedores')
 }
 
 </script>
