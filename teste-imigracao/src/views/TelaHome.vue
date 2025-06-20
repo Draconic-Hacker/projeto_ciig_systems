@@ -8,7 +8,7 @@
 
         <div class="menu-box">
 
-            <button class="menu-item">
+            <button @click="RedirectDashboard" class="menu-item">
                 <i class="fas fa-shopping-cart"></i>
                 <span>MATERIAL</span>
             </button>
@@ -56,6 +56,10 @@ const router = useRouter();
 
 function RedirectOuvidoria(){
     router.push('/ouvidoria')
+}
+
+function RedirectDashboard(){
+    router.push('/dashboard')
 }
 
 </script>

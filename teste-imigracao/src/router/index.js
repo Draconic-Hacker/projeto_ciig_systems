@@ -3,6 +3,7 @@ import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
 import TelaLogin from '@/views/TelaLogin.vue'
 import TelaOuvidoria from '@/views/TelaOuvidoria.vue'
 import HomeMenu from '@/views/TelaHome.vue'
+import TelaDashboard from '@/views/TelaDashboard.vue'
 
 const routes = [
   // { path: '/', component: TelaOuvidoria },
@@ -10,6 +11,7 @@ const routes = [
   { path: '/login', component: TelaLogin },
   { path: '/home', component: HomeMenu },
   { path: '/ouvidoria', component: TelaOuvidoria },
+  { path: '/dashboard', component: TelaDashboard },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
