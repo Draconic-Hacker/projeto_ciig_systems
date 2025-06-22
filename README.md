@@ -52,6 +52,15 @@ para que os testes: Jest e Cypress Funcionem, precisa-se usar estes comandos no 
 (CMD/Command Prompt), 
 siga em ordem respectiva para que possa baixar tudo conforme necessário:
 
+npm install --save-dev @vue/test-utils@next jest vue-jest@next
+npm install --save-dev vitest @vitest/ui @vue/test-utils
+npm install -D vitest @vue/test-utils @testing-library/vue happy-dom
+npm install -D vitest @vue/test-utils @testing-library/vue jsdom
+yarn add cypress --dev
+npm install cypress --save-dev
+npx cypress open
+
+
 1.
 
 npm install --save-dev jest
