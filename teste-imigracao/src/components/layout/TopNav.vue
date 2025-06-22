@@ -33,8 +33,8 @@
           </button>
         </div>
         <div class="border-l pl-4 border-gray-300 dark:border-gray-600 flex items-center space-x-2">
+          <button @click="RedirectPerfil"  class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">AG</div>
-          <button @click="RedirectPerfil">
             <span data-testid="profile-icon" class="text-sm font-medium text-gray-700 dark:text-gray-300">Admin Gestor</span>
           </button>
         </div>

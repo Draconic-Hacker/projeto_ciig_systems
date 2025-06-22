@@ -59,6 +59,10 @@ const menu = [
   { label: 'Configurações', icon: Settings, route: '/configuracoes' }
 ]
 
+function RedirectHome(){
+  router.push('/home')
+}
+
 // Adiciona um método para lidar com o clique no menu
 function handleMenuClick(item) {
   if (item.route) {
