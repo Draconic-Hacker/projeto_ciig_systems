@@ -2,8 +2,8 @@
     <div class="bg-home">
 
         <div class="title">
-            <h1>SOC GLOBAL</h1>
-            <p>PORTAL DE COMPRAS</p>
+            <h1>CIIG SYSTEMS</h1>
+            <p>Supply Chain</p>
         </div>
 
         <div class="menu-box">
