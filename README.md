@@ -1,3 +1,9 @@
+# para rodar testes e2e
+npx cypress open --e2e
+
+# para rodar testes de componente
+npx cypress open --component
+
 # para teste jest: 
 npx vitest
 npx vitest run __tests__/TelaLogin.test.js
