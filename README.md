@@ -5,8 +5,12 @@ npx cypress open --e2e
 npx cypress open --component
 
 # para teste jest: 
+cd teste-imigracao
 npx vitest
-npx vitest run __tests__/TelaLogin.test.js
+npx vitest run tests/TelaLogin.test.ts
+npx vitest run tests/TelaHome.test.ts
+npx vitest run tests/TopNav.test.ts
+npx vitest run tests/Sidebar.test.ts
 
 
 # Dependencias:
