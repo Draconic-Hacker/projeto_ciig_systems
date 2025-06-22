@@ -1,11 +1,9 @@
 <template>
   <Card>
     <div class="flex items-center space-x-4">
-      <img
-        src="/ciig.png"
-        alt="Foto de Perfil"
-        class="w-20 h-20 rounded-full object-cover"
-      />
+      <div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white font-bold">
+          JS
+      </div>
       <div>
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">João Silva</h2>
         <p class="text-gray-600 dark:text-gray-400">Analista de Logística</p>

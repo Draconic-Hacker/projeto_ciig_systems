@@ -9,7 +9,6 @@ import TelaFornecedores from '@/views/TelaFornecedores.vue'
 import TelaNotificacoes from '@/views/TelaNotificacoes.vue'
 
 const routes = [
-  // { path: '/', component: TelaOuvidoria },
   { path: '/', component: TelaDeEntrada },
   { path: '/login', component: TelaLogin },
   { path: '/perfil', component: TelaPerfil },

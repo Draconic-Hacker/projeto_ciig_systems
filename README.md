@@ -1,3 +1,8 @@
+# para teste jest: 
+npx vitest
+npx vitest run __tests__/TelaLogin.test.js
+
+
 # Dependencias:
 copie e cole e execute no terminal, e sim, tem, deve e precisa executar todos os comandos em orgem
 

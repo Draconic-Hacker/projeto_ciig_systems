@@ -110,7 +110,17 @@ form{ width: 100%; }
         font-size: 20px;
     }
 
-.error-msg { margin: -15px 0 15px; }
+.error-msg { 
+    margin: -15px 0 15px;
+    color: red;
+    font-size: 14px;
+}
+
+.success-msg{
+    margin: -15px 0 15px;
+    color: green;
+    font-size: 14px;
+}
 
 .forgot-link{ margin: -15px 0 15px; }
     .forgot-link a{

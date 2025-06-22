@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col min-h-screen">
-    <!-- Top Navigation -->
-    <TopNav />
-
-    <div class="flex flex-1">
-      <!-- Sidebar Layout -->
-      <Sidebar />
+  <div class="flex min-h-screen">
+    <!-- Sidebar Layout -->
+    <Sidebar />
+    
+    <div class="flex flex-col flex-1">
+      <!-- Top Navigation -->
+      <TopNav />
 
       <!-- Conteúdo Principal -->
       <main class="flex-1 bg-white dark:bg-gray-700 p-4 overflow-y-auto">

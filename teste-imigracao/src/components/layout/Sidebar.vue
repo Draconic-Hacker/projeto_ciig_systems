@@ -3,7 +3,12 @@
     :class="['sidebar w-64 flex-shrink-0 bg-gradient-to-b from-[#1a3a6d] to-[#0f2952] dark:from-[#0f172a] dark:to-[#0c1322]', { hidden: isHidden }]"
   >
     <div class="flex items-center justify-center h-16 border-b border-gray-700">
-      <button @click="RedirectHome">
+      <button @click="RedirectHome" class="flex items-center space-x-3">
+        <img
+          src="/ciig.png"
+          alt="Foto de Perfil"
+          class="w-9 h-9 rounded-full object-cover"
+        />
         <h2 class="text-xl font-bold text-white">CIIG Global</h2>
       </button>
     </div>
@@ -21,7 +26,11 @@
         <template v-for="(item, index) in menu" :key="index">
           <a
             href="#"
-            :class="['sidebar-link flex items-center px-4 py-3 rounded-lg mb-1', item.active ? 'bg-white/20 text-white active' : 'text-gray-300 hover:text-white']"
+            :class="[
+              'sidebar-link flex items-center px-4 py-3 rounded-lg mb-1 text-gray-300 hover:text-white hover:bg-white/20 hover:border-l-4 hover:border-sky-400',
+              $route.path === item.route ? 'active' : ''
+            ]"
+            @click.prevent="handleMenuClick(item)"
           >
             <component :is="item.icon" class="w-5 h-5 mr-3" />
             {{ item.label }}
@@ -41,43 +50,19 @@ const router = useRouter();
 const isHidden = ref(false)
 
 const menu = [
-  { label: 'Dashboard', icon: Home, active: true },
-  { label: 'Inventário', icon: Box },
-  { label: 'Pedidos', icon: ShoppingBag },
-  { label: 'Fornecedores', icon: Users },
-  { label: 'Planejamento', icon: Calendar },
-  { label: 'Relatórios', icon: BarChart2 },
-  { label: 'Configurações', icon: Settings }
+  { label: 'Dashboard', icon: Home, route: '/dashboard' },
+  { label: 'Inventário', icon: Box, route: '/inventario' },
+  { label: 'Pedidos', icon: ShoppingBag, route: '/notificacoes' },
+  { label: 'Fornecedores', icon: Users, route: '/fornecedores' },
+  { label: 'Planejamento', icon: Calendar, route: '/planejamento' },
+  { label: 'Relatórios', icon: BarChart2, route: '/relatorios' },
+  { label: 'Configurações', icon: Settings, route: '/configuracoes' }
 ]
 
-function RedirectHome(){
-    router.push('/home')
-}
-function RedirectDashboard() {
-  router.push('/dashboard')
-}
-function RedirectFornecedores() {
-  router.push('/fornecedores')
-}
-function RedirectNotificacoes() {
-  router.push('/notificacoes')
-}
-
 // Adiciona um método para lidar com o clique no menu
-function handleMenuClick(label) {
-  switch (label) {
-    case 'Dashboard':
-      RedirectDashboard();
-      break;
-    case 'Pedidos':
-      router.push('/pedidos');
-      break;
-    case 'Fornecedores':
-      RedirectFornecedores();
-      break;
-    default:
-      // Adicione outros casos conforme necessário
-      break;
+function handleMenuClick(item) {
+  if (item.route) {
+    router.push(item.route)
   }
 }
 </script>
@@ -88,6 +73,9 @@ function handleMenuClick(label) {
 }
 .sidebar-link:hover {
   transform: translateX(5px);
+  border-left: 4px solid #38bdf8;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
 }
 .sidebar-link.active {
   border-left: 4px solid #38bdf8;
