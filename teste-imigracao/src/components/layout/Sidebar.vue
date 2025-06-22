@@ -9,7 +9,7 @@
           alt="Foto de Perfil"
           class="w-9 h-9 rounded-full object-cover"
         />
-        <h2 class="text-xl font-bold text-white">CIIG Global</h2>
+        <h2 class="text-xl font-bold text-white">CIIG SYSTEMS</h2>
       </button>
     </div>
     <div class="px-4 py-6">
