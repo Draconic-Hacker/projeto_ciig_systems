@@ -1,5 +1,12 @@
 <template>
-    <div class="bg-login">
+<ToastModal
+    :message="toastMessage"
+    :type="toastType"
+    @click="toastMessage = ''"
+    @clear="toastMessage = ''"
+/>
+
+<div class="bg-login">
 <div class="container" :class="{ active: isRegisterActive }">
 
     <div class="form-box login"> <!-- login form -->
@@ -19,7 +26,6 @@
                 >
                 <i class='bx bxs-lock-alt cor-icon'></i>
             </div>
-            <div class="error-msg" v-if="loginError">{{ loginError }}</div> <!-- mensagem de erro -->
             <div class="forgot-link"> <!-- link para recuperar senha -->
                 <a href="#">Esqueceu a sua Senha?</a>
             </div>
@@ -62,8 +68,6 @@
                 <input type="checkbox" id="showPassRegister" v-model="showPasswordRegister">
                 <label for="showPassRegister">Mostrar senha</label>
             </div>
-            <div class="error-msg" v-if="registerError">{{ registerError }}</div> <!-- mensagem de erro -->
-            <div class="success-msg" v-if="registerSuccess">{{ registerSuccess }}</div> <!-- mensagem de sucesso -->
             <button type="submit" class="btn">Cadastrar-se</button> <!-- botao de cadastro -->
             <div class="social-icons">
                 <a href="#"><i class='bx bxl-google' ></i></a>
@@ -92,9 +96,18 @@
 </template>
 
 <script setup>
+import ToastModal from '@/components/Common/ToastModal.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
+
+const toastMessage = ref('')
+const toastType = ref('info')
+
+function showToast(msg, type = 'info') {
+  toastMessage.value = msg
+  toastType.value = type
+}
 
 const isRegisterActive = ref(false)
 
@@ -108,16 +121,11 @@ const register = ref({
     password: ''
 })
 
-const loginError = ref('')
-const registerError = ref('')
-const registerSuccess = ref('')
-
 const showPassword = ref(false)
 const showPasswordRegister = ref(false)
 
 // Função de login
 function handleLogin() {
-    loginError.value = ''
     const users = JSON.parse(localStorage.getItem("users")) || []
     const userFound = users.find(user =>
         (user.username === login.value.username || user.email === login.value.username) &&
@@ -125,53 +133,37 @@ function handleLogin() {
     )
     if (userFound) {
         // Login válido
-        alert('Login realizado!')
+        showToast('Login realizado!', 'success')
         isRegisterActive.value = false
         router.push('/home')
     } else {
-    loginError.value = 'Usuário ou senha incorretos.'
-    setTimeout(() => {
-        loginError.value = ''
-    }, 2000)
+    showToast('Usuário ou senha incorretos.', 'error')
 }
 }
 
 // Função de cadastro
 function handleRegister() {
-    registerError.value = ''
     const users = JSON.parse(localStorage.getItem("users")) || []
 
     // Validação básica
     if (!register.value.username || !register.value.email || !register.value.password) {
-        registerError.value = 'Preencha todos os campos.'
-        setTimeout(() => {
-        registerError.value = ''
-    }, 2000)
+        showToast('Preencha todos os campos.', 'error')
         return
     }
     // Validação de email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailPattern.test(register.value.email)) {
-        registerError.value = 'Por favor, insira um email válido.'
-        setTimeout(() => {
-        registerError.value = ''
-    }, 2000)
+        showToast('Por favor, insira um email válido.', 'error')
         return
     }
     // Usuário já existe
     if (users.some(user => user.username.toLowerCase() === register.value.username.toLowerCase())) {
-        registerError.value = 'Usuário já cadastrado.'
-        setTimeout(() => {
-        registerError.value = ''
-    }, 2000)
+        showToast('Usuário já cadastrado.', 'error')
         return
     }
     // Email já existe
     if (users.some(user => user.email.toLowerCase() === register.value.email.toLowerCase())) {
-        registerError.value = 'Email já cadastrado.'
-        setTimeout(() => {
-        registerError.value = ''
-    }, 2000)
+        showToast('Email já cadastrado', 'error')
         return
     }
     // Salva usuário
@@ -181,10 +173,7 @@ function handleRegister() {
         password: register.value.password
     })
     localStorage.setItem("users", JSON.stringify(users))
-    registerSuccess.value = 'Cadastro realizado com sucesso!'
-    setTimeout(() => {
-      registerSuccess.value = ''
-    }, 2000)
+    showToast('Cadastro realizado com sucesso!', 'success')
     isRegisterActive.value = false
     // Limpa campos
     register.value.username = ''
