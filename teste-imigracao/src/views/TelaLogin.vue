@@ -10,8 +10,18 @@
                 <i class='bx bxs-user cor-icon'></i>
             </div>
             <div class="input-box">
-                <input data-testid="login-password" type="password" placeholder="Senha" v-model="login.password" required>
+                <input
+                data-testid="login-password"
+                :type="showPassword ? 'text' : 'password'"
+                placeholder="Senha"
+                v-model="login.password"
+                required
+                >
                 <i class='bx bxs-lock-alt cor-icon'></i>
+            </div>
+            <div class="forgot-link">
+                <input type="checkbox" id="showPass" v-model="showPassword">
+                <label for="showPass">Mostrar senha</label>
             </div>
             <div class="error-msg" v-if="loginError">{{ loginError }}</div>
             <div class="forgot-link">
@@ -92,6 +102,8 @@ const register = ref({
 const loginError = ref('')
 const registerError = ref('')
 const registerSuccess = ref('')
+
+const showPassword = ref(false)
 
 // Função de login
 function handleLogin() {

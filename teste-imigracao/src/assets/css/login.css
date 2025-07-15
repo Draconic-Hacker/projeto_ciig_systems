@@ -122,6 +122,15 @@ form{ width: 100%; }
     font-size: 14px;
 }
 
+.show-password {
+  margin-top: 5px;
+  font-size: 0.95em;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .forgot-link{ margin: -15px 0 15px; }
     .forgot-link a{
         font-size: 14.5px;
