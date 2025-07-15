@@ -2,14 +2,14 @@
     <div class="bg-login">
 <div class="container" :class="{ active: isRegisterActive }">
 
-    <div class="form-box login">
+    <div class="form-box login"> <!-- login form -->
         <form @submit.prevent="handleLogin">
             <h1>Login</h1>
-            <div class="input-box">
+            <div class="input-box"> <!-- input de usuario -->
                 <input data-testid="login-username" type="text" placeholder="Nome de Usuário" v-model="login.username" required>
                 <i class='bx bxs-user cor-icon'></i>
             </div>
-            <div class="input-box">
+            <div class="input-box"> <!-- input de senha -->
                 <input
                 data-testid="login-password"
                 :type="showPassword ? 'text' : 'password'"
@@ -19,15 +19,15 @@
                 >
                 <i class='bx bxs-lock-alt cor-icon'></i>
             </div>
-            <div class="forgot-link">
+            <div class="error-msg" v-if="loginError">{{ loginError }}</div> <!-- mensagem de erro -->
+            <div class="forgot-link"> <!-- link para recuperar senha -->
+                <a href="#">Esqueceu a sua Senha?</a>
+            </div>
+            <div class="show-password"> <!-- input para mostrar a senha -->
                 <input type="checkbox" id="showPass" v-model="showPassword">
                 <label for="showPass">Mostrar senha</label>
             </div>
-            <div class="error-msg" v-if="loginError">{{ loginError }}</div>
-            <div class="forgot-link">
-                <a href="#">Esqueceu a sua Senha?</a>
-            </div>
-            <button data-testid="login-button" type="submit" class="btn">Login</button>
+            <button data-testid="login-button" type="submit" class="btn">Login</button> <!-- botao de login -->
             <p>ou faça login com plataformas sociais</p>
             <div class="social-icons">
                 <a href="#"><i class='bx bxl-google' ></i></a>
@@ -38,24 +38,33 @@
         </form>
     </div>
 
-    <div class="form-box register">
+    <div class="form-box register"> <!-- register form -->
         <form @submit.prevent="handleRegister">
             <h1>Cadastro</h1>
-            <div class="input-box">
+            <div class="input-box"> <!-- input de usuario -->
                 <input data-testid="register-username" type="text" placeholder="Nome de Usuário" v-model="register.username" required>
                 <i class='bx bxs-user cor-icon'></i>
             </div>
-            <div class="input-box">
+            <div class="input-box"> <!-- input de email -->
                 <input data-testid="register-email" type="email" placeholder="Email" v-model="register.email" required>
                 <i class='bx bxs-envelope cor-icon'></i>
             </div>
-            <div class="input-box">
-                <input data-testid="register-password" type="password" placeholder="Senha" v-model="register.password" required>
+            <div class="input-box"> <!-- input de senha -->
+                <input 
+                data-testid="register-password" 
+                :type="showPasswordRegister ? 'text' : 'password'"
+                placeholder="Senha" 
+                v-model="register.password" 
+                required>
                 <i class='bx bxs-lock-alt cor-icon'></i>
             </div>
-            <div class="error-msg" v-if="registerError">{{ registerError }}</div>
-            <div class="success-msg" v-if="registerSuccess">{{ registerSuccess }}</div>
-            <button type="submit" class="btn">Cadastrar-se</button>
+            <div class="show-password"> <!-- input para mostrar a senha -->
+                <input type="checkbox" id="showPassRegister" v-model="showPasswordRegister">
+                <label for="showPassRegister">Mostrar senha</label>
+            </div>
+            <div class="error-msg" v-if="registerError">{{ registerError }}</div> <!-- mensagem de erro -->
+            <div class="success-msg" v-if="registerSuccess">{{ registerSuccess }}</div> <!-- mensagem de sucesso -->
+            <button type="submit" class="btn">Cadastrar-se</button> <!-- botao de cadastro -->
             <div class="social-icons">
                 <a href="#"><i class='bx bxl-google' ></i></a>
                 <a href="#"><i class='bx bxl-facebook' ></i></a>
@@ -104,6 +113,7 @@ const registerError = ref('')
 const registerSuccess = ref('')
 
 const showPassword = ref(false)
+const showPasswordRegister = ref(false)
 
 // Função de login
 function handleLogin() {

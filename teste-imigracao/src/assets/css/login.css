@@ -123,12 +123,11 @@ form{ width: 100%; }
 }
 
 .show-password {
-  margin-top: 5px;
+  margin: -5px 0 15px; 
   font-size: 0.95em;
-  color: #333;
-  display: flex;
+  color: white;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 }
 
 .forgot-link{ margin: -15px 0 15px; }
