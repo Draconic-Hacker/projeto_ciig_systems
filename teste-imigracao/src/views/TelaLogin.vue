@@ -1,11 +1,4 @@
 <template>
-<ToastModal
-    :message="toastMessage"
-    :type="toastType"
-    @click="toastMessage = ''"
-    @clear="toastMessage = ''"
-/>
-
 <div class="bg-login">
 <div class="container" :class="{ active: isRegisterActive }">
 
@@ -96,18 +89,11 @@
 </template>
 
 <script setup>
-import ToastModal from '@/components/Common/ToastModal.vue'
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const toastMessage = ref('')
-const toastType = ref('info')
-
-function showToast(msg, type = 'info') {
-  toastMessage.value = msg
-  toastType.value = type
-}
+const showToast = inject('showToast')
 
 const isRegisterActive = ref(false)
 
