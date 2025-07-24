@@ -1,310 +1,482 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CIIG Systems Supply Chain</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a3a6d, #2a5298);
-            min-height: 100vh;
-        }
-        
-        .main-button {
-            transition: all 0.3s ease;
-        }
-        
-        .main-button:hover {
-            background-color: rgba(25, 50, 100, 0.8) !important;
-            transform: scale(1.05);
-        }
-        
-        .social-icon {
-            transition: all 0.2s ease;
-        }
-        
-        .social-icon:hover {
-            transform: scale(1.2);
-        }
-        
-        .glass-effect {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .logo-text {
-            background: linear-gradient(90deg, #ffffff, #a3c2ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        }
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #1a3a6d, #2a5298);
+        min-height: 100vh;
+      }
+
+      .main-button {
+        transition: all 0.3s ease;
+      }
+
+      .main-button:hover {
+        background-color: rgba(25, 50, 100, 0.8) !important;
+        transform: scale(1.05);
+      }
+
+      .social-icon {
+        transition: all 0.2s ease;
+      }
+
+      .social-icon:hover {
+        transform: scale(1.2);
+      }
+
+      .glass-effect {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .logo-text {
+        background: linear-gradient(90deg, #ffffff, #a3c2ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      }
     </style>
-</head>
-<body class="bg-gray-100">
+  </head>
+  <body class="bg-gray-100">
     <div class="min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="bg-gradient-to-r from-blue-900 to-blue-800 text-white shadow-lg">
-            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <div class="flex items-center">
-                    <div class="mr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
-                        </svg>
-                    </div>
-                    <h1 class="text-2xl font-bold logo-text">CIIG Systems Supply Chain</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button id="notificationBtn" class="relative p-2 rounded-full hover:bg-blue-700 transition">
-                        <i class="fas fa-bell"></i>
-                        <span class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
-                    </button>
-                    <div class="relative group">
-                        <button id="profileBtn" class="flex items-center space-x-2 p-2 rounded-full hover:bg-blue-700 transition">
-                            <div class="h-8 w-8 rounded-full bg-blue-400 flex items-center justify-center text-blue-900 font-bold">
-                                US
-                            </div>
-                            <span class="hidden md:inline">Usuário</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                            <a href="#" id="profileLink" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-                                <i class="fas fa-user mr-2"></i> Perfil
-                            </a>
-                            <a href="#" id="changePasswordBtn" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-                                <i class="fas fa-key mr-2"></i> Trocar Senha
-                            </a>
-                            <hr class="my-1">
-                            <a href="#" id="logoutBtn" class="block px-4 py-2 text-red-600 hover:bg-gray-100">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Deslogar
-                            </a>
-                        </div>
-                    </div>
-                </div>
+      <!-- Header -->
+      <header
+        class="bg-gradient-to-r from-blue-900 to-blue-800 text-white shadow-lg"
+      >
+        <div
+          class="container mx-auto px-4 py-3 flex justify-between items-center"
+        >
+          <div class="flex items-center">
+            <div class="mr-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-10 w-10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
+                />
+              </svg>
             </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="flex-grow container mx-auto px-4 py-8">
-            <div class="flex flex-col md:flex-row gap-6">
-                <!-- Main Navigation Buttons -->
-                <div class="w-full md:w-2/3 glass-effect rounded-xl p-6 shadow-xl">
-                    <h2 class="text-xl font-semibold mb-6 text-white">Gestão de Cadeia de Suprimentos</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Button 1: Materiais -->
-                        <button class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                            <i class="fas fa-boxes text-3xl mb-3"></i>
-                            <span class="font-medium">Materiais</span>
-                        </button>
-                        
-                        <!-- Button 2: Descontos -->
-                        <button class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                            <i class="fas fa-percentage text-3xl mb-3"></i>
-                            <span class="font-medium">Descontos</span>
-                        </button>
-                        
-                        <!-- Button 3: Fornecedores -->
-                        <button class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                            <i class="fas fa-truck text-3xl mb-3"></i>
-                            <span class="font-medium">Fornecedores</span>
-                        </button>
-                        
-                        <!-- Button 4: Ouvidoria Geral -->
-                        <button class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                            <i class="fas fa-headset text-3xl mb-3"></i>
-                            <span class="font-medium">Ouvidoria Geral</span>
-                        </button>
-                        
-                        <!-- Button 5: Notificações -->
-                        <button class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                            <i class="fas fa-bell text-3xl mb-3"></i>
-                            <span class="font-medium">Notificações</span>
-                        </button>
-                        
-                        <!-- Button 6: Perfil -->
-                        <button class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                            <i class="fas fa-user text-3xl mb-3"></i>
-                            <span class="font-medium">Perfil</span>
-                        </button>
-                    </div>
+            <h1 class="text-2xl font-bold logo-text">
+              CIIG Systems Supply Chain
+            </h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              id="notificationBtn"
+              class="relative p-2 rounded-full hover:bg-blue-700 transition"
+            >
+              <i class="fas fa-bell"></i>
+              <span
+                class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs flex items-center justify-center"
+                >3</span
+              >
+            </button>
+            <div class="relative">
+              <button
+                id="profileBtn"
+                class="flex items-center space-x-2 p-2 rounded-full hover:bg-blue-700 transition"
+                type="button"
+              >
+                <div
+                  class="h-8 w-8 rounded-full bg-blue-400 flex items-center justify-center text-blue-900 font-bold"
+                >
+                  US
                 </div>
-
-                <!-- Side Panel -->
-                <div class="w-full md:w-1/3 flex flex-col gap-6">
-                    <!-- Quick Stats -->
-                    <div class="glass-effect rounded-xl p-6 shadow-xl">
-                        <h2 class="text-xl font-semibold mb-4 text-white">Visão Geral</h2>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Pedidos Pendentes</span>
-                                <span class="text-white font-semibold">12</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Fornecedores Ativos</span>
-                                <span class="text-white font-semibold">28</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Materiais em Estoque</span>
-                                <span class="text-white font-semibold">1,254</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-300">Alertas</span>
-                                <span class="text-red-400 font-semibold">3</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Social Media Contact -->
-                    <div class="glass-effect rounded-xl p-6 shadow-xl">
-                        <h2 class="text-xl font-semibold mb-4 text-white">Contato CIIG Systems</h2>
-                        <div class="flex justify-center space-x-6 py-2">
-                            <a href="#" class="social-icon text-white hover:text-green-400">
-                                <i class="fab fa-whatsapp text-3xl"></i>
-                            </a>
-                            <a href="#" class="social-icon text-white hover:text-pink-400">
-                                <i class="fab fa-instagram text-3xl"></i>
-                            </a>
-                            <a href="#" class="social-icon text-white hover:text-blue-400">
-                                <i class="fab fa-facebook text-3xl"></i>
-                            </a>
-                        </div>
-                        <div class="mt-4 text-center">
-                            <p class="text-gray-300 text-sm">Suporte disponível 24/7</p>
-                            <p class="text-white font-medium mt-1">contato@ciigsystems.com</p>
-                        </div>
-                    </div>
-                </div>
+                <span class="hidden md:inline">Usuário</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                id="profileMenu"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden"
+              >
+                <a
+                  href="#"
+                  id="profileLink"
+                  class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
+                  <i class="fas fa-user mr-2"></i> Perfil
+                </a>
+                <a
+                  href="#"
+                  id="changePasswordBtn"
+                  class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
+                  <i class="fas fa-key mr-2"></i> Trocar Senha
+                </a>
+                <hr class="my-1" />
+                <a
+                  href="#"
+                  id="logoutBtn"
+                  class="block px-4 py-2 text-red-600 hover:bg-gray-100"
+                >
+                  <i class="fas fa-sign-out-alt mr-2"></i> Deslogar
+                </a>
+              </div>
             </div>
-        </main>
+          </div>
+        </div>
+      </header>
 
-        <!-- Footer -->
-        <footer class="bg-blue-900 text-white py-4">
-            <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-                <div class="text-center md:text-left mb-4 md:mb-0">
-                    <p>&copy; 2023 CIIG Systems Supply Chain. Todos os direitos reservados.</p>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="#" class="hover:text-blue-300 transition">Termos</a>
-                    <a href="#" class="hover:text-blue-300 transition">Privacidade</a>
-                    <a href="#" class="hover:text-blue-300 transition">Ajuda</a>
-                </div>
+      <!-- Main Content -->
+      <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-6">
+          <!-- Main Navigation Buttons -->
+          <div class="w-full md:w-2/3 glass-effect rounded-xl p-6 shadow-xl">
+            <h2 class="text-xl font-semibold mb-6 text-white">
+              Gestão de Cadeia de Suprimentos
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Button 1: Materiais -->
+              <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg"
+              >
+                <i class="fas fa-boxes text-3xl mb-3"></i>
+                <span class="font-medium">Materiais</span>
+              </button>
+
+              <!-- Button 2: Descontos -->
+              <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg"
+              >
+                <i class="fas fa-percentage text-3xl mb-3"></i>
+                <span class="font-medium">Descontos</span>
+              </button>
+
+              <!-- Button 3: Fornecedores -->
+              <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg"
+              >
+                <i class="fas fa-truck text-3xl mb-3"></i>
+                <span class="font-medium">Fornecedores</span>
+              </button>
+
+              <!-- Button 4: Ouvidoria Geral -->
+              <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg"
+              >
+                <i class="fas fa-headset text-3xl mb-3"></i>
+                <span class="font-medium">Ouvidoria Geral</span>
+              </button>
+
+              <!-- Button 5: Notificações -->
+              <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg"
+              >
+                <i class="fas fa-bell text-3xl mb-3"></i>
+                <span class="font-medium">Notificações</span>
+              </button>
+
+              <!-- Button 6: Perfil -->
+              <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg"
+              >
+                <i class="fas fa-user text-3xl mb-3"></i>
+                <span class="font-medium">Perfil</span>
+              </button>
             </div>
-        </footer>
+          </div>
+
+          <!-- Side Panel -->
+          <div class="w-full md:w-1/3 flex flex-col gap-6">
+            <!-- Quick Stats -->
+            <div class="glass-effect rounded-xl p-6 shadow-xl">
+              <h2 class="text-xl font-semibold mb-4 text-white">Visão Geral</h2>
+              <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-300">Pedidos Pendentes</span>
+                  <span class="text-white font-semibold">12</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-300">Fornecedores Ativos</span>
+                  <span class="text-white font-semibold">28</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-300">Materiais em Estoque</span>
+                  <span class="text-white font-semibold">1,254</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-300">Alertas</span>
+                  <span class="text-red-400 font-semibold">3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Media Contact -->
+            <div class="glass-effect rounded-xl p-6 shadow-xl">
+              <h2 class="text-xl font-semibold mb-4 text-white">
+                Contato CIIG Systems
+              </h2>
+              <div class="flex justify-center space-x-6 py-2">
+                <a href="#" class="social-icon text-white hover:text-green-400">
+                  <i class="fab fa-whatsapp text-3xl"></i>
+                </a>
+                <a href="#" class="social-icon text-white hover:text-pink-400">
+                  <i class="fab fa-instagram text-3xl"></i>
+                </a>
+                <a href="#" class="social-icon text-white hover:text-blue-400">
+                  <i class="fab fa-facebook text-3xl"></i>
+                </a>
+              </div>
+              <div class="mt-4 text-center">
+                <p class="text-gray-300 text-sm">Suporte disponível 24/7</p>
+                <p class="text-white font-medium mt-1">
+                  contato@ciigsystems.com
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-blue-900 text-white py-4">
+        <div
+          class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center"
+        >
+          <div class="text-center md:text-left mb-4 md:mb-0">
+            <p>
+              &copy; 2023 CIIG Systems Supply Chain. Todos os direitos
+              reservados.
+            </p>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="hover:text-blue-300 transition">Termos</a>
+            <a href="#" class="hover:text-blue-300 transition">Privacidade</a>
+            <a href="#" class="hover:text-blue-300 transition">Ajuda</a>
+          </div>
+        </div>
+      </footer>
     </div>
 
     <!-- Modal for Change Password -->
-    <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold text-gray-800">Trocar Senha</h3>
-                <button id="closePasswordModal" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="currentPassword">
-                        Senha Atual
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="currentPassword" type="password">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="newPassword">
-                        Nova Senha
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="newPassword" type="password">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">
-                        Confirmar Nova Senha
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="confirmPassword" type="password">
-                </div>
-                <div class="flex items-center justify-end">
-                    <button class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2" type="button" id="cancelPasswordChange">
-                        Cancelar
-                    </button>
-                    <button class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" id="savePasswordChange">
-                        Salvar
-                    </button>
-                </div>
-            </form>
+    <div
+      id="passwordModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">Trocar Senha</h3>
+          <button
+            id="closePasswordModal"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <i class="fas fa-times"></i>
+          </button>
         </div>
+        <form>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="currentPassword"
+            >
+              Senha Atual
+            </label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="currentPassword"
+              type="password"
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="newPassword"
+            >
+              Nova Senha
+            </label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="newPassword"
+              type="password"
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="confirmPassword"
+            >
+              Confirmar Nova Senha
+            </label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="confirmPassword"
+              type="password"
+            />
+          </div>
+          <div class="flex items-center justify-end">
+            <button
+              class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+              type="button"
+              id="cancelPasswordChange"
+            >
+              Cancelar
+            </button>
+            <button
+              class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              id="savePasswordChange"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Logout Confirmation Modal -->
-    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg p-6 w-full max-w-sm">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Confirmar Saída</h3>
-            <p class="text-gray-600 mb-6">Tem certeza que deseja sair do sistema?</p>
-            <div class="flex items-center justify-end">
-                <button id="cancelLogout" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">
-                    Cancelar
-                </button>
-                <button id="confirmLogout" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Sair
-                </button>
-            </div>
+    <div
+      id="logoutModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">
+          Confirmar Saída
+        </h3>
+        <p class="text-gray-600 mb-6">
+          Tem certeza que deseja sair do sistema?
+        </p>
+        <div class="flex items-center justify-end">
+          <button
+            id="cancelLogout"
+            class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+          >
+            Cancelar
+          </button>
+          <button
+            id="confirmLogout"
+            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Sair
+          </button>
         </div>
+      </div>
     </div>
 
     <script>
-        // Change Password Modal
-        const changePasswordBtn = document.getElementById('changePasswordBtn');
-        const passwordModal = document.getElementById('passwordModal');
-        const closePasswordModal = document.getElementById('closePasswordModal');
-        const cancelPasswordChange = document.getElementById('cancelPasswordChange');
-        const savePasswordChange = document.getElementById('savePasswordChange');
-
-        changePasswordBtn.addEventListener('click', function() {
-            passwordModal.classList.remove('hidden');
-        });
-
-        function closePasswordModalFunc() {
-            passwordModal.classList.add('hidden');
+      // Menu de perfil (abre/fecha ao clicar)
+      const profileBtn = document.getElementById("profileBtn");
+      const profileMenu = document.getElementById("profileMenu");
+      document.addEventListener("click", function (e) {
+        if (profileBtn.contains(e.target)) {
+          profileMenu.classList.toggle("hidden");
+        } else if (!profileMenu.contains(e.target)) {
+          profileMenu.classList.add("hidden");
         }
+      });
 
-        closePasswordModal.addEventListener('click', closePasswordModalFunc);
-        cancelPasswordChange.addEventListener('click', closePasswordModalFunc);
-        
-        savePasswordChange.addEventListener('click', function() {
-            alert('Senha alterada com sucesso!');
-            closePasswordModalFunc();
-        });
+      // Change Password Modal
+      const changePasswordBtn = document.getElementById("changePasswordBtn");
+      const passwordModal = document.getElementById("passwordModal");
+      const closePasswordModal = document.getElementById("closePasswordModal");
+      const cancelPasswordChange = document.getElementById(
+        "cancelPasswordChange"
+      );
+      const savePasswordChange = document.getElementById("savePasswordChange");
 
-        // Logout Modal
-        const logoutBtn = document.getElementById('logoutBtn');
-        const logoutModal = document.getElementById('logoutModal');
-        const cancelLogout = document.getElementById('cancelLogout');
-        const confirmLogout = document.getElementById('confirmLogout');
+      changePasswordBtn.addEventListener("click", function () {
+        passwordModal.classList.remove("hidden");
+      });
 
-        logoutBtn.addEventListener('click', function() {
-            logoutModal.classList.remove('hidden');
-        });
+      function closePasswordModalFunc() {
+        passwordModal.classList.add("hidden");
+      }
 
-        function closeLogoutModal() {
-            logoutModal.classList.add('hidden');
-        }
+      closePasswordModal.addEventListener("click", closePasswordModalFunc);
+      cancelPasswordChange.addEventListener("click", closePasswordModalFunc);
 
-        cancelLogout.addEventListener('click', closeLogoutModal);
-        
-        confirmLogout.addEventListener('click', function() {
-            alert('Você foi desconectado com sucesso!');
-            closeLogoutModal();
-            // In a real application, this would redirect to the login page
-        });
+      savePasswordChange.addEventListener("click", function () {
+        alert("Senha alterada com sucesso!");
+        closePasswordModalFunc();
+      });
 
-        // Notification functionality
-        document.getElementById('notificationBtn').addEventListener('click', function() {
-            alert('Você tem 3 novas notificações!');
+      // Logout Modal
+      const logoutBtn = document.getElementById("logoutBtn");
+      const logoutModal = document.getElementById("logoutModal");
+      const cancelLogout = document.getElementById("cancelLogout");
+      const confirmLogout = document.getElementById("confirmLogout");
+
+      logoutBtn.addEventListener("click", function () {
+        logoutModal.classList.remove("hidden");
+      });
+
+      function closeLogoutModal() {
+        logoutModal.classList.add("hidden");
+      }
+
+      cancelLogout.addEventListener("click", closeLogoutModal);
+
+      confirmLogout.addEventListener("click", function () {
+        alert("Você foi desconectado com sucesso!");
+        closeLogoutModal();
+        // In a real application, this would redirect to the login page
+      });
+
+      // Notification functionality
+      document
+        .getElementById("notificationBtn")
+        .addEventListener("click", function () {
+          alert("Você tem 3 novas notificações!");
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9642dd9ec3e7f62e',t:'MTc1MzM1NDMyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9642dd9ec3e7f62e',t:'MTc1MzM1NDMyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>
