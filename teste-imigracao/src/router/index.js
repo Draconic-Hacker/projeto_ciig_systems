@@ -7,9 +7,11 @@ import TelaDashboard from '@/views/TelaDashboard.vue'
 import TelaPerfil from '@/views/TelaPerfil.vue'
 import TelaFornecedores from '@/views/TelaFornecedores.vue'
 import TelaNotificacoes from '@/views/TelaNotificacoes.vue'
+import Menutoggle from '@/views/MenuCircleRotate.vue'
 
 const routes = [
   { path: '/', component: TelaDeEntrada },
+  { path: '/menutoggle', component: Menutoggle },
   { path: '/login', component: TelaLogin },
   { path: '/perfil', component: TelaPerfil },
   { path: '/home', component: HomeMenu },
