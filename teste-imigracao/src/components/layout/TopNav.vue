@@ -1,42 +1,91 @@
+
 <template>
-  <header class="bg-white dark:bg-gray-800 shadow-sm z-10">
-    <div class="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-900 to-blue-800 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center">
-        <button @click="$emit('toggleSidebar')" class="md:hidden mr-4 text-gray-600 dark:text-gray-300">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-        <div class="relative">
-          <input
-            type="text"
-            placeholder="Pesquisar..."
-            class="w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <div class="mr-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-10 w-10"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
+            />
           </svg>
         </div>
+        <h1 class="text-2xl font-bold logo-text">
+          CIIG Systems Supply Chain
+        </h1>
       </div>
       <div class="flex items-center space-x-4">
-        <ThemeToggle />
+        <button
+          class="relative p-2 rounded-full hover:bg-blue-700 transition"
+          @click="notify"
+        >
+          <i class="fas fa-bell"></i>
+          <span
+            class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs flex items-center justify-center"
+            >3</span
+          >
+        </button>
         <div class="relative">
-          <button data-testid="notification-icon" @click="RedirectNotificacoes" class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white relative">
-            🔔
-            <span class="notification-badge bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center absolute -top-2 -right-2">3</span>
+          <button
+            ref="profileBtn"
+            class="flex items-center space-x-2 p-2 rounded-full hover:bg-blue-700 transition"
+            type="button"
+            @click="toggleProfileMenu"
+          >
+            <div
+              class="h-8 w-8 rounded-full bg-blue-400 flex items-center justify-center text-blue-900 font-bold"
+            >
+              US
+            </div>
+            <span class="hidden md:inline">Usuário</span>
+            <i class="fas fa-chevron-down text-xs"></i>
           </button>
-        </div>
-        <div class="relative">
-          <button class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
-            ✉️
-            <span class="notification-badge bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center absolute -top-2 -right-2">5</span>
-          </button>
-        </div>
-        <div class="border-l pl-4 border-gray-300 dark:border-gray-600 flex items-center space-x-2">
-          <button @click="RedirectPerfil"  class="flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">AG</div>
-            <span data-testid="profile-icon" class="text-sm font-medium text-gray-700 dark:text-gray-300">Admin Gestor</span>
-          </button>
+          <div
+            ref="profileMenu"
+            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
+            v-show="showProfileMenu"
+          >
+            <a
+              href="#"
+              class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              <i class="fas fa-user mr-2"></i> Perfil
+            </a>
+            <a
+              href="#"
+              class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+            >
+              <i class="fas fa-key mr-2"></i> Trocar Senha
+            </a>
+            <hr class="my-1" />
+            <a
+              href="#"
+              class="block px-4 py-2 text-red-600 hover:bg-gray-100"
+              @click="openLogoutModal"
+              >
+              <i class="fas fa-sign-out-alt mr-2"></i> Deslogar
+            </a>
+            <LogoutModal
+              :visible="showLogoutModal"
+              @cancel="showLogoutModal = false"
+              @confirm="handleLogoutConfirm"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -44,23 +93,58 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import ThemeToggle from '@/components/Common/ThemeToggle.vue'
-const router = useRouter();
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { userRouter } from '@/router';
+import LogoutModal from '@/components/Common/LogoutModal.vue';
+const showToast = inject('showToast')
 
-function RedirectNotificacoes(){
-    router.push('/notificacoes')
+// showLogoutModal
+const showLogoutModal = ref(false);
+const router = userRouter();
+
+function openLogoutModal() {
+  showLogoutModal.value = true;
 }
 
-function RedirectPerfil(){
-    router.push('/perfil')
+function handleLogoutConfirm () {
+  showLogoutModal.value = false;
+  // Colocar aqui a Toast
+  showToast('Logout realizado com sucesso!', 'info')
+  router.push('/login')
+}
+
+// Show the ProfileMenu when the profile button is clicked
+const showProfileMenu = ref(false);
+const profileBtn = ref(null);
+const profileMenu = ref(null);
+
+function toggleProfileMenu(event) {
+  showProfileMenu.value = !showProfileMenu.value;
+}
+
+function handleClickOutside(event) {
+  if (
+    profileMenu.value &&
+    !profileMenu.value.contains(event.target) &&
+    profileBtn.value &&
+    !profileBtn.value.contains(event.target)
+  ) {
+    showProfileMenu.value = false;
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+function notify() {
+  alert('Você tem 3 novas notificações!');
 }
 </script>
 
 <style scoped>
-.notification-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-}
+
 </style>
