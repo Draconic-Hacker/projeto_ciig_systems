@@ -94,7 +94,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { userRouter } from '@/router';
+import userRouter from '../../router/index.js';
 import LogoutModal from '@/components/Common/LogoutModal.vue';
 const showToast = inject('showToast')
 
