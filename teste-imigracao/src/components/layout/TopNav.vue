@@ -93,14 +93,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import userRouter from '../../router/index.js';
+import { ref, onMounted, onBeforeUnmount, inject } from 'vue';
+import { useRouter } from 'vue-router';
 import LogoutModal from '@/components/Common/LogoutModal.vue';
 const showToast = inject('showToast')
 
 // showLogoutModal
 const showLogoutModal = ref(false);
-const router = userRouter();
+const router = useRouter();
 
 function openLogoutModal() {
   showLogoutModal.value = true;
