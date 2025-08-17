@@ -36,6 +36,8 @@ defineProps({
     required: true
   }
 });
+
+const emit = defineEmits(['cancel', 'confirm']);
 </script>
 
 <style scoped>

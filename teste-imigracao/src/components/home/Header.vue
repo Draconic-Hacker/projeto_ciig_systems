@@ -17,11 +17,15 @@
         </h1>
       </div>
       <div class="flex items-center space-x-4">
-        <button class="relative p-2 rounded-full hover:bg-blue-700 transition" @click="notify">
+        <!-- Notificações -->
+        <button class="relative p-2 rounded-full hover:bg-blue-700 transition  flex items-center justify-center w-10 h-10" @click="notify">
           <i class="fas fa-bell"></i>
           <span
             class="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
         </button>
+        <!-- ThemeToggle -->
+        <ThemeToggle @toggle-theme="handleThemeToggle" />
+        <!-- Profile Menu -->
         <div class="relative">
           <button ref="profileBtn" class="flex items-center space-x-2 p-2 rounded-full hover:bg-blue-700 transition"
             type="button" @click="toggleProfileMenu">
@@ -67,6 +71,8 @@ import { ref, onMounted, onBeforeUnmount, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import LogoutModal from '@/components/Common/LogoutModal.vue';
 import ChangePasswordModal from '@/components/Common/ChangePasswordModal.vue'
+import ThemeToggle from "@/components/Common/ThemeToggle.vue";
+
 const showToast = inject('showToast')
 
 // showLogoutModal
@@ -75,12 +81,19 @@ const showLogoutModal = ref(false);
 const showChangePasswordModal = ref(false);
 const router = useRouter();
 
+const emit = defineEmits(['toggle-theme']);
+
 function openLogoutModal() {
   showLogoutModal.value = true;
 }
 
 function openChangePasswordModal() {
   showChangePasswordModal.value = true;
+}
+
+function handleThemeToggle(isDark) {
+  // Emite para o pai (TelaHome.vue)
+  emit('toggle-theme', isDark);
 }
 
 function handleChangePasswordModal() {
@@ -140,5 +153,13 @@ function notify() {
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+button.relative.p-2 {
+    transition: transform 0.2s cubic-bezier(.4,0,.2,1), box-shadow 0.2s;
+}
+button.relative.p-2:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 </style>

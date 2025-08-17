@@ -46,6 +46,13 @@
                 <i class="fas fa-user text-3xl mb-3"></i>
                 <span class="font-medium">Perfil</span>
             </button>
+
+            <!-- Button 6: Gestão de Marketplace -->
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-store text-3xl mb-3"></i>
+                <span class="font-medium">Gestão de Mercado</span>
+            </button>
         </div>
     </div>
 </template>
