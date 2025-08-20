@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 @import "tailwindcss";
+
+@layer utilities {
+  /* Classe base de transição */
+  .theme-transition {
+    @apply transition-all;
+  }
+}

@@ -149,6 +149,7 @@ function notify() {
   color: transparent;
   text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .glass-effect {
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);

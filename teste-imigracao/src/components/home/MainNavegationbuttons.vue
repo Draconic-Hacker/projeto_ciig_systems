@@ -48,17 +48,20 @@
             </button>
 
             <!-- Button 6: Gestão de Marketplace -->
-            <button
-                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                <i class="fas fa-store text-3xl mb-3"></i>
-                <span class="font-medium">Gestão de Mercado</span>
-            </button>
+            <a href="https://draconic-hacker.github.io/Marketplace/" rel="noopener noreferrer">
+                <button
+                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                    <i class="fas fa-store text-3xl mb-3"></i>
+                    <span class="font-medium">Gestão de Mercado</span>
+                </button>
+            </a>
         </div>
     </div>
 </template>
 
 <script setup>
 // import '@/assets/css/TelaHome.css';
+
 </script>
 
 <style scoped>

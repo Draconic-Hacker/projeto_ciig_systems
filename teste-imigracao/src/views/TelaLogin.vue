@@ -95,6 +95,9 @@ const router = useRouter()
 
 const showToast = inject('showToast')
 
+const showPassword = ref(false)
+const showPasswordRegister = ref(false)
+
 const isRegisterActive = ref(false)
 
 const login = ref({
@@ -106,9 +109,6 @@ const register = ref({
     email: '',
     password: ''
 })
-
-const showPassword = ref(false)
-const showPasswordRegister = ref(false)
 
 // Função de login
 function handleLogin() {

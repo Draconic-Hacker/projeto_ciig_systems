@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
-import TelaLogin from '@/views/TelaLogin.vue'
-import TelaOuvidoria from '@/views/TelaOuvidoria.vue'
 import HomeMenu from '@/views/TelaHome.vue'
+import GestaoDeMercado from '@/views/GestaoDeMercado.vue'
 import TelaDashboard from '@/views/TelaDashboard.vue'
-import TelaPerfil from '@/views/TelaPerfil.vue'
+import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
 import TelaFornecedores from '@/views/TelaFornecedores.vue'
+import TelaLogin from '@/views/TelaLogin.vue'
 import TelaNotificacoes from '@/views/TelaNotificacoes.vue'
+import TelaOuvidoria from '@/views/TelaOuvidoria.vue'
+import TelaPerfil from '@/views/TelaPerfil.vue'
 // import Menutoggle from '@/views/MenuCircleRotate.vue'
 
 const routes = [
@@ -19,6 +20,17 @@ const routes = [
   { path: '/dashboard', component: TelaDashboard },
   { path: '/fornecedores', component: TelaFornecedores },
   { path: '/notificacoes', component: TelaNotificacoes },
+  // { path: '/gestao-de-mercado',
+  //   component: GestaoDeMercado,
+  //   children: [
+  //     { path: 'dashboard', component: Dashboard },
+  //     { path: 'inventario', component: Inventario },
+  //     { path: 'pedidos', component: Pedidos }, 
+  //     { path: 'vendedores', component: Vendedores },
+  //     { path: 'analises', component: Analises },
+  //     { path: 'logistica', component: Logistica }
+  //   ]
+  //  },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
