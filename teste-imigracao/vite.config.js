@@ -9,6 +9,7 @@ export default defineConfig({
 	vue(),
 	tailwindcss(),
 	],
+  base: '/projeto_ciig_systems/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
