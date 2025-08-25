@@ -3,7 +3,7 @@ name: Deploy Vue + Vite to GitHub Pages
 on:
   push:
     branches:
-      - master  # branch principal do projeto.
+      - main   # ou a branch que você usa como principal
 
 jobs:
   build-deploy:
@@ -19,13 +19,15 @@ jobs:
           node-version: 18
 
       - name: Instalar dependências
+        working-directory: ./teste-imigracao   # 👈 entra na pasta do projeto Vue
         run: npm ci
 
       - name: Build do projeto
+        working-directory: ./teste-imigracao   # 👈 idem
         run: npm run build
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./teste-imigracao/dist   # 👈 publica o dist da pasta correta
