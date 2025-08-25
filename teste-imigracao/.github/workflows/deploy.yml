@@ -3,7 +3,7 @@ name: Deploy Vue + Vite to GitHub Pages
 on:
   push:
     branches:
-      - master  # branch principal do projeto
+      - master  # branch principal do projeto.
 
 jobs:
   build-deploy:
