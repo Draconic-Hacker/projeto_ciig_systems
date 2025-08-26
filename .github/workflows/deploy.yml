@@ -3,11 +3,16 @@ name: Deploy Vue + Vite to GitHub Pages
 on:
   push:
     branches:
-      - master   # ou a branch que você usa como principal
+      - master  # ou main, dependendo do seu repositório
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./teste-imigracao
+
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
@@ -18,14 +23,10 @@ jobs:
           node-version: 18
 
       - name: Instalar dependências
-        run: |
-          cd teste-imigracao
-          npm install
+        run: npm install
 
       - name: Build do projeto
-        run: |
-          cd teste-imigracao
-          npm run build
+        run: npm run build
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
