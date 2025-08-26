@@ -8,7 +8,6 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
@@ -19,15 +18,17 @@ jobs:
           node-version: 18
 
       - name: Instalar dependências
-        working-directory: ./teste-imigracao   # 👈 entra na pasta do projeto Vue
-        run: npm ci
+        run: |
+          cd teste-imigracao
+          npm install
 
       - name: Build do projeto
-        working-directory: ./teste-imigracao   # 👈 idem
-        run: npm run build
+        run: |
+          cd teste-imigracao
+          npm run build
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./teste-imigracao/dist   # 👈 publica o dist da pasta correta
+          publish_dir: ./teste-imigracao/dist
