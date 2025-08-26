@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import "tailwindcss"; */
+@import "tailwindcss";
 
 @layer utilities {
   /* Classe base de transição */
