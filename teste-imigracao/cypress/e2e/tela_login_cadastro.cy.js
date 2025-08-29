@@ -41,14 +41,25 @@ describe('Tela de Login e Registro', () => {
       expect(str).to.equal('Login realizado!')
     })
     cy.url().should('include', '/home')
-    cy.contains('CIIG SYSTEMS').should('be.visible')
-    cy.contains('Supply Chain').should('be.visible')
-    cy.contains('MATERIAL').should('be.visible')
-    cy.contains('DESCONTOS').should('be.visible')
-    cy.contains('FORNECEDORES').should('be.visible')
-    cy.contains('OUVIDORIA GERAL').should('be.visible')
-    cy.contains('NOTIFICAÇÃO').should('be.visible')
-    cy.contains('PERFIL').should('be.visible')
+    cy.contains("CIIG Systems Supply Chain").should("be.visible");
+    cy.contains("Visão Geral").should("be.visible");
+    cy.contains("Pedidos Pendentes").should("be.visible");
+    cy.contains("Fornecedores Ativos").should("be.visible");
+    cy.contains("Materiais em Estoque").should("be.visible");
+    cy.contains("Alertas").should("be.visible");
+    cy.contains("Contato CIIG Systems").should("be.visible");
+    cy.contains("contato@ciigsystems.com").should("be.visible");
+    cy.contains("Usuário").should("be.visible");
+    cy.contains(
+      "© 2023 CIIG Systems Supply Chain. Todos os direitos reservados."
+    ).should("be.visible");
+    cy.contains("Materiais").should("be.visible");
+    cy.contains("Descontos").should("be.visible");
+    cy.contains("Fornecedores").should("be.visible");
+    cy.contains("Ouvidoria Geral").should("be.visible");
+    cy.contains("Notificações").should("be.visible");
+    cy.get(".main-button").contains("Perfil").should("be.visible");
+    cy.contains("Gestão de Mercado").should("be.visible");
   })
 
   it('Deve dar erro ao cadastrar o mesmo usuário', () =>{
@@ -88,7 +99,7 @@ describe('Tela de Login e Registro', () => {
 
     cy.contains('Cadastrar-se').click()
 
-    cy.contains('Email já cadastrado.').should('be.visible')
+    cy.contains('Email já cadastrado').should('be.visible')
   })
 
   it('Deve dar erro ao tentar fazer login com usuário não cadastrado', () => {

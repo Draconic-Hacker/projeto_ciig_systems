@@ -6,43 +6,94 @@ describe('Tela Home', () => {
 })
 
 it('Deve renderizar toda a página', () => {
-    cy.contains('CIIG SYSTEMS').should('be.visible')
-    cy.contains('Supply Chain').should('be.visible')
-    cy.contains('MATERIAL').should('be.visible')
-    cy.contains('DESCONTOS').should('be.visible')
-    cy.contains('FORNECEDORES').should('be.visible')
-    cy.contains('OUVIDORIA GERAL').should('be.visible')
-    cy.contains('NOTIFICAÇÃO').should('be.visible')
-    cy.contains('PERFIL').should('be.visible')
+    cy.contains('CIIG Systems Supply Chain').should('be.visible');
+    cy.contains("Visão Geral").should("be.visible");
+    cy.contains("Pedidos Pendentes").should("be.visible");
+    cy.contains("Fornecedores Ativos").should("be.visible");
+    cy.contains("Materiais em Estoque").should("be.visible");
+    cy.contains("Alertas").should("be.visible");
+    cy.contains("Contato CIIG Systems").should("be.visible");
+    cy.contains("contato@ciigsystems.com").should("be.visible");
+    cy.contains("Usuário").should("be.visible");
+    cy.contains(
+      "© 2023 CIIG Systems Supply Chain. Todos os direitos reservados."
+    ).should("be.visible");
+    cy.contains("Materiais").should('be.visible');
+    cy.contains("Descontos").should("be.visible");
+    cy.contains("Fornecedores").should("be.visible");
+    cy.contains("Ouvidoria Geral").should("be.visible");
+    cy.contains("Notificações").should('be.visible');
+    cy.get(".main-button").contains("Perfil").should("be.visible");
+    cy.contains("Gestão de Mercado").should("be.visible");
 })
 
-it('Deve redirecionar para a página Dashboard corretamente', () => {
-    cy.contains('MATERIAL').click()
+    it('Deve redirecionar para a página Dashboard corretamente', () => {
+    cy.visit("http://localhost:5173/home");
+    cy.contains('Materiais').click();
     
-    cy.url().should('include', '/dashboard')
+    cy.origin("https://draconic-hacker.github.io", () => {
+        // Comandos para verificar a página de descontos
+        cy.url().should("include", "/DashboardVisaoGeral");
+    });
 })
 
-it('Deve redirecionar para a página Fornecedores corretamente', () =>{
-    cy.contains('FORNECEDORES').click()
+it('Deve redirecionar para a página Descontos corretamente', () =>{
+    cy.visit("http://localhost:5173/home");
+    cy.contains("Descontos").click();
     
-    cy.url().should('include', '/fornecedores')
-  })
+    cy.origin("https://draconic-hacker.github.io", () => {
+        // Comandos para verificar a página de descontos
+        cy.url().should("include", "/TelaDeDescontos");
+    });
+})
+
+it('Deve redirecionar para a página Fornecedores corretamente', () => {
+    cy.visit("http://localhost:5173/home");
+    cy.contains('Fornecedores').click()
+    
+    cy.origin("https://draconic-hacker.github.io", () => {
+      // Comandos para verificar a página de descontos
+      cy.url().should("include", "/TelaDeFornecedores");
+    });
+})
 
 it('Deve redirecionar para a página Ouvidoria Geral corretamente', () => {
-    cy.contains('OUVIDORIA GERAL').click()
-
-    cy.url().should('include', '/ouvidoria')
+    cy.visit("http://localhost:5173/home");
+    cy.contains('Ouvidoria Geral').click()
+    
+    cy.origin("https://draconic-hacker.github.io", () => {
+        // Comandos para verificar a página de descontos
+        cy.url().should("include", "/TelaDeOuvidoria");
+    });
 })
 
-it('Deve redirecionar para a página notificações corretamente', () => {
-    cy.contains('NOTIFICAÇÃO').click()
-
-    cy.url().should('include', '/notificacoes')
+it('Deve redirecionar para a página Notificações corretamente', () =>{
+    cy.visit("http://localhost:5173/home");
+    cy.contains('Notificações').click()
+    
+    cy.origin("https://draconic-hacker.github.io", () => {
+        // Comandos para verificar a página de descontos
+        cy.url().should("include", "/TelaDeNotificacoes");
+    });
 })
 
-it('Deve redirecionar para a página perfil corretamente', () =>{
-    cy.contains('PERFIL').click()
+it('Deve redirecionar para a página Perfil corretamente', () =>{
+    cy.visit("http://localhost:5173/home");
+    cy.get(".main-button").contains("Perfil").click();
+    
+    cy.origin("https://draconic-hacker.github.io", () => {
+        // Comandos para verificar a página de descontos
+        cy.url().should("include", "/Profile");
+    });
+})
 
-    cy.url().should('include', '/perfil')
+it('Deve redirecionar para a página Gestão de Mercado corretamente', () =>{
+    cy.visit("http://localhost:5173/home");
+    cy.contains("Gestão de Mercado").click();
+    
+    cy.origin("https://draconic-hacker.github.io", () => {
+        // Comandos para verificar a página de descontos
+        cy.url().should("include", "/Marketplace");
+    });
 })
 })

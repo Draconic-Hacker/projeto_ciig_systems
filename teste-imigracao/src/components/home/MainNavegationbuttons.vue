@@ -6,67 +6,67 @@
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <!-- Button 1: Materiais -->
-            <a href="https://draconic-hacker.github.io/DashboardVisaoGeral/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-boxes text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-boxes text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/DashboardVisaoGeral/" rel="noopener noreferrer">
                     <span class="font-medium">Materiais</span>
-                </button>
-            </a>
+                </a>
+            </button>
 
             <!-- Button 2: Descontos -->
-            <a href="https://draconic-hacker.github.io/TelaDeDescontos/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-percentage text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-percentage text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/TelaDeDescontos/" rel="noopener noreferrer">
                     <span class="font-medium">Descontos</span>
-                </button>
-            </a>
+                </a>
+            </button>
 
             <!-- Button 3: Fornecedores -->
-            <a href="https://draconic-hacker.github.io/TelaDeFornecedores/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-truck text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-truck text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/TelaDeFornecedores/" rel="noopener noreferrer">
                     <span class="font-medium">Fornecedores</span>
-                </button>
-            </a>
+                </a>
+            </button>
 
             <!-- Button 4: Ouvidoria Geral -->
-            <a href="https://draconic-hacker.github.io/TelaDeOuvidoria/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-headset text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-headset text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/TelaDeOuvidoria/" rel="noopener noreferrer">
                     <span class="font-medium">Ouvidoria Geral</span>
-                </button>
-            </a>
+                </a>
+            </button>
 
             <!-- Button 5: Notificações -->
-            <a href="https://draconic-hacker.github.io/TelaDeNotificacoes/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-bell text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-bell text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/TelaDeNotificacoes/" rel="noopener noreferrer">
                     <span class="font-medium">Notificações</span>
-                </button>
-            </a>
+                </a>
+            </button>
 
             <!-- Button 6: Perfil -->
-            <a href="https://draconic-hacker.github.io/Profile/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-user text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-user text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/Profile/" rel="noopener noreferrer">
                     <span class="font-medium">Perfil</span>
-                </button>
-            </a>
+                </a>
+            </button>
 
             <!-- Button 6: Gestão de Marketplace -->
-            <a href="https://draconic-hacker.github.io/Marketplace/" rel="noopener noreferrer">
-                <button
-                    class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
-                    <i class="fas fa-store text-3xl mb-3"></i>
+            <button
+                class="main-button bg-black bg-opacity-60 rounded-lg p-6 flex flex-col items-center justify-center text-white hover:shadow-lg">
+                <i class="fas fa-store text-3xl mb-3"></i>
+                <a href="https://draconic-hacker.github.io/Marketplace/" rel="noopener noreferrer">
                     <span class="font-medium">Gestão de Mercado</span>
-                </button>
-            </a>
+                </a>
+            </button>
         </div>
     </div>
 </template>
