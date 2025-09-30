@@ -17,4 +17,23 @@ describe("Tela Home", () => {
     cy.contains("Configurações").should("be.visible");
   });
 
+      it("Deve redirecionar para a página Gestão de mercado corretamente", () => {
+        cy.visit("https://draconic-hacker.github.io/DashboardVisaoGeral");
+        cy.contains("Inventário").click();
+
+        cy.origin("https://draconic-hacker.github.io", () => {
+          // Comandos para verificar a página de descontos
+          cy.url().should("include", "/DashboardVisaoGeral");
+        });
+      });
+
+      it("Deve redirecionar para a página Gestão de mercado corretamente", () => {
+        cy.visit("https://draconic-hacker.github.io/DashboardVisaoGeral");
+        cy.contains("Inventário").click();
+
+        cy.origin("https://draconic-hacker.github.io", () => {
+          // Comandos para verificar a página de descontos
+          cy.url().should("include", "/DashboardVisaoGeral");
+        });
+      });
 });

@@ -1,0 +1,11 @@
+{
+  "name": "escola-simples",
+  "version": "1",
+  "description": "api destinada para aplicação node de escola",
+  "main": "index.js",
+  "author": "kleber andrade",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
