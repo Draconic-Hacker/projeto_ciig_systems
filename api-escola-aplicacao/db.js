@@ -1,29 +1,37 @@
-// Conexão com banco de dados MySQL usando mysql2/promise
 // Comando para ativar o código por enquanto: node db.js
+
+// Conexão com banco de dados MySQL usando mysql2/promise
 import mysql from 'mysql2/promise';
 
+// Configuração da conexão com o banco de dados
 const conn = mysql.createPool({
     host: 'localhost',
+    // user do seu banco de dados
     user: 'root',
+    // senha do seu banco de dados
     password: 'sesi',
+    // porta do seu banco de dados
     port: 3306,
+    // nome do seu banco de dados
     database: 'escoladb',
     // database: 'sistema_login_brmodelo',
+    // específica que a conexão pode ter múltiplas conexões ao mesmo tempo
     waitForConnections: true,
 })
 
-
+// função para testar a conexão com o banco de dados
 function conexao() {
     console.log('conexão com banco de dados realizada com sucesso!');
 }
 
+// função para selecionar todos os alunos
 async function selectAlunos() {
     const [result] = await conn.query('SELECT * FROM aluno');
     console.log("O select é: ", result);
     // return result;
 }
 
-
+// função para inserir um aluno
 async function insertAlunos(aluno) {
     try {
         const sql = 'INSERT INTO aluno (nome, idade, curso) VALUES (?, ?, ?)';
@@ -86,9 +94,24 @@ async function selectIdAluno(id) {
     }
 }
 
+async function updateAluno(aluno) {
+    try {
+        const [result] = await conn.execute('UPDATE aluno SET nome = ?, idade = ?, curso = ? WHERE id_estudante = ?',
+            [
+                aluno.nome,
+                aluno.idade,
+                aluno.curso,
+                aluno.id_estudante]);
+        console.log("Update realizado com sucesso: ", result);
+    } catch (error) {
+        console;log('Erro ao atualizar aluno: ', error);
+    }
+}
+
 conexao();
 // insertAlunos(aluno);
 // insertAlunos({ nome: 'João', idade: 23, curso: 'Matemática' });
 // selectAlunos();
 // deleteAluno(3);
 // selectIdAluno(2);
+updateAluno({ id_estudante: 1, nome: 'Ana Clara', idade: 23, curso: 'Física' });
