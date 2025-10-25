@@ -1,4 +1,5 @@
 import express from "express";
+import alunoRouter from "./router/alunoRouter.js";
 const app = express();
 const port = 3000;
 //middleware para envio de dados json
@@ -6,9 +7,15 @@ app.use(express.json());
 //middleware para envio e recebimento de dados simples de formulario
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/aluno', alunoRouter)
+
 app.get("/", (req, res) => {
   res.send("<h1>Hello World my api</h1>");
 });
+
+/* 
+
+
 //metodo get para o endpoint /users
 app.get("/users", (req, res) => {
   res.send("Listando usuarios");
@@ -30,7 +37,7 @@ app.put("/users/:id", (req, res) => {
 //metodo delete para o endpoint /users
 app.delete("/users/:id", (req, res) => {
   res.send("Esse é o delete");
-});
+}); */
 
 app.listen(port, () => {
   console.log("Servidor rodando na porta ", port);

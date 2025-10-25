@@ -1,0 +1,1121 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIIG System - Gestão de Descontos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-primary-600 dark:text-primary-400">CIIG System</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Supply Chain Management</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <svg id="sunIcon" class="w-5 h-5 text-gray-600 dark:text-gray-300 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">A</span>
+                        </div>
+                        <span class="text-gray-700 dark:text-gray-300 text-sm">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Gestão de Descontos</h2>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">Gerencie descontos e promoções da cadeia de suprimentos</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center">
+                    <div class="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
+                        <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Descontos Ativos</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="activeDiscounts">12</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center">
+                    <div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Economia Total</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="totalSavings">R$ 45.230</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center">
+                    <div class="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                        <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Fornecedores</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="suppliers">8</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center">
+                    <div class="p-2 bg-red-100 dark:bg-red-900 rounded-lg">
+                        <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Expirando</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white" id="expiring">3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Bar -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+            <div class="flex flex-wrap gap-3">
+                <button id="newDiscountBtn" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span>Novo Desconto</span>
+                </button>
+                <button id="newCouponBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                    <span>Criar Cupom</span>
+                </button>
+                <button id="bulkActionsBtn" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg font-medium transition-colors">
+                    Ações em Lote
+                </button>
+                <button id="exportBtn" class="bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Exportar</span>
+                </button>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Buscar descontos..." class="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <select id="filterSelect" class="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="all">Todos os Status</option>
+                    <option value="active">Ativos</option>
+                    <option value="expired">Expirados</option>
+                    <option value="scheduled">Agendados</option>
+                </select>
+                <select id="typeFilter" class="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="all">Todos os Tipos</option>
+                    <option value="discount">Descontos</option>
+                    <option value="coupon">Cupons</option>
+                </select>
+                <button id="advancedFiltersBtn" class="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z"></path>
+                    </svg>
+                    <span>Filtros</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Discounts Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                <input type="checkbox" id="selectAll" class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nome</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tipo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Fornecedor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Valor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Usos</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Validade</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="discountsTableBody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex items-center justify-between mt-6">
+            <div class="text-sm text-gray-700 dark:text-gray-300">
+                Mostrando <span id="showingFrom">1</span> a <span id="showingTo">10</span> de <span id="totalItems">25</span> resultados
+            </div>
+            <div class="flex space-x-2">
+                <button id="prevPage" class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Anterior
+                </button>
+                <button class="px-3 py-2 text-sm font-medium text-white bg-primary-600 border border-primary-600 rounded-lg">1</button>
+                <button class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">2</button>
+                <button class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">3</button>
+                <button id="nextPage" class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                    Próximo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Discount Modal -->
+    <div id="discountModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h3 id="modalTitle" class="text-lg font-semibold text-gray-900 dark:text-white">Novo Desconto</h3>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="discountForm" class="p-6 space-y-6">
+                <!-- Type Selection -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Tipo de Promoção</label>
+                    <div class="flex space-x-4">
+                        <label class="flex items-center">
+                            <input type="radio" name="promotionType" value="discount" checked class="text-primary-600 focus:ring-primary-500">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Desconto Direto</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="promotionType" value="coupon" class="text-primary-600 focus:ring-primary-500">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Cupom de Desconto</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome</label>
+                        <input type="text" id="discountName" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Ex: Desconto Volume Matéria Prima">
+                    </div>
+                    
+                    <!-- Coupon Code Field (hidden by default) -->
+                    <div id="couponCodeField" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Código do Cupom</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="couponCode" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Ex: SAVE20">
+                            <button type="button" id="generateCode" class="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                                Gerar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fornecedor</label>
+                        <select id="supplierSelect" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="">Selecione um parceiro</option>
+                            <option value="bk" data-logo="🍔">Burger King</option>
+                            <option value="mcdonalds" data-logo="🍟">McDonald's</option>
+                            <option value="cafe-petinho" data-logo="☕">Café Petinho</option>
+                            <option value="ford" data-logo="🚗">Ford Car</option>
+                            <option value="acme" data-logo="🏭">ACME Suprimentos Ltda</option>
+                            <option value="global" data-logo="🌍">Global Materials Inc</option>
+                            <option value="premium" data-logo="⭐">Premium Supply Co</option>
+                            <option value="industrial" data-logo="🔧">Industrial Parts SA</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo de Desconto</label>
+                        <select id="discountType" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="percentage">Percentual (%)</option>
+                            <option value="fixed">Valor Fixo (R$)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor</label>
+                        <input type="number" id="discountValue" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="0">
+                    </div>
+                    
+                    <!-- Usage Limit Fields (for coupons) -->
+                    <div id="usageLimitField" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Limite de Uso</label>
+                        <input type="number" id="usageLimit" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Ex: 100">
+                    </div>
+                    
+                    <div id="minOrderField" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pedido Mínimo (R$)</label>
+                        <input type="number" id="minOrder" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="0">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data de Início</label>
+                        <input type="date" id="startDate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data de Fim</label>
+                        <input type="date" id="endDate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descrição</label>
+                    <textarea id="discountDescription" rows="3" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Descreva os detalhes do desconto..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Imagem do Desconto</label>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-1">
+                            <input type="file" id="discountImage" accept="image/*" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        </div>
+                        <div id="imagePreview" class="w-16 h-16 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center bg-gray-50 dark:bg-gray-700 hidden">
+                            <img id="previewImg" class="w-full h-full object-cover rounded-lg" alt="Preview">
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Formatos aceitos: JPG, PNG, GIF (máx. 2MB)</p>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="autoApply" class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
+                    <label for="autoApply" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Aplicar automaticamente em pedidos elegíveis</label>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg font-medium transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                        Criar Desconto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Advanced Filters Modal -->
+    <div id="filtersModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full mx-4">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Filtros Avançados</h3>
+                <button id="closeFiltersModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Período</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="date" id="filterStartDate" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <input type="date" id="filterEndDate" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor Mínimo (R$)</label>
+                    <input type="number" id="filterMinValue" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="0">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor Máximo (R$)</label>
+                    <input type="number" id="filterMaxValue" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="1000">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fornecedor</label>
+                    <select id="filterSupplier" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <option value="">Todos os parceiros</option>
+                        <option value="Burger King">🍔 Burger King</option>
+                        <option value="McDonald's">🍟 McDonald's</option>
+                        <option value="Café Petinho">☕ Café Petinho</option>
+                        <option value="Ford Car">🚗 Ford Car</option>
+                        <option value="ACME Suprimentos Ltda">🏭 ACME Suprimentos Ltda</option>
+                        <option value="Global Materials Inc">🌍 Global Materials Inc</option>
+                        <option value="Premium Supply Co">⭐ Premium Supply Co</option>
+                        <option value="Industrial Parts SA">🔧 Industrial Parts SA</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <button id="clearFilters" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg font-medium transition-colors">
+                        Limpar
+                    </button>
+                    <button id="applyFilters" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                        Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let discounts = [
+            {
+                id: 1,
+                name: "Big King Combo",
+                supplier: "Burger King",
+                supplierLogo: "🍔",
+                promotionType: "coupon",
+                type: "percentage",
+                value: 30,
+                startDate: "2024-01-01",
+                endDate: "2024-03-31",
+                status: "active",
+                description: "30% de desconto no combo Big King + batata + refrigerante",
+                couponCode: "BIGKING30",
+                usageLimit: 500,
+                usageCount: 127,
+                minOrder: 25,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%23d63031'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='white' font-size='24'%3E🍔%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 2,
+                name: "McOferta Especial",
+                supplier: "McDonald's",
+                supplierLogo: "🍟",
+                promotionType: "coupon",
+                type: "fixed",
+                value: 15,
+                startDate: "2024-01-15",
+                endDate: "2024-04-15",
+                status: "active",
+                description: "R$ 15 de desconto em pedidos acima de R$ 40",
+                couponCode: "MCOFERTA15",
+                usageLimit: 1000,
+                usageCount: 234,
+                minOrder: 40,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%23ffcc02'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='red' font-size='24'%3E🍟%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 3,
+                name: "Café da Manhã Especial",
+                supplier: "Café Petinho",
+                supplierLogo: "☕",
+                promotionType: "coupon",
+                type: "percentage",
+                value: 25,
+                startDate: "2024-02-01",
+                endDate: "2024-12-31",
+                status: "active",
+                description: "25% de desconto no café da manhã completo",
+                couponCode: "MANHA25",
+                usageLimit: 200,
+                usageCount: 45,
+                minOrder: 20,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%236c5ce7'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='white' font-size='24'%3E☕%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 4,
+                name: "Ford Revisão Premium",
+                supplier: "Ford Car",
+                supplierLogo: "🚗",
+                promotionType: "coupon",
+                type: "percentage",
+                value: 20,
+                startDate: "2024-03-01",
+                endDate: "2024-06-30",
+                status: "active",
+                description: "20% de desconto na revisão completa do seu Ford",
+                couponCode: "FORDREV20",
+                usageLimit: 100,
+                usageCount: 23,
+                minOrder: 300,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%23003f7f'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='white' font-size='24'%3E🚗%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 5,
+                name: "Desconto Volume Q1",
+                supplier: "ACME Suprimentos Ltda",
+                supplierLogo: "🏭",
+                promotionType: "discount",
+                type: "percentage",
+                value: 15,
+                startDate: "2024-01-01",
+                endDate: "2024-03-31",
+                status: "active",
+                description: "Desconto por volume para pedidos acima de R$ 10.000",
+                usageLimit: null,
+                usageCount: 0,
+                minOrder: 10000,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%2300b894'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='white' font-size='24'%3E🏭%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 6,
+                name: "Liquidação Estoque",
+                supplier: "Industrial Parts SA",
+                supplierLogo: "🔧",
+                promotionType: "discount",
+                type: "percentage",
+                value: 25,
+                startDate: "2024-03-15",
+                endDate: "2024-03-30",
+                status: "scheduled",
+                description: "Liquidação de estoque parado",
+                usageLimit: null,
+                usageCount: 0,
+                minOrder: 0,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%23636e72'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='white' font-size='24'%3E🔧%3C/text%3E%3C/svg%3E"
+            }
+        ];
+
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let filteredDiscounts = [...discounts];
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', currentTheme === 'dark');
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('discountModal');
+        const filtersModal = document.getElementById('filtersModal');
+        const newDiscountBtn = document.getElementById('newDiscountBtn');
+        const newCouponBtn = document.getElementById('newCouponBtn');
+        const closeModal = document.getElementById('closeModal');
+        const closeFiltersModal = document.getElementById('closeFiltersModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const advancedFiltersBtn = document.getElementById('advancedFiltersBtn');
+        const exportBtn = document.getElementById('exportBtn');
+
+        function openModal(type = 'discount') {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            const modalTitle = document.getElementById('modalTitle');
+            const promotionTypeRadios = document.querySelectorAll('input[name="promotionType"]');
+            
+            if (type === 'coupon') {
+                modalTitle.textContent = 'Novo Cupom de Desconto';
+                promotionTypeRadios[1].checked = true; // Select coupon radio
+                toggleCouponFields(true);
+            } else {
+                modalTitle.textContent = 'Novo Desconto';
+                promotionTypeRadios[0].checked = true; // Select discount radio
+                toggleCouponFields(false);
+            }
+        }
+
+        function closeModalFunc() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('discountForm').reset();
+            toggleCouponFields(false);
+        }
+
+        function openFiltersModal() {
+            filtersModal.classList.remove('hidden');
+            filtersModal.classList.add('flex');
+        }
+
+        function closeFiltersModalFunc() {
+            filtersModal.classList.add('hidden');
+            filtersModal.classList.remove('flex');
+        }
+
+        function toggleCouponFields(isCoupon) {
+            const couponCodeField = document.getElementById('couponCodeField');
+            const usageLimitField = document.getElementById('usageLimitField');
+            const minOrderField = document.getElementById('minOrderField');
+            
+            if (isCoupon) {
+                couponCodeField.classList.remove('hidden');
+                usageLimitField.classList.remove('hidden');
+                minOrderField.classList.remove('hidden');
+            } else {
+                couponCodeField.classList.add('hidden');
+                usageLimitField.classList.add('hidden');
+                minOrderField.classList.add('hidden');
+            }
+        }
+
+        // Event listeners
+        newDiscountBtn.addEventListener('click', () => openModal('discount'));
+        newCouponBtn.addEventListener('click', () => openModal('coupon'));
+        closeModal.addEventListener('click', closeModalFunc);
+        closeFiltersModal.addEventListener('click', closeFiltersModalFunc);
+        cancelBtn.addEventListener('click', closeModalFunc);
+        advancedFiltersBtn.addEventListener('click', openFiltersModal);
+
+        // Export functionality
+        exportBtn.addEventListener('click', () => {
+            const csvContent = generateCSV();
+            downloadCSV(csvContent, 'descontos_ciig_system.csv');
+            alert('Dados exportados com sucesso!');
+        });
+
+        // Toggle coupon fields based on radio selection
+        document.querySelectorAll('input[name="promotionType"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                toggleCouponFields(e.target.value === 'coupon');
+            });
+        });
+
+        // Generate coupon code
+        document.getElementById('generateCode').addEventListener('click', () => {
+            const code = generateCouponCode();
+            document.getElementById('couponCode').value = code;
+        });
+
+        // Image upload functionality
+        document.getElementById('discountImage').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                    alert('Arquivo muito grande! Máximo 2MB permitido.');
+                    e.target.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('imagePreview');
+                    const previewImg = document.getElementById('previewImg');
+                    previewImg.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalFunc();
+            }
+        });
+
+        // Form submission
+        document.getElementById('discountForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const promotionType = document.querySelector('input[name="promotionType"]:checked').value;
+            const supplierSelect = document.getElementById('supplierSelect');
+            
+            const selectedOption = supplierSelect.options[supplierSelect.selectedIndex];
+            const imageFile = document.getElementById('discountImage').files[0];
+            let imageData = null;
+            
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imageData = e.target.result;
+                    saveDiscount(imageData);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveDiscount(null);
+            }
+            
+            function saveDiscount(image) {
+                const formData = {
+                    id: discounts.length + 1,
+                    name: document.getElementById('discountName').value,
+                    supplier: selectedOption.text,
+                    supplierLogo: selectedOption.getAttribute('data-logo') || '🏪',
+                    promotionType: promotionType,
+                    type: document.getElementById('discountType').value,
+                    value: parseFloat(document.getElementById('discountValue').value),
+                    startDate: document.getElementById('startDate').value,
+                    endDate: document.getElementById('endDate').value,
+                    status: new Date(document.getElementById('startDate').value) > new Date() ? 'scheduled' : 'active',
+                    description: document.getElementById('discountDescription').value,
+                    usageLimit: promotionType === 'coupon' ? parseInt(document.getElementById('usageLimit').value) || null : null,
+                    usageCount: 0,
+                    minOrder: parseInt(document.getElementById('minOrder').value) || 0,
+                    image: image
+                };
+
+                if (promotionType === 'coupon') {
+                    formData.couponCode = document.getElementById('couponCode').value;
+                }
+
+                discounts.push(formData);
+                filteredDiscounts = [...discounts];
+                updateStats();
+                renderTable();
+                closeModalFunc();
+                
+                // Show success message
+                const message = promotionType === 'coupon' ? 'Cupom criado com sucesso!' : 'Desconto criado com sucesso!';
+                alert(message);
+            }
+
+
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // Filter functionality
+        document.getElementById('filterSelect').addEventListener('change', applyFilters);
+        document.getElementById('typeFilter').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const statusFilter = document.getElementById('filterSelect').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredDiscounts = discounts.filter(discount => {
+                let matchesStatus = statusFilter === 'all' || discount.status === statusFilter;
+                let matchesType = typeFilter === 'all' || discount.promotionType === typeFilter;
+                let matchesSearch = discount.name.toLowerCase().includes(searchTerm) ||
+                                  discount.supplier.toLowerCase().includes(searchTerm) ||
+                                  (discount.couponCode && discount.couponCode.toLowerCase().includes(searchTerm));
+                
+                return matchesStatus && matchesType && matchesSearch;
+            });
+            
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Advanced filters
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            const startDate = document.getElementById('filterStartDate').value;
+            const endDate = document.getElementById('filterEndDate').value;
+            const minValue = parseFloat(document.getElementById('filterMinValue').value) || 0;
+            const maxValue = parseFloat(document.getElementById('filterMaxValue').value) || Infinity;
+            const supplier = document.getElementById('filterSupplier').value;
+
+            filteredDiscounts = discounts.filter(discount => {
+                let matchesDate = true;
+                if (startDate) {
+                    matchesDate = matchesDate && new Date(discount.startDate) >= new Date(startDate);
+                }
+                if (endDate) {
+                    matchesDate = matchesDate && new Date(discount.endDate) <= new Date(endDate);
+                }
+                
+                let matchesValue = discount.value >= minValue && discount.value <= maxValue;
+                let matchesSupplier = !supplier || discount.supplier.includes(supplier);
+                
+                return matchesDate && matchesValue && matchesSupplier;
+            });
+
+            currentPage = 1;
+            renderTable();
+            closeFiltersModalFunc();
+        });
+
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            document.getElementById('filterStartDate').value = '';
+            document.getElementById('filterEndDate').value = '';
+            document.getElementById('filterMinValue').value = '';
+            document.getElementById('filterMaxValue').value = '';
+            document.getElementById('filterSupplier').value = '';
+            document.getElementById('filterSelect').value = 'all';
+            document.getElementById('typeFilter').value = 'all';
+            document.getElementById('searchInput').value = '';
+            
+            filteredDiscounts = [...discounts];
+            currentPage = 1;
+            renderTable();
+            closeFiltersModalFunc();
+        });
+
+        // Select all functionality
+        document.getElementById('selectAll').addEventListener('change', (e) => {
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = e.target.checked;
+            });
+        });
+
+        // Bulk actions
+        document.getElementById('bulkActionsBtn').addEventListener('click', () => {
+            const selectedCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Selecione pelo menos um desconto para executar ações em lote.');
+                return;
+            }
+            
+            const action = prompt('Escolha uma ação:\n1 - Ativar\n2 - Desativar\n3 - Excluir\n4 - Duplicar\n5 - Exportar Selecionados\n\nDigite o número da ação:');
+            
+            if (action) {
+                const selectedIds = Array.from(selectedCheckboxes).map(cb => {
+                    const row = cb.closest('tr');
+                    const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+                    return filteredDiscounts[rowIndex].id;
+                });
+                
+                switch(action) {
+                    case '1': // Ativar
+                        selectedIds.forEach(id => {
+                            const discount = discounts.find(d => d.id === id);
+                            if (discount) discount.status = 'active';
+                        });
+                        alert(`${selectedIds.length} desconto(s) ativado(s) com sucesso!`);
+                        break;
+                    case '2': // Desativar
+                        selectedIds.forEach(id => {
+                            const discount = discounts.find(d => d.id === id);
+                            if (discount) discount.status = 'expired';
+                        });
+                        alert(`${selectedIds.length} desconto(s) desativado(s) com sucesso!`);
+                        break;
+                    case '3': // Excluir
+                        if (confirm(`Tem certeza que deseja excluir ${selectedIds.length} desconto(s)?`)) {
+                            discounts = discounts.filter(d => !selectedIds.includes(d.id));
+                            filteredDiscounts = filteredDiscounts.filter(d => !selectedIds.includes(d.id));
+                            alert(`${selectedIds.length} desconto(s) excluído(s) com sucesso!`);
+                        }
+                        break;
+                    case '4': // Duplicar
+                        selectedIds.forEach(id => {
+                            const original = discounts.find(d => d.id === id);
+                            if (original) {
+                                const duplicate = {
+                                    ...original,
+                                    id: discounts.length + Math.random(),
+                                    name: original.name + ' (Cópia)',
+                                    couponCode: original.couponCode ? generateCouponCode() : undefined,
+                                    usageCount: 0
+                                };
+                                discounts.push(duplicate);
+                            }
+                        });
+                        filteredDiscounts = [...discounts];
+                        alert(`${selectedIds.length} desconto(s) duplicado(s) com sucesso!`);
+                        break;
+                    case '5': // Exportar Selecionados
+                        const selectedDiscounts = discounts.filter(d => selectedIds.includes(d.id));
+                        const csvContent = generateCSVFromData(selectedDiscounts);
+                        downloadCSV(csvContent, 'descontos_selecionados.csv');
+                        alert(`${selectedIds.length} desconto(s) exportado(s) com sucesso!`);
+                        break;
+                }
+                
+                updateStats();
+                renderTable();
+                
+                // Uncheck all checkboxes
+                selectedCheckboxes.forEach(cb => cb.checked = false);
+                document.getElementById('selectAll').checked = false;
+            }
+        });
+
+        function getStatusBadge(status) {
+            const badges = {
+                active: '<span class="px-2 py-1 text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Ativo</span>',
+                expired: '<span class="px-2 py-1 text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full">Expirado</span>',
+                scheduled: '<span class="px-2 py-1 text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full">Agendado</span>'
+            };
+            return badges[status] || badges.active;
+        }
+
+        function getTypeBadge(type) {
+            const badges = {
+                discount: '<span class="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">Desconto</span>',
+                coupon: '<span class="px-2 py-1 text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full">Cupom</span>'
+            };
+            return badges[type] || badges.discount;
+        }
+
+        function generateCouponCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert(`Código ${code} copiado para a área de transferência!`);
+            }).catch(() => {
+                alert(`Código do cupom: ${code}`);
+            });
+        }
+
+        function generateCSV() {
+            return generateCSVFromData(filteredDiscounts);
+        }
+        
+        function generateCSVFromData(data) {
+            const headers = ['Nome', 'Tipo', 'Fornecedor', 'Valor', 'Código', 'Usos', 'Data Início', 'Data Fim', 'Status', 'Pedido Mínimo'];
+            const rows = data.map(discount => [
+                discount.name,
+                discount.promotionType === 'coupon' ? 'Cupom' : 'Desconto',
+                discount.supplier,
+                formatValue(discount.type, discount.value),
+                discount.couponCode || '',
+                discount.usageLimit ? `${discount.usageCount}/${discount.usageLimit}` : 'Ilimitado',
+                formatDate(discount.startDate),
+                formatDate(discount.endDate),
+                discount.status,
+                `R$ ${discount.minOrder.toLocaleString('pt-BR')}`
+            ]);
+            
+            return [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+        }
+
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function formatValue(type, value) {
+            if (type === 'percentage') {
+                return `${value}%`;
+            } else {
+                return `R$ ${value.toLocaleString('pt-BR')}`;
+            }
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('pt-BR');
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('discountsTableBody');
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageDiscounts = filteredDiscounts.slice(startIndex, endIndex);
+
+            tbody.innerHTML = pageDiscounts.map(discount => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0">
+                                ${discount.image ? 
+                                    `<img src="${discount.image}" alt="${discount.name}" class="w-12 h-8 object-cover rounded border border-gray-200 dark:border-gray-600">` : 
+                                    `<div class="w-12 h-8 bg-gray-100 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 flex items-center justify-center text-lg">${discount.supplierLogo}</div>`
+                                }
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">${discount.name}</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">${discount.description}</div>
+                                ${discount.couponCode ? `<div class="text-xs text-primary-600 dark:text-primary-400 font-mono bg-primary-50 dark:bg-primary-900 px-2 py-1 rounded mt-1 inline-block">Código: ${discount.couponCode}</div>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${getTypeBadge(discount.promotionType)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">${discount.supplier}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${formatValue(discount.type, discount.value)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        ${discount.usageLimit ? `${discount.usageCount}/${discount.usageLimit}` : 'Ilimitado'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">${formatDate(discount.startDate)} - ${formatDate(discount.endDate)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${getStatusBadge(discount.status)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="viewDiscount(${discount.id})" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300" title="Visualizar">👁️</button>
+                            <button onclick="editDiscount(${discount.id})" class="text-primary-600 dark:text-primary-400 hover:text-primary-900 dark:hover:text-primary-300" title="Editar">✏️</button>
+                            <button onclick="duplicateDiscount(${discount.id})" class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300" title="Duplicar">📋</button>
+                            ${discount.promotionType === 'coupon' ? `<button onclick="copyCode('${discount.couponCode}')" class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300" title="Copiar Código">📄</button>` : ''}
+                            <button onclick="toggleStatus(${discount.id})" class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300" title="Alternar Status">${discount.status === 'active' ? '⏸️' : '▶️'}</button>
+                            <button onclick="deleteDiscount(${discount.id})" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300" title="Excluir">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Update pagination info
+            document.getElementById('showingFrom').textContent = startIndex + 1;
+            document.getElementById('showingTo').textContent = Math.min(endIndex, filteredDiscounts.length);
+            document.getElementById('totalItems').textContent = filteredDiscounts.length;
+        }
+
+        function updateStats() {
+            const activeCount = discounts.filter(d => d.status === 'active').length;
+            const expiringCount = discounts.filter(d => {
+                const endDate = new Date(d.endDate);
+                const today = new Date();
+                const diffTime = endDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays <= 7 && diffDays > 0;
+            }).length;
+            
+            const totalSavings = discounts.reduce((sum, discount) => {
+                if (discount.type === 'fixed') {
+                    return sum + discount.value;
+                }
+                return sum + (discount.value * 100); // Simplified calculation for percentage
+            }, 0);
+
+            const supplierCount = new Set(discounts.map(d => d.supplier)).size;
+
+            document.getElementById('activeDiscounts').textContent = activeCount;
+            document.getElementById('totalSavings').textContent = `R$ ${totalSavings.toLocaleString('pt-BR')}`;
+            document.getElementById('suppliers').textContent = supplierCount;
+            document.getElementById('expiring').textContent = expiringCount;
+        }
+
+        function editDiscount(id) {
+            const discount = discounts.find(d => d.id === id);
+            if (discount) {
+                // Populate form with existing data
+                document.getElementById('discountName').value = discount.name;
+                document.getElementById('discountValue').value = discount.value;
+                document.getElementById('startDate').value = discount.startDate;
+                document.getElementById('endDate').value = discount.endDate;
+                document.getElementById('discountDescription').value = discount.description;
+                document.getElementById('discountType').value = discount.type;
+                
+                openModal();
+            }
+        }
+
+        function viewDiscount(id) {
+            const discount = discounts.find(d => d.id === id);
+            if (discount) {
+                const details = `
+📋 DETALHES DO ${discount.promotionType === 'coupon' ? 'CUPOM' : 'DESCONTO'}
+
+🏪 Parceiro: ${discount.supplier} ${discount.supplierLogo}
+📝 Nome: ${discount.name}
+💰 Valor: ${formatValue(discount.type, discount.value)}
+${discount.couponCode ? `🎫 Código: ${discount.couponCode}` : ''}
+📅 Período: ${formatDate(discount.startDate)} até ${formatDate(discount.endDate)}
+📊 Status: ${discount.status.toUpperCase()}
+${discount.usageLimit ? `📈 Usos: ${discount.usageCount}/${discount.usageLimit}` : '📈 Usos: Ilimitado'}
+💳 Pedido Mínimo: R$ ${discount.minOrder.toLocaleString('pt-BR')}
+📄 Descrição: ${discount.description}
+                `;
+                alert(details);
+            }
+        }
+
+        function duplicateDiscount(id) {
+            const original = discounts.find(d => d.id === id);
+            if (original) {
+                const duplicate = {
+                    ...original,
+                    id: discounts.length + Math.random(),
+                    name: original.name + ' (Cópia)',
+                    couponCode: original.couponCode ? generateCouponCode() : undefined,
+                    usageCount: 0,
+                    status: 'scheduled'
+                };
+                discounts.push(duplicate);
+                filteredDiscounts = [...discounts];
+                updateStats();
+                renderTable();
+                alert('Desconto duplicado com sucesso!');
+            }
+        }
+
+        function toggleStatus(id) {
+            const discount = discounts.find(d => d.id === id);
+            if (discount) {
+                if (discount.status === 'active') {
+                    discount.status = 'expired';
+                    alert('Desconto desativado!');
+                } else {
+                    discount.status = 'active';
+                    alert('Desconto ativado!');
+                }
+                updateStats();
+                renderTable();
+            }
+        }
+
+        function deleteDiscount(id) {
+            if (confirm('Tem certeza que deseja excluir este desconto?')) {
+                discounts = discounts.filter(d => d.id !== id);
+                filteredDiscounts = discounts.filter(discount => {
+                    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                    const filterValue = document.getElementById('filterSelect').value;
+                    
+                    let matchesSearch = discount.name.toLowerCase().includes(searchTerm) ||
+                                      discount.supplier.toLowerCase().includes(searchTerm);
+                    let matchesFilter = filterValue === 'all' || discount.status === filterValue;
+                    
+                    return matchesSearch && matchesFilter;
+                });
+                
+                updateStats();
+                renderTable();
+                alert('Desconto excluído com sucesso!');
+            }
+        }
+
+        // Pagination
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            const maxPages = Math.ceil(filteredDiscounts.length / itemsPerPage);
+            if (currentPage < maxPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        // Initialize
+        updateStats();
+        renderTable();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'990068d6676ef610',t:'MTc2MDcxMDU0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
