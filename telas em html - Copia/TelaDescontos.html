@@ -1,0 +1,1913 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIIG System - Descontos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'ciig-blue': '#1e40af',
+                        'ciig-light-blue': '#3b82f6',
+                        'ciig-dark-blue': '#1e3a8a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-lg transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-ciig-blue rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">C</span>
+                    </div>
+                    <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">CIIG System</h1>
+                    <p class="text-xs text-gray-500">Estratégia de Venda</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Cart Button -->
+                    <button id="cartToggle" class="relative p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9m-9 0h9"></path>
+                        </svg>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <svg id="sunIcon" class="w-5 h-5 text-gray-600 dark:text-gray-300 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-ciig-blue rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-semibold">U</span>
+                        </div>
+                        <span class="text-gray-700 dark:text-gray-300">Usuário</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="fixed inset-y-0 right-0 w-96 bg-white dark:bg-gray-800 shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex flex-col h-full">
+            <!-- Cart Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Carrinho de Compras</h2>
+                <button id="closeCart" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Cart Items -->
+            <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+                <div id="emptyCart" class="text-center py-12">
+                    <div class="text-6xl mb-4">🛒</div>
+                    <p class="text-gray-500 dark:text-gray-400">Seu carrinho está vazio</p>
+                    <p class="text-sm text-gray-400 dark:text-gray-500 mt-2">Adicione produtos para começar</p>
+                </div>
+            </div>
+            
+            <!-- Cart Footer -->
+            <div id="cartFooter" class="border-t border-gray-200 dark:border-gray-700 p-6 hidden">
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">Subtotal:</span>
+                        <span id="cartSubtotal" class="text-gray-900 dark:text-white">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">Frete:</span>
+                        <span class="text-green-600 font-semibold">GRÁTIS</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600 dark:text-gray-400">Desconto:</span>
+                        <span id="cartDiscount" class="text-green-600">-R$ 0,00</span>
+                    </div>
+                    <hr class="border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-semibold text-gray-900 dark:text-white">Total:</span>
+                        <span id="cartTotal" class="text-2xl font-bold text-ciig-blue">R$ 0,00</span>
+                    </div>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold transition-colors">
+                    Finalizar Compra
+                </button>
+                <button id="clearCart" class="w-full mt-2 text-red-500 hover:text-red-700 py-2 text-sm transition-colors">
+                    Limpar Carrinho
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Checkout Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Finalizar Compra</h2>
+                <button id="closeCheckout" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left Column - Forms -->
+                    <div class="space-y-6">
+                        <!-- Delivery Address -->
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <span class="w-6 h-6 bg-ciig-blue text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+                                Endereço de Entrega
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="relative">
+                                    <input type="text" placeholder="Nome completo *" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <span class="absolute right-3 top-3 text-red-500">*</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" placeholder="CEP *" id="cepInput" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <span class="absolute right-3 top-3 text-red-500">*</span>
+                                    <button type="button" onclick="searchCEP()" class="absolute right-8 top-3 text-ciig-blue hover:text-ciig-dark-blue text-sm">🔍</button>
+                                </div>
+                                <div class="relative md:col-span-2">
+                                    <input type="text" placeholder="Rua *" id="streetInput" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <span class="absolute right-3 top-3 text-red-500">*</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" placeholder="Número *" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <span class="absolute right-3 top-3 text-red-500">*</span>
+                                </div>
+                                <input type="text" placeholder="Complemento (opcional)" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                <input type="text" placeholder="Bairro (opcional)" id="neighborhoodInput" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                <div class="relative">
+                                    <input type="text" placeholder="Cidade *" id="cityInput" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <span class="absolute right-3 top-3 text-red-500">*</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Saved Addresses -->
+                            <div class="mt-4">
+                                <button type="button" onclick="toggleSavedAddresses()" class="text-ciig-blue hover:text-ciig-dark-blue text-sm flex items-center">
+                                    📍 Usar endereço salvo
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div id="savedAddresses" class="hidden mt-2 space-y-2">
+                                    <div class="p-3 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700" onclick="fillAddress('home')">
+                                        <div class="font-semibold text-sm">🏠 Casa</div>
+                                        <div class="text-xs text-gray-500">Rua das Flores, 123 - Centro</div>
+                                    </div>
+                                    <div class="p-3 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700" onclick="fillAddress('work')">
+                                        <div class="font-semibold text-sm">🏢 Trabalho</div>
+                                        <div class="text-xs text-gray-500">Av. Paulista, 1000 - Bela Vista</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <span class="w-6 h-6 bg-ciig-blue text-white rounded-full flex items-center justify-center text-sm mr-3">2</span>
+                                Forma de Pagamento
+                            </h3>
+                            
+                            <!-- Payment Options -->
+                            <div class="space-y-3 mb-6">
+                                <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:border-ciig-blue transition-colors">
+                                    <input type="radio" name="payment" value="credit" class="text-ciig-blue focus:ring-ciig-blue">
+                                    <div class="ml-3 flex items-center">
+                                        <span class="text-2xl mr-3">💳</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 dark:text-white">Cartão de Crédito</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">Visa, Mastercard, Elo</div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:border-ciig-blue transition-colors">
+                                    <input type="radio" name="payment" value="debit" class="text-ciig-blue focus:ring-ciig-blue">
+                                    <div class="ml-3 flex items-center">
+                                        <span class="text-2xl mr-3">💳</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 dark:text-white">Cartão de Débito</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">Débito à vista</div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:border-ciig-blue transition-colors">
+                                    <input type="radio" name="payment" value="pix" class="text-ciig-blue focus:ring-ciig-blue">
+                                    <div class="ml-3 flex items-center">
+                                        <span class="text-2xl mr-3">📱</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 dark:text-white">PIX</div>
+                                            <div class="text-sm text-green-600">5% de desconto adicional</div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:border-ciig-blue transition-colors">
+                                    <input type="radio" name="payment" value="boleto" class="text-ciig-blue focus:ring-ciig-blue">
+                                    <div class="ml-3 flex items-center">
+                                        <span class="text-2xl mr-3">🧾</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 dark:text-white">Boleto Bancário</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">Vencimento em 3 dias úteis</div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:border-ciig-blue transition-colors">
+                                    <input type="radio" name="payment" value="paypal" class="text-ciig-blue focus:ring-ciig-blue">
+                                    <div class="ml-3 flex items-center">
+                                        <span class="text-2xl mr-3">🅿️</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-900 dark:text-white">PayPal</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">Pagamento seguro</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Card Details (shown when credit/debit is selected) -->
+                            <div id="cardDetails" class="hidden space-y-4">
+                                <input type="text" placeholder="Número do cartão" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                <input type="text" placeholder="Nome no cartão" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="text" placeholder="MM/AA" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <input type="text" placeholder="CVV" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                </div>
+                                
+                                <!-- Installments for credit card -->
+                                <div id="installments" class="hidden">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Parcelas</label>
+                                    <select class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                        <option>1x sem juros</option>
+                                        <option>2x sem juros</option>
+                                        <option>3x sem juros</option>
+                                        <option>4x sem juros</option>
+                                        <option>5x sem juros</option>
+                                        <option>6x sem juros</option>
+                                        <option>7x com juros (2,5% a.m.)</option>
+                                        <option>8x com juros (2,5% a.m.)</option>
+                                        <option>9x com juros (2,5% a.m.)</option>
+                                        <option>10x com juros (2,5% a.m.)</option>
+                                        <option>11x com juros (2,5% a.m.)</option>
+                                        <option>12x com juros (2,5% a.m.)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- PIX Details -->
+                            <div id="pixDetails" class="hidden">
+                                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                                    <div class="flex items-center">
+                                        <span class="text-green-600 text-xl mr-3">✅</span>
+                                        <div>
+                                            <div class="font-semibold text-green-800 dark:text-green-400">PIX selecionado</div>
+                                            <div class="text-sm text-green-600 dark:text-green-500">Você receberá o QR Code após confirmar o pedido</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Boleto Details -->
+                            <div id="boletoDetails" class="hidden">
+                                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                                    <div class="flex items-center">
+                                        <span class="text-blue-600 text-xl mr-3">🧾</span>
+                                        <div>
+                                            <div class="font-semibold text-blue-800 dark:text-blue-400">Boleto Bancário</div>
+                                            <div class="text-sm text-blue-600 dark:text-blue-500">Você receberá o boleto por email após confirmar o pedido</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Order Summary -->
+                    <div class="space-y-6">
+                        <!-- Order Summary -->
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                                <span class="w-6 h-6 bg-ciig-blue text-white rounded-full flex items-center justify-center text-sm mr-3">3</span>
+                                Resumo do Pedido
+                            </h3>
+                            
+                            <div id="checkoutItems" class="space-y-4 mb-6">
+                                <!-- Items will be populated here -->
+                            </div>
+
+                            <!-- Coupon -->
+                            <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mb-4">
+                                <div class="flex space-x-2">
+                                    <input type="text" id="couponInput" placeholder="Código de desconto" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                                    <button onclick="applyCoupon()" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                                        Aplicar
+                                    </button>
+                                </div>
+                                <div id="couponStatus" class="mt-2 text-sm hidden"></div>
+                                
+                                <!-- Available Coupons -->
+                                <div class="mt-3">
+                                    <button type="button" onclick="toggleAvailableCoupons()" class="text-ciig-blue hover:text-ciig-dark-blue text-sm flex items-center">
+                                        🎫 Ver cupons disponíveis
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="availableCoupons" class="hidden mt-2 space-y-2">
+                                        <div class="p-3 border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 rounded-lg cursor-pointer hover:bg-green-100 dark:hover:bg-green-900/30" onclick="applyCouponCode('PRIMEIRA10')">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <div class="font-semibold text-sm text-green-800 dark:text-green-400">PRIMEIRA10</div>
+                                                    <div class="text-xs text-green-600 dark:text-green-500">10% de desconto na primeira compra</div>
+                                                </div>
+                                                <div class="text-green-600 font-bold">-10%</div>
+                                            </div>
+                                        </div>
+                                        <div class="p-3 border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 rounded-lg cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/30" onclick="applyCouponCode('FRETE20')">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <div class="font-semibold text-sm text-blue-800 dark:text-blue-400">FRETE20</div>
+                                                    <div class="text-xs text-blue-600 dark:text-blue-500">R$ 20 de desconto</div>
+                                                </div>
+                                                <div class="text-blue-600 font-bold">-R$20</div>
+                                            </div>
+                                        </div>
+                                        <div class="p-3 border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 rounded-lg cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30" onclick="applyCouponCode('VIP15')">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <div class="font-semibold text-sm text-purple-800 dark:text-purple-400">VIP15</div>
+                                                    <div class="text-xs text-purple-600 dark:text-purple-500">15% para clientes VIP</div>
+                                                </div>
+                                                <div class="text-purple-600 font-bold">-15%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Price Breakdown -->
+                            <div class="space-y-2 border-t border-gray-200 dark:border-gray-600 pt-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">Subtotal:</span>
+                                    <span id="checkoutSubtotal" class="text-gray-900 dark:text-white">R$ 0,00</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">Frete:</span>
+                                    <span class="text-green-600 font-semibold">GRÁTIS</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600 dark:text-gray-400">Desconto:</span>
+                                    <span id="checkoutDiscount" class="text-green-600">-R$ 0,00</span>
+                                </div>
+                                <div id="pixDiscountLine" class="flex justify-between text-sm hidden">
+                                    <span class="text-gray-600 dark:text-gray-400">Desconto PIX (5%):</span>
+                                    <span id="pixDiscountAmount" class="text-green-600">-R$ 0,00</span>
+                                </div>
+                                <hr class="border-gray-200 dark:border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-gray-900 dark:text-white">Total:</span>
+                                    <span id="checkoutTotal" class="text-2xl font-bold text-ciig-blue">R$ 0,00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Info -->
+                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                            <div class="flex items-center">
+                                <span class="text-green-600 text-2xl mr-3">🔒</span>
+                                <div>
+                                    <div class="font-semibold text-green-800 dark:text-green-400">Compra 100% Segura</div>
+                                    <div class="text-sm text-green-600 dark:text-green-500">Seus dados estão protegidos com criptografia SSL</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Button -->
+                        <button id="confirmOrder" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-4 rounded-xl font-bold text-lg transition-colors">
+                            Confirmar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-8 text-center">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pedido Confirmado!</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Seu pedido foi realizado com sucesso. Você receberá um email com os detalhes.</p>
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+                <div class="text-sm text-gray-600 dark:text-gray-400">Número do pedido:</div>
+                <div id="orderNumber" class="text-lg font-bold text-ciig-blue">#CIIG-2024-001</div>
+            </div>
+            <button id="closeSuccess" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold transition-colors">
+                Continuar Comprando
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="bg-gradient-to-r from-ciig-blue to-ciig-light-blue rounded-2xl p-8 mb-8 text-white">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-4xl font-bold mb-2">🎉 Super Descontos!</h2>
+                    <p class="text-xl opacity-90">Economize até 70% em produtos selecionados</p>
+                    <p class="text-lg opacity-80 mt-2">Válido até 31/12/2024</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white/20 rounded-xl p-4 backdrop-blur-sm">
+                        <div class="text-3xl font-bold">70%</div>
+                        <div class="text-sm">OFF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 transition-colors duration-300">
+            <div class="flex flex-wrap items-center gap-4">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Filtrar por:</h3>
+                <select id="categoryFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                    <option value="all">Todas as categorias</option>
+                    <option value="electronics">Eletrônicos</option>
+                    <option value="office">Escritório</option>
+                    <option value="equipment">Equipamentos</option>
+                </select>
+                <select id="sortFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue">
+                    <option value="discount">Maior desconto</option>
+                    <option value="price">Menor preço</option>
+                    <option value="popular">Mais vendidos</option>
+                    <option value="rating">Melhor avaliação</option>
+                </select>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm text-gray-700 dark:text-gray-300">Preço máximo:</label>
+                    <input id="priceRange" type="range" min="0" max="5000" value="5000" class="w-32">
+                    <span id="priceValue" class="text-sm font-semibold text-ciig-blue">R$ 5.000</span>
+                </div>
+                <button id="clearFilters" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors">
+                    Limpar
+                </button>
+            </div>
+            <div id="activeFilters" class="mt-4 flex flex-wrap gap-2 hidden">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Filtros ativos:</span>
+            </div>
+        </div>
+
+        <!-- Flash Sale Timer -->
+        <div class="bg-red-500 text-white rounded-xl p-6 mb-8 text-center">
+            <h3 class="text-2xl font-bold mb-2">⚡ FLASH SALE</h3>
+            <p class="mb-4">Termina em:</p>
+            <div class="flex justify-center space-x-4 text-2xl font-bold">
+                <div class="bg-white/20 rounded-lg p-3">
+                    <div id="hours">02</div>
+                    <div class="text-sm">Horas</div>
+                </div>
+                <div class="bg-white/20 rounded-lg p-3">
+                    <div id="minutes">45</div>
+                    <div class="text-sm">Min</div>
+                </div>
+                <div class="bg-white/20 rounded-lg p-3">
+                    <div id="seconds">30</div>
+                    <div class="text-sm">Seg</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <!-- Products will be dynamically generated here -->
+        </div>
+
+        <!-- Load More Button -->
+        <div class="text-center">
+            <button class="px-8 py-3 border-2 border-ciig-blue text-ciig-blue hover:bg-ciig-blue hover:text-white rounded-lg transition-colors font-semibold">
+                Carregar Mais Produtos
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-4">
+                    <div class="w-8 h-8 bg-ciig-blue rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold">C</span>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900 dark:text-white">CIIG System</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400">© 2024 CIIG System. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Products Database
+        const products = [
+            {
+                id: 1,
+                name: 'Notebook Empresarial',
+                price: 1299,
+                originalPrice: 3699,
+                discount: 65,
+                category: 'electronics',
+                emoji: '💻',
+                rating: 5,
+                reviews: 127,
+                gradient: 'from-blue-100 to-blue-200'
+            },
+            {
+                id: 2,
+                name: 'Impressora Multifuncional',
+                price: 549,
+                originalPrice: 999,
+                discount: 45,
+                category: 'office',
+                emoji: '🖨️',
+                rating: 4,
+                reviews: 89,
+                gradient: 'from-green-100 to-green-200'
+            },
+            {
+                id: 3,
+                name: 'Tablet Corporativo',
+                price: 899,
+                originalPrice: 1999,
+                discount: 55,
+                category: 'electronics',
+                emoji: '📱',
+                rating: 5,
+                reviews: 203,
+                gradient: 'from-purple-100 to-purple-200'
+            },
+            {
+                id: 4,
+                name: 'Monitor 4K',
+                price: 599,
+                originalPrice: 1999,
+                discount: 70,
+                category: 'electronics',
+                emoji: '🖥️',
+                rating: 5,
+                reviews: 156,
+                gradient: 'from-orange-100 to-orange-200'
+            },
+            {
+                id: 5,
+                name: 'Cadeira Ergonômica',
+                price: 799,
+                originalPrice: 1299,
+                discount: 38,
+                category: 'office',
+                emoji: '🪑',
+                rating: 4,
+                reviews: 92,
+                gradient: 'from-red-100 to-red-200'
+            },
+            {
+                id: 6,
+                name: 'Projetor HD',
+                price: 1199,
+                originalPrice: 2499,
+                discount: 52,
+                category: 'equipment',
+                emoji: '📽️',
+                rating: 4,
+                reviews: 67,
+                gradient: 'from-yellow-100 to-yellow-200'
+            },
+            {
+                id: 7,
+                name: 'Scanner Profissional',
+                price: 399,
+                originalPrice: 799,
+                discount: 50,
+                category: 'office',
+                emoji: '📄',
+                rating: 4,
+                reviews: 45,
+                gradient: 'from-indigo-100 to-indigo-200'
+            },
+            {
+                id: 8,
+                name: 'Roteador Wi-Fi 6',
+                price: 299,
+                originalPrice: 599,
+                discount: 50,
+                category: 'electronics',
+                emoji: '📡',
+                rating: 5,
+                reviews: 134,
+                gradient: 'from-pink-100 to-pink-200'
+            }
+        ];
+
+        // Cart Management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', currentTheme === 'dark');
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Flash Sale Timer
+        function updateTimer() {
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            
+            let hours = parseInt(hoursEl.textContent);
+            let minutes = parseInt(minutesEl.textContent);
+            let seconds = parseInt(secondsEl.textContent);
+            
+            seconds--;
+            
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+                
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                    
+                    if (hours < 0) {
+                        hours = 23;
+                    }
+                }
+            }
+            
+            hoursEl.textContent = hours.toString().padStart(2, '0');
+            minutesEl.textContent = minutes.toString().padStart(2, '0');
+            secondsEl.textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        setInterval(updateTimer, 1000);
+
+        // Product Rendering
+        function renderProducts(productsToRender = products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            
+            productsToRender.forEach(product => {
+                const stars = '⭐'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
+                const isInWishlist = wishlist.includes(product.id);
+                
+                const productCard = `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-product-id="${product.id}" data-category="${product.category}" data-price="${product.price}">
+                        <div class="relative">
+                            <div class="h-48 bg-gradient-to-br ${product.gradient} dark:from-gray-700 dark:to-gray-600 flex items-center justify-center">
+                                <div class="text-6xl">${product.emoji}</div>
+                            </div>
+                            <div class="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-sm font-bold">
+                                -${product.discount}%
+                            </div>
+                            <button class="wishlist-btn absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors ${isInWishlist ? 'bg-red-100' : ''}" data-product-id="${product.id}">
+                                ${isInWishlist ? '💖' : '❤️'}
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">${product.name}</h4>
+                            <div class="flex items-center space-x-2 mb-3">
+                                <span class="text-2xl font-bold text-ciig-blue">R$ ${product.price.toLocaleString('pt-BR')}</span>
+                                <span class="text-gray-500 line-through">R$ ${product.originalPrice.toLocaleString('pt-BR')}</span>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <div class="flex text-yellow-400">
+                                    ${stars}
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">(${product.reviews})</span>
+                            </div>
+                            <div class="space-y-2">
+                                <button class="add-to-cart-btn w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-2 rounded-lg transition-colors font-semibold" data-product-id="${product.id}">
+                                    Adicionar ao Carrinho
+                                </button>
+                                <button onclick="openQuickView(${product.id})" class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 py-2 rounded-lg transition-colors text-sm">
+                                    👁️ Visualização Rápida
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += productCard;
+            });
+            
+            // Attach event listeners
+            attachProductEventListeners();
+        }
+
+        // Attach Event Listeners to Products
+        function attachProductEventListeners() {
+            // Add to cart buttons
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.productId);
+                    addToCart(productId);
+                });
+            });
+
+            // Wishlist buttons
+            document.querySelectorAll('.wishlist-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.productId);
+                    toggleWishlist(productId);
+                });
+            });
+        }
+
+        // Add to Cart Function
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            
+            // Visual feedback
+            const button = document.querySelector(`[data-product-id="${productId}"].add-to-cart-btn`);
+            const originalText = button.textContent;
+            button.textContent = 'Adicionado! ✓';
+            button.classList.remove('bg-ciig-blue', 'hover:bg-ciig-dark-blue');
+            button.classList.add('bg-green-500');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('bg-green-500');
+                button.classList.add('bg-ciig-blue', 'hover:bg-ciig-dark-blue');
+            }, 1500);
+            
+            showNotification(`${product.name} foi adicionado ao carrinho!`);
+        }
+
+        // Toggle Wishlist
+        function toggleWishlist(productId) {
+            const product = products.find(p => p.id === productId);
+            const button = document.querySelector(`[data-product-id="${productId}"].wishlist-btn`);
+            
+            if (wishlist.includes(productId)) {
+                wishlist = wishlist.filter(id => id !== productId);
+                button.textContent = '❤️';
+                button.classList.remove('bg-red-100');
+                showNotification('Removido dos favoritos!');
+            } else {
+                wishlist.push(productId);
+                button.textContent = '💖';
+                button.classList.add('bg-red-100');
+                showNotification('Adicionado aos favoritos!');
+            }
+            
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        }
+
+        // Update Cart UI
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartFooter = document.getElementById('cartFooter');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartDiscount = document.getElementById('cartDiscount');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = subtotal - totalPrice;
+            
+            // Update cart count
+            if (totalItems > 0) {
+                cartCount.textContent = totalItems;
+                cartCount.classList.remove('hidden');
+            } else {
+                cartCount.classList.add('hidden');
+            }
+            
+            // Update cart items
+            if (cart.length === 0) {
+                emptyCart.classList.remove('hidden');
+                cartFooter.classList.add('hidden');
+                cartItems.innerHTML = `
+                    <div id="emptyCart" class="text-center py-12">
+                        <div class="text-6xl mb-4">🛒</div>
+                        <p class="text-gray-500 dark:text-gray-400">Seu carrinho está vazio</p>
+                        <p class="text-sm text-gray-400 dark:text-gray-500 mt-2">Adicione produtos para começar</p>
+                    </div>
+                `;
+            } else {
+                emptyCart.classList.add('hidden');
+                cartFooter.classList.remove('hidden');
+                
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-4 p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="w-16 h-16 bg-gradient-to-br ${item.gradient} dark:from-gray-700 dark:to-gray-600 rounded-lg flex items-center justify-center">
+                            <span class="text-2xl">${item.emoji}</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-900 dark:text-white text-sm">${item.name}</h4>
+                            <p class="text-ciig-blue font-bold">R$ ${item.price.toLocaleString('pt-BR')}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="quantity-btn w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500" data-product-id="${item.id}" data-action="decrease">-</button>
+                            <span class="w-8 text-center font-semibold text-gray-900 dark:text-white">${item.quantity}</span>
+                            <button class="quantity-btn w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500" data-product-id="${item.id}" data-action="increase">+</button>
+                        </div>
+                        <button class="remove-item text-red-500 hover:text-red-700 p-1" data-product-id="${item.id}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+                
+                cartSubtotal.textContent = `R$ ${subtotal.toLocaleString('pt-BR')}`;
+                cartDiscount.textContent = `-R$ ${discount.toLocaleString('pt-BR')}`;
+                cartTotal.textContent = `R$ ${totalPrice.toLocaleString('pt-BR')}`;
+                
+                // Attach cart event listeners
+                attachCartEventListeners();
+            }
+        }
+
+        // Attach Cart Event Listeners
+        function attachCartEventListeners() {
+            document.querySelectorAll('.quantity-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.productId);
+                    const action = this.dataset.action;
+                    updateQuantity(productId, action);
+                });
+            });
+
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.productId);
+                    removeFromCart(productId);
+                });
+            });
+        }
+
+        // Update Quantity
+        function updateQuantity(productId, action) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                if (action === 'increase') {
+                    item.quantity += 1;
+                } else if (action === 'decrease' && item.quantity > 1) {
+                    item.quantity -= 1;
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI();
+                updateCheckoutSummary();
+            }
+        }
+
+        // Remove from Cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            updateCheckoutSummary();
+            showNotification('Produto removido do carrinho!');
+        }
+
+        // Cart Toggle
+        const cartToggle = document.getElementById('cartToggle');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCart = document.getElementById('closeCart');
+
+        function openCart() {
+            cartSidebar.classList.remove('translate-x-full');
+            cartOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCartSidebar() {
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        cartToggle.addEventListener('click', openCart);
+        closeCart.addEventListener('click', closeCartSidebar);
+        cartOverlay.addEventListener('click', closeCartSidebar);
+
+        // Clear Cart
+        document.getElementById('clearCart').addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja limpar o carrinho?')) {
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI();
+                showNotification('Carrinho limpo!');
+            }
+        });
+
+        // Checkout Modal
+        const checkoutModal = document.getElementById('checkoutModal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const closeCheckout = document.getElementById('closeCheckout');
+
+        checkoutBtn.addEventListener('click', function() {
+            if (cart.length === 0) {
+                showNotification('Seu carrinho está vazio!');
+                return;
+            }
+            checkoutModal.classList.remove('hidden');
+            updateCheckoutSummary();
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeCheckout.addEventListener('click', function() {
+            checkoutModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Payment Method Selection
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const cardDetails = document.getElementById('cardDetails');
+                const pixDetails = document.getElementById('pixDetails');
+                const boletoDetails = document.getElementById('boletoDetails');
+                const installments = document.getElementById('installments');
+                
+                // Hide all details
+                cardDetails.classList.add('hidden');
+                pixDetails.classList.add('hidden');
+                boletoDetails.classList.add('hidden');
+                installments.classList.add('hidden');
+                
+                // Show relevant details
+                if (this.value === 'credit') {
+                    cardDetails.classList.remove('hidden');
+                    installments.classList.remove('hidden');
+                } else if (this.value === 'debit') {
+                    cardDetails.classList.remove('hidden');
+                } else if (this.value === 'pix') {
+                    pixDetails.classList.remove('hidden');
+                } else if (this.value === 'boleto') {
+                    boletoDetails.classList.remove('hidden');
+                }
+                
+                updateCheckoutSummary();
+            });
+        });
+
+        // Update Checkout Summary
+        function updateCheckoutSummary() {
+            const checkoutItems = document.getElementById('checkoutItems');
+            const checkoutSubtotal = document.getElementById('checkoutSubtotal');
+            const checkoutDiscount = document.getElementById('checkoutDiscount');
+            const checkoutTotal = document.getElementById('checkoutTotal');
+            const pixDiscountLine = document.getElementById('pixDiscountLine');
+            const pixDiscountAmount = document.getElementById('pixDiscountAmount');
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = subtotal - totalPrice;
+            
+            // Check if PIX is selected
+            const pixSelected = document.querySelector('input[name="payment"]:checked')?.value === 'pix';
+            const pixDiscount = pixSelected ? totalPrice * 0.05 : 0;
+            const finalTotal = totalPrice - pixDiscount;
+            
+            // Update items
+            checkoutItems.innerHTML = cart.map(item => `
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br ${item.gradient} dark:from-gray-700 dark:to-gray-600 rounded-lg flex items-center justify-center">
+                        <span class="text-lg">${item.emoji}</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-semibold text-gray-900 dark:text-white text-sm">${item.name}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">Qtd: ${item.quantity}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-semibold text-ciig-blue">R$ ${(item.price * item.quantity).toLocaleString('pt-BR')}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update totals
+            checkoutSubtotal.textContent = `R$ ${subtotal.toLocaleString('pt-BR')}`;
+            checkoutDiscount.textContent = `-R$ ${discount.toLocaleString('pt-BR')}`;
+            
+            if (pixSelected) {
+                pixDiscountLine.classList.remove('hidden');
+                pixDiscountAmount.textContent = `-R$ ${pixDiscount.toLocaleString('pt-BR')}`;
+            } else {
+                pixDiscountLine.classList.add('hidden');
+            }
+            
+            checkoutTotal.textContent = `R$ ${finalTotal.toLocaleString('pt-BR')}`;
+        }
+
+        // Payment Processing Modal
+        const paymentModal = document.createElement('div');
+        paymentModal.id = 'paymentModal';
+        paymentModal.className = 'fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4';
+        paymentModal.innerHTML = `
+            <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-8 text-center">
+                <div id="paymentContent">
+                    <!-- Content will be dynamically updated -->
+                </div>
+            </div>
+        `;
+        document.body.appendChild(paymentModal);
+
+        // Generate QR Code for PIX
+        function generatePixQRCode() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 200;
+            canvas.height = 200;
+            
+            // Simple QR code pattern (mock)
+            ctx.fillStyle = '#000';
+            const size = 8;
+            const pattern = [
+                [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
+                [1,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1],
+                [1,0,1,1,1,0,1,0,1,0,1,1,0,1,1,1,1],
+                [1,0,1,1,1,0,1,0,0,1,0,1,0,1,1,1,1],
+                [1,0,1,1,1,0,1,0,1,1,1,1,0,1,1,1,1],
+                [1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+                [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
+                [0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],
+                [1,0,1,1,0,1,1,1,0,1,1,0,1,0,1,1,0],
+                [0,1,0,0,1,0,0,0,1,0,0,1,0,1,0,0,1],
+                [1,1,1,0,1,1,1,1,0,1,1,0,1,1,1,0,0],
+                [0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,1],
+                [1,1,1,1,1,1,1,0,0,1,1,0,1,1,1,0,1],
+                [1,0,0,0,0,0,1,0,1,0,1,1,0,0,0,1,0],
+                [1,0,1,1,1,0,1,0,0,1,0,0,1,1,1,0,1],
+                [1,0,1,1,1,0,1,0,1,0,1,1,0,1,0,1,1],
+                [1,1,1,1,1,1,1,0,0,1,1,0,1,0,1,1,0]
+            ];
+            
+            for (let y = 0; y < pattern.length; y++) {
+                for (let x = 0; x < pattern[y].length; x++) {
+                    if (pattern[y][x]) {
+                        ctx.fillRect(x * size + 20, y * size + 20, size, size);
+                    }
+                }
+            }
+            
+            return canvas.toDataURL();
+        }
+
+        // Process Payment
+        function processPayment(paymentMethod) {
+            const paymentContent = document.getElementById('paymentContent');
+            const finalTotal = calculateFinalTotal();
+            
+            paymentModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            switch (paymentMethod) {
+                case 'pix':
+                    paymentContent.innerHTML = `
+                        <div class="text-6xl mb-4">📱</div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pagamento PIX</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Escaneie o QR Code com seu app do banco</p>
+                        
+                        <div class="bg-white p-4 rounded-lg mb-6 inline-block">
+                            <img src="${generatePixQRCode()}" alt="QR Code PIX" class="w-48 h-48">
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Chave PIX (Copia e Cola):</div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded border font-mono text-sm break-all">
+                                00020126580014br.gov.bcb.pix013636c4c91e-4b5d-4f8a-9c2e-1234567890ab5204000053039865802BR5925CIIG SYSTEM LTDA6009SAO PAULO62070503***6304A1B2
+                            </div>
+                            <button onclick="copyPixCode()" class="mt-2 text-ciig-blue hover:text-ciig-dark-blue text-sm">📋 Copiar código</button>
+                        </div>
+                        
+                        <div class="text-2xl font-bold text-ciig-blue mb-6">R$ ${finalTotal.toLocaleString('pt-BR')}</div>
+                        
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
+                            <div class="flex items-center">
+                                <span class="text-yellow-600 text-xl mr-3">⏰</span>
+                                <div>
+                                    <div class="font-semibold text-yellow-800 dark:text-yellow-400">Aguardando pagamento</div>
+                                    <div class="text-sm text-yellow-600 dark:text-yellow-500">Expira em: <span id="pixTimer">15:00</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="simulatePixPayment()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold mb-3">
+                            ✅ Simular Pagamento Aprovado
+                        </button>
+                        <button onclick="closePaymentModal()" class="w-full text-gray-500 hover:text-gray-700 py-2">
+                            Cancelar
+                        </button>
+                    `;
+                    startPixTimer();
+                    break;
+                    
+                case 'credit':
+                case 'debit':
+                    paymentContent.innerHTML = `
+                        <div class="text-6xl mb-4">💳</div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Processando ${paymentMethod === 'credit' ? 'Cartão de Crédito' : 'Cartão de Débito'}</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Aguarde enquanto processamos seu pagamento...</p>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+                            <div class="animate-spin w-12 h-12 border-4 border-ciig-blue border-t-transparent rounded-full mx-auto mb-4"></div>
+                            <div class="text-lg font-semibold text-gray-900 dark:text-white">Conectando com o banco...</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mt-2">Isso pode levar alguns segundos</div>
+                        </div>
+                        
+                        <div class="text-2xl font-bold text-ciig-blue mb-6">R$ ${finalTotal.toLocaleString('pt-BR')}</div>
+                    `;
+                    
+                    setTimeout(() => {
+                        paymentContent.innerHTML = `
+                            <div class="text-6xl mb-4">✅</div>
+                            <h3 class="text-2xl font-bold text-green-600 mb-4">Pagamento Aprovado!</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-6">Seu ${paymentMethod === 'credit' ? 'cartão de crédito' : 'cartão de débito'} foi processado com sucesso</p>
+                            
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Comprovante:</div>
+                                <div class="font-mono text-sm">NSU: ${Math.floor(Math.random() * 1000000)}</div>
+                                <div class="font-mono text-sm">Autorização: ${Math.floor(Math.random() * 1000000)}</div>
+                            </div>
+                            
+                            <button onclick="completeOrder()" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold">
+                                Continuar
+                            </button>
+                        `;
+                    }, 3000);
+                    break;
+                    
+                case 'boleto':
+                    paymentContent.innerHTML = `
+                        <div class="text-6xl mb-4">🧾</div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Boleto Bancário</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Seu boleto foi gerado com sucesso!</p>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Código de barras:</div>
+                            <div class="bg-white dark:bg-gray-800 p-3 rounded border font-mono text-xs break-all">
+                                23793.39001 60000.000001 00000.000000 1 84370000${Math.floor(finalTotal * 100).toString().padStart(8, '0')}
+                            </div>
+                        </div>
+                        
+                        <div class="text-2xl font-bold text-ciig-blue mb-4">R$ ${finalTotal.toLocaleString('pt-BR')}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-6">Vencimento: ${new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')}</div>
+                        
+                        <button onclick="downloadBoleto()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold mb-3">
+                            📄 Baixar Boleto PDF
+                        </button>
+                        <button onclick="completeOrder()" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold mb-3">
+                            Finalizar Pedido
+                        </button>
+                        <button onclick="closePaymentModal()" class="w-full text-gray-500 hover:text-gray-700 py-2">
+                            Voltar
+                        </button>
+                    `;
+                    break;
+                    
+                case 'paypal':
+                    paymentContent.innerHTML = `
+                        <div class="text-6xl mb-4">🅿️</div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">PayPal</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Redirecionando para o PayPal...</p>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
+                            <div class="animate-pulse">
+                                <div class="flex items-center justify-center mb-4">
+                                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white text-2xl font-bold">P</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-semibold text-blue-800 dark:text-blue-400">Conectando com PayPal...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-2xl font-bold text-ciig-blue mb-6">R$ ${finalTotal.toLocaleString('pt-BR')}</div>
+                    `;
+                    
+                    setTimeout(() => {
+                        paymentContent.innerHTML = `
+                            <div class="text-6xl mb-4">✅</div>
+                            <h3 class="text-2xl font-bold text-green-600 mb-4">Pagamento PayPal Aprovado!</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-6">Seu pagamento foi processado com sucesso pelo PayPal</p>
+                            
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">ID da Transação:</div>
+                                <div class="font-mono text-sm">PP-${Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
+                            </div>
+                            
+                            <button onclick="completeOrder()" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold">
+                                Continuar
+                            </button>
+                        `;
+                    }, 2500);
+                    break;
+            }
+        }
+
+        // Calculate Final Total
+        function calculateFinalTotal() {
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Apply coupon discount
+            let couponDiscount = 0;
+            if (appliedCoupon) {
+                if (appliedCoupon.type === 'percentage') {
+                    couponDiscount = totalPrice * (appliedCoupon.value / 100);
+                } else {
+                    couponDiscount = appliedCoupon.value;
+                }
+            }
+            
+            const pixSelected = document.querySelector('input[name="payment"]:checked')?.value === 'pix';
+            const pixDiscount = pixSelected ? (totalPrice - couponDiscount) * 0.05 : 0;
+            return totalPrice - couponDiscount - pixDiscount;
+        }
+
+        // PIX Timer
+        function startPixTimer() {
+            let timeLeft = 15 * 60; // 15 minutes
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                const timerElement = document.getElementById('pixTimer');
+                
+                if (timerElement) {
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                timeLeft--;
+                
+                if (timeLeft < 0) {
+                    clearInterval(timer);
+                    if (timerElement) {
+                        timerElement.textContent = 'Expirado';
+                        timerElement.parentElement.parentElement.classList.remove('border-yellow-200', 'bg-yellow-50');
+                        timerElement.parentElement.parentElement.classList.add('border-red-200', 'bg-red-50');
+                    }
+                }
+            }, 1000);
+        }
+
+        // Copy PIX Code
+        window.copyPixCode = function() {
+            const pixCode = '00020126580014br.gov.bcb.pix013636c4c91e-4b5d-4f8a-9c2e-1234567890ab5204000053039865802BR5925CIIG SYSTEM LTDA6009SAO PAULO62070503***6304A1B2';
+            navigator.clipboard.writeText(pixCode).then(() => {
+                showNotification('Código PIX copiado!');
+            });
+        };
+
+        // Simulate PIX Payment
+        window.simulatePixPayment = function() {
+            const paymentContent = document.getElementById('paymentContent');
+            paymentContent.innerHTML = `
+                <div class="text-6xl mb-4">✅</div>
+                <h3 class="text-2xl font-bold text-green-600 mb-4">PIX Recebido!</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Pagamento confirmado com sucesso</p>
+                
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Comprovante PIX:</div>
+                    <div class="font-mono text-sm">ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
+                    <div class="font-mono text-sm">Data: ${new Date().toLocaleString('pt-BR')}</div>
+                </div>
+                
+                <button onclick="completeOrder()" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold">
+                    Continuar
+                </button>
+            `;
+        };
+
+        // Download Boleto
+        window.downloadBoleto = function() {
+            // Create a simple PDF-like content
+            const boletoContent = `
+CIIG SYSTEM - BOLETO BANCÁRIO
+================================
+
+Beneficiário: CIIG SYSTEM LTDA
+CNPJ: 12.345.678/0001-90
+
+Pagador: Cliente CIIG
+Valor: R$ ${calculateFinalTotal().toLocaleString('pt-BR')}
+Vencimento: ${new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')}
+
+Código de Barras:
+23793.39001 60000.000001 00000.000000 1 84370000${Math.floor(calculateFinalTotal() * 100).toString().padStart(8, '0')}
+
+Instruções:
+- Pagável em qualquer banco até o vencimento
+- Após o vencimento, sujeito a multa e juros
+- Em caso de dúvidas, entre em contato conosco
+            `;
+            
+            const blob = new Blob([boletoContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `boleto-ciig-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Boleto baixado com sucesso!');
+        };
+
+        // Close Payment Modal
+        window.closePaymentModal = function() {
+            paymentModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        // Complete Order
+        window.completeOrder = function() {
+            // Generate order number
+            const orderNum = `#CIIG-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+            document.getElementById('orderNumber').textContent = orderNum;
+            
+            // Close payment modal and show success
+            paymentModal.classList.add('hidden');
+            checkoutModal.classList.add('hidden');
+            document.getElementById('successModal').classList.remove('hidden');
+            
+            // Clear cart
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            
+            showNotification('Pedido realizado com sucesso!');
+        };
+
+        // Confirm Order
+        const confirmOrder = document.getElementById('confirmOrder');
+        const successModal = document.getElementById('successModal');
+        const closeSuccess = document.getElementById('closeSuccess');
+        const orderNumber = document.getElementById('orderNumber');
+
+        confirmOrder.addEventListener('click', function() {
+            const selectedPayment = document.querySelector('input[name="payment"]:checked');
+            
+            if (!selectedPayment) {
+                showNotification('Selecione uma forma de pagamento!');
+                return;
+            }
+            
+            // Validate only essential fields (name, CEP, street, number, city)
+            const essentialFields = [
+                document.querySelector('input[placeholder="Nome completo"]'),
+                document.querySelector('input[placeholder="CEP"]'),
+                document.querySelector('input[placeholder="Rua"]'),
+                document.querySelector('input[placeholder="Número"]'),
+                document.querySelector('input[placeholder="Cidade"]')
+            ];
+            
+            let hasEmptyEssentialFields = false;
+            
+            // Clear all previous error states
+            document.querySelectorAll('#checkoutModal input').forEach(field => {
+                field.classList.remove('border-red-500');
+            });
+            
+            essentialFields.forEach(field => {
+                if (field && !field.value.trim()) {
+                    hasEmptyEssentialFields = true;
+                    field.classList.add('border-red-500');
+                }
+            });
+            
+            if (hasEmptyEssentialFields) {
+                showNotification('Preencha os campos obrigatórios: Nome, CEP, Rua, Número e Cidade!');
+                return;
+            }
+            
+            // Validate card details if credit/debit is selected (only number and name required)
+            if ((selectedPayment.value === 'credit' || selectedPayment.value === 'debit')) {
+                const cardNumber = document.querySelector('#cardDetails input[placeholder="Número do cartão"]');
+                const cardName = document.querySelector('#cardDetails input[placeholder="Nome no cartão"]');
+                
+                let hasEmptyCardFields = false;
+                
+                if (!cardNumber.value.trim()) {
+                    cardNumber.classList.add('border-red-500');
+                    hasEmptyCardFields = true;
+                }
+                
+                if (!cardName.value.trim()) {
+                    cardName.classList.add('border-red-500');
+                    hasEmptyCardFields = true;
+                }
+                
+                if (hasEmptyCardFields) {
+                    showNotification('Preencha o número e nome do cartão!');
+                    return;
+                }
+            }
+            
+            // Process payment
+            processPayment(selectedPayment.value);
+        });
+
+        closeSuccess.addEventListener('click', function() {
+            successModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Filter Functionality
+        const categoryFilter = document.getElementById('categoryFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const priceRange = document.getElementById('priceRange');
+        const priceValue = document.getElementById('priceValue');
+        const clearFilters = document.getElementById('clearFilters');
+
+        function applyFilters() {
+            let filteredProducts = [...products];
+            
+            // Category filter
+            const selectedCategory = categoryFilter.value;
+            if (selectedCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.category === selectedCategory);
+            }
+            
+            // Price filter
+            const maxPrice = parseInt(priceRange.value);
+            filteredProducts = filteredProducts.filter(product => product.price <= maxPrice);
+            
+            // Sort filter
+            const sortBy = sortFilter.value;
+            switch (sortBy) {
+                case 'price':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'discount':
+                    filteredProducts.sort((a, b) => b.discount - a.discount);
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'popular':
+                    filteredProducts.sort((a, b) => b.reviews - a.reviews);
+                    break;
+            }
+            
+            renderProducts(filteredProducts);
+            updateActiveFilters();
+        }
+
+        function updateActiveFilters() {
+            const activeFilters = document.getElementById('activeFilters');
+            const filters = [];
+            
+            if (categoryFilter.value !== 'all') {
+                filters.push(`Categoria: ${categoryFilter.options[categoryFilter.selectedIndex].text}`);
+            }
+            
+            if (parseInt(priceRange.value) < 5000) {
+                filters.push(`Preço máximo: R$ ${parseInt(priceRange.value).toLocaleString('pt-BR')}`);
+            }
+            
+            if (filters.length > 0) {
+                activeFilters.innerHTML = `
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Filtros ativos:</span>
+                    ${filters.map(filter => `<span class="bg-ciig-blue text-white px-3 py-1 rounded-full text-sm">${filter}</span>`).join('')}
+                `;
+                activeFilters.classList.remove('hidden');
+            } else {
+                activeFilters.classList.add('hidden');
+            }
+        }
+
+        // Price range update
+        priceRange.addEventListener('input', function() {
+            priceValue.textContent = `R$ ${parseInt(this.value).toLocaleString('pt-BR')}`;
+            applyFilters();
+        });
+
+        // Filter event listeners
+        categoryFilter.addEventListener('change', applyFilters);
+        sortFilter.addEventListener('change', applyFilters);
+
+        // Clear filters
+        clearFilters.addEventListener('click', function() {
+            categoryFilter.value = 'all';
+            sortFilter.value = 'discount';
+            priceRange.value = 5000;
+            priceValue.textContent = 'R$ 5.000';
+            renderProducts();
+            updateActiveFilters();
+        });
+
+        // Notification System
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-ciig-blue text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Load More Products
+        document.querySelector('button').addEventListener('click', function() {
+            if (this.textContent.includes('Carregar Mais')) {
+                this.textContent = 'Carregando...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.textContent = 'Carregar Mais Produtos';
+                    this.disabled = false;
+                    showNotification('Mais produtos carregados!');
+                }, 1500);
+            }
+        });
+
+        // Coupon System
+        let appliedCoupon = null;
+        const availableCoupons = {
+            'PRIMEIRA10': { type: 'percentage', value: 10, description: '10% de desconto na primeira compra' },
+            'FRETE20': { type: 'fixed', value: 20, description: 'R$ 20 de desconto' },
+            'VIP15': { type: 'percentage', value: 15, description: '15% para clientes VIP' },
+            'BLACKFRIDAY': { type: 'percentage', value: 25, description: '25% Black Friday' },
+            'NATAL2024': { type: 'fixed', value: 50, description: 'R$ 50 desconto Natal' }
+        };
+
+        // Apply Coupon
+        window.applyCoupon = function() {
+            const couponInput = document.getElementById('couponInput');
+            const couponCode = couponInput.value.trim().toUpperCase();
+            applyCouponCode(couponCode);
+        };
+
+        window.applyCouponCode = function(couponCode) {
+            const couponInput = document.getElementById('couponInput');
+            const couponStatus = document.getElementById('couponStatus');
+            
+            couponInput.value = couponCode;
+            
+            if (availableCoupons[couponCode]) {
+                appliedCoupon = { code: couponCode, ...availableCoupons[couponCode] };
+                couponStatus.className = 'mt-2 text-sm text-green-600 dark:text-green-400';
+                couponStatus.textContent = `✅ Cupom "${couponCode}" aplicado! ${appliedCoupon.description}`;
+                couponStatus.classList.remove('hidden');
+                updateCheckoutSummary();
+                showNotification(`Cupom ${couponCode} aplicado com sucesso!`);
+            } else {
+                couponStatus.className = 'mt-2 text-sm text-red-600 dark:text-red-400';
+                couponStatus.textContent = '❌ Cupom inválido ou expirado';
+                couponStatus.classList.remove('hidden');
+                showNotification('Cupom inválido!');
+            }
+        };
+
+        // Toggle Available Coupons
+        window.toggleAvailableCoupons = function() {
+            const availableCoupons = document.getElementById('availableCoupons');
+            availableCoupons.classList.toggle('hidden');
+        };
+
+        // CEP Search
+        window.searchCEP = function() {
+            const cepInput = document.getElementById('cepInput');
+            const cep = cepInput.value.replace(/\D/g, '');
+            
+            if (cep.length !== 8) {
+                showNotification('CEP deve ter 8 dígitos!');
+                return;
+            }
+            
+            // Simulate CEP search
+            showNotification('Buscando CEP...');
+            
+            setTimeout(() => {
+                // Mock data
+                const mockData = {
+                    street: 'Rua das Flores',
+                    neighborhood: 'Centro',
+                    city: 'São Paulo'
+                };
+                
+                document.getElementById('streetInput').value = mockData.street;
+                document.getElementById('neighborhoodInput').value = mockData.neighborhood;
+                document.getElementById('cityInput').value = mockData.city;
+                
+                showNotification('CEP encontrado! Dados preenchidos automaticamente.');
+            }, 1500);
+        };
+
+        // Saved Addresses
+        window.toggleSavedAddresses = function() {
+            const savedAddresses = document.getElementById('savedAddresses');
+            savedAddresses.classList.toggle('hidden');
+        };
+
+        window.fillAddress = function(type) {
+            const addresses = {
+                home: {
+                    name: 'João Silva',
+                    cep: '01234-567',
+                    street: 'Rua das Flores',
+                    number: '123',
+                    complement: 'Apto 45',
+                    neighborhood: 'Centro',
+                    city: 'São Paulo'
+                },
+                work: {
+                    name: 'João Silva',
+                    cep: '01310-100',
+                    street: 'Av. Paulista',
+                    number: '1000',
+                    complement: 'Sala 1001',
+                    neighborhood: 'Bela Vista',
+                    city: 'São Paulo'
+                }
+            };
+            
+            const address = addresses[type];
+            if (address) {
+                document.querySelector('input[placeholder*="Nome completo"]').value = address.name;
+                document.getElementById('cepInput').value = address.cep;
+                document.getElementById('streetInput').value = address.street;
+                document.querySelector('input[placeholder*="Número"]').value = address.number;
+                document.querySelector('input[placeholder*="Complemento"]').value = address.complement;
+                document.getElementById('neighborhoodInput').value = address.neighborhood;
+                document.getElementById('cityInput').value = address.city;
+                
+                document.getElementById('savedAddresses').classList.add('hidden');
+                showNotification(`Endereço ${type === 'home' ? 'residencial' : 'comercial'} preenchido!`);
+            }
+        };
+
+        // Enhanced Product Search
+        function addSearchFunctionality() {
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = '🔍 Buscar produtos...';
+            searchInput.className = 'px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue flex-1';
+            
+            const filterSection = document.querySelector('.bg-white.dark\\:bg-gray-800.rounded-xl.shadow-lg.p-6.mb-8');
+            const filterContainer = filterSection.querySelector('.flex.flex-wrap.items-center.gap-4');
+            
+            // Add search to filter container
+            const searchContainer = document.createElement('div');
+            searchContainer.className = 'flex items-center space-x-2 flex-1 min-w-64';
+            searchContainer.innerHTML = `
+                <input type="text" id="searchInput" placeholder="🔍 Buscar produtos..." class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue flex-1">
+                <button onclick="clearSearch()" class="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">✕</button>
+            `;
+            
+            filterContainer.insertBefore(searchContainer, filterContainer.firstChild);
+            
+            // Add search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const filteredProducts = products.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.category.toLowerCase().includes(searchTerm)
+                );
+                renderProducts(filteredProducts);
+            });
+        }
+
+        window.clearSearch = function() {
+            document.getElementById('searchInput').value = '';
+            applyFilters();
+        };
+
+        // Product Comparison
+        let comparisonList = [];
+
+        function addComparisonFeature() {
+            // Add comparison button to each product
+            const style = document.createElement('style');
+            style.textContent = `
+                .comparison-btn {
+                    position: absolute;
+                    top: 3px;
+                    left: 50px;
+                    background: rgba(255, 255, 255, 0.9);
+                    border-radius: 50%;
+                    padding: 8px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                }
+                .comparison-btn:hover {
+                    background: white;
+                    transform: scale(1.1);
+                }
+                .comparison-btn.active {
+                    background: #1e40af;
+                    color: white;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Quick View Modal
+        function createQuickViewModal() {
+            const quickViewModal = document.createElement('div');
+            quickViewModal.id = 'quickViewModal';
+            quickViewModal.className = 'fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4';
+            quickViewModal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Visualização Rápida</h2>
+                        <button onclick="closeQuickView()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                            <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="quickViewContent" class="p-6">
+                        <!-- Content will be populated dynamically -->
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(quickViewModal);
+        }
+
+        window.openQuickView = function(productId) {
+            const product = products.find(p => p.id === productId);
+            const quickViewContent = document.getElementById('quickViewContent');
+            const stars = '⭐'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
+            
+            quickViewContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="h-64 bg-gradient-to-br ${product.gradient} dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center">
+                        <div class="text-8xl">${product.emoji}</div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">${product.name}</h3>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="text-3xl font-bold text-ciig-blue">R$ ${product.price.toLocaleString('pt-BR')}</span>
+                            <span class="text-gray-500 line-through">R$ ${product.originalPrice.toLocaleString('pt-BR')}</span>
+                            <span class="bg-red-500 text-white px-2 py-1 rounded-full text-sm font-bold">-${product.discount}%</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400 mr-2">${stars}</div>
+                            <span class="text-sm text-gray-600 dark:text-gray-400">(${product.reviews} avaliações)</span>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                                <span class="w-4 h-4 mr-2">✅</span>
+                                Garantia de 12 meses
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                                <span class="w-4 h-4 mr-2">🚚</span>
+                                Frete grátis para todo Brasil
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                                <span class="w-4 h-4 mr-2">🔄</span>
+                                Troca grátis em 30 dias
+                            </div>
+                        </div>
+                        <button onclick="addToCart(${product.id}); closeQuickView();" class="w-full bg-ciig-blue hover:bg-ciig-dark-blue text-white py-3 rounded-lg font-semibold transition-colors mb-3">
+                            Adicionar ao Carrinho
+                        </button>
+                        <button onclick="toggleWishlist(${product.id})" class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 py-3 rounded-lg font-semibold transition-colors">
+                            ❤️ Adicionar aos Favoritos
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('quickViewModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeQuickView = function() {
+            document.getElementById('quickViewModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        // Enhanced Update Checkout Summary with Coupon
+        function updateCheckoutSummary() {
+            const checkoutItems = document.getElementById('checkoutItems');
+            const checkoutSubtotal = document.getElementById('checkoutSubtotal');
+            const checkoutDiscount = document.getElementById('checkoutDiscount');
+            const checkoutTotal = document.getElementById('checkoutTotal');
+            const pixDiscountLine = document.getElementById('pixDiscountLine');
+            const pixDiscountAmount = document.getElementById('pixDiscountAmount');
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = subtotal - totalPrice;
+            
+            // Apply coupon discount
+            let couponDiscount = 0;
+            if (appliedCoupon) {
+                if (appliedCoupon.type === 'percentage') {
+                    couponDiscount = totalPrice * (appliedCoupon.value / 100);
+                } else {
+                    couponDiscount = appliedCoupon.value;
+                }
+            }
+            
+            // Check if PIX is selected
+            const pixSelected = document.querySelector('input[name="payment"]:checked')?.value === 'pix';
+            const pixDiscount = pixSelected ? (totalPrice - couponDiscount) * 0.05 : 0;
+            const finalTotal = totalPrice - couponDiscount - pixDiscount;
+            
+            // Update items
+            if (checkoutItems) {
+                checkoutItems.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br ${item.gradient} dark:from-gray-700 dark:to-gray-600 rounded-lg flex items-center justify-center">
+                            <span class="text-lg">${item.emoji}</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold text-gray-900 dark:text-white text-sm">${item.name}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">Qtd: ${item.quantity}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-semibold text-ciig-blue">R$ ${(item.price * item.quantity).toLocaleString('pt-BR')}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update totals
+            if (checkoutSubtotal) checkoutSubtotal.textContent = `R$ ${subtotal.toLocaleString('pt-BR')}`;
+            if (checkoutDiscount) checkoutDiscount.textContent = `-R$ ${(discount + couponDiscount).toLocaleString('pt-BR')}`;
+            
+            if (pixSelected && pixDiscountLine) {
+                pixDiscountLine.classList.remove('hidden');
+                if (pixDiscountAmount) pixDiscountAmount.textContent = `-R$ ${pixDiscount.toLocaleString('pt-BR')}`;
+            } else if (pixDiscountLine) {
+                pixDiscountLine.classList.add('hidden');
+            }
+            
+            if (checkoutTotal) checkoutTotal.textContent = `R$ ${finalTotal.toLocaleString('pt-BR')}`;
+        }
+
+        // Initialize
+        renderProducts();
+        updateCartUI();
+        addSearchFunctionality();
+        addComparisonFeature();
+        createQuickViewModal();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974d41ed37ae79a7',t:'MTc1NjE0NzY0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,1000 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CIIG Global</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        // Configuração do Tailwind para suportar tema escuro
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#121212',
+                            card: '#1e1e1e',
+                            text: '#f3f4f6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .sidebar-link {
+            transition: all 0.2s;
+        }
+        .sidebar-link:hover {
+            transform: translateX(5px);
+        }
+        .sidebar-link.active {
+            border-left: 4px solid #38bdf8;
+        }
+        .card {
+            transition: all 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-dot.green {
+            background-color: #10b981;
+        }
+        .status-dot.yellow {
+            background-color: #f59e0b;
+        }
+        .status-dot.red {
+            background-color: #ef4444;
+        }
+        .table-row {
+            transition: all 0.2s;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        /* Tema escuro */
+        html.dark body {
+            background-color: #121212;
+            color: #f3f4f6;
+        }
+        html.dark .sidebar {
+            background: linear-gradient(180deg, #0f172a 0%, #0c1322 100%);
+        }
+        html.dark .bg-white {
+            background-color: #1e1e1e;
+        }
+        html.dark .bg-gray-50 {
+            background-color: #262626;
+        }
+        html.dark .text-gray-800 {
+            color: #f3f4f6;
+        }
+        html.dark .text-gray-700 {
+            color: #e5e7eb;
+        }
+        html.dark .text-gray-600 {
+            color: #d1d5db;
+        }
+        html.dark .text-gray-500 {
+            color: #9ca3af;
+        }
+        html.dark .text-gray-900 {
+            color: #f9fafb;
+        }
+        html.dark .border-gray-200 {
+            border-color: #374151;
+        }
+        html.dark .border-gray-300 {
+            border-color: #4b5563;
+        }
+        html.dark .divide-gray-200 > * + * {
+            border-color: #374151;
+        }
+        html.dark .bg-gray-50 {
+            background-color: #262626;
+        }
+        html.dark .table-row:hover {
+            background-color: #2d3748;
+        }
+        html.dark .shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Botão de alternância de tema */
+        .theme-toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        html.dark .theme-toggle {
+            background-color: #3b82f6;
+        }
+        html.dark .theme-toggle::after {
+            transform: translateX(26px);
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-dark-bg">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar w-64 flex-shrink-0 hidden md:block bg-gradient-to-b from-[#1a3a6d] to-[#0f2952] dark:from-[#0f172a] dark:to-[#0c1322]">
+            <div class="flex items-center justify-center h-16 border-b border-gray-700">
+                <h2 class="text-xl font-bold text-white">CIIG Systems</h2>
+            </div>
+            <div class="px-4 py-6">
+                <div class="flex items-center mb-6">
+                    <div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white font-bold">
+                        AG
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-white">Admin Gestor</p>
+                        <p class="text-xs text-gray-300">Administrador</p>
+                    </div>
+                </div>
+                <nav>
+                    <a href="#" class="sidebar-link active flex items-center px-4 py-3 text-white rounded-lg mb-1 bg-white/20">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="https://draconic-hacker.github.io/Marketplace/" class="sidebar-link flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg mb-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                        Inventário
+                    </a>
+                    <a href="https://draconic-hacker.github.io/Marketplace/" class="sidebar-link flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg mb-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                        Pedidos
+                    </a>
+                    <a href="https://draconic-hacker.github.io/TelaDeFornecedores/" class="sidebar-link flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg mb-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Fornecedores
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg mb-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Planejamento
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg mb-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Relatórios
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-300 hover:text-white rounded-lg mb-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Configurações
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white dark:bg-dark-card shadow-sm z-10">
+                <div class="px-4 sm:px-6 lg:px-8 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <button class="md:hidden mr-4 text-gray-600 dark:text-gray-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                </svg>
+                            </button>
+                            <div class="relative">
+                                <input type="text" placeholder="Pesquisar..." class="w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <!-- Botão de alternância de tema -->
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                                <div id="themeToggle" class="theme-toggle"></div>
+                                <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                                </svg>
+                            </div>
+                            <div class="relative">
+                            <a href="https://draconic-hacker.github.io/TelaDeNotificacoes/" rel="noopener noreferrer">
+                                <button class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                    </svg>
+                                    <span class="notification-badge bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                                </button>
+                            </a>
+                            </div>
+                            <div class="relative">
+                                <button class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span class="notification-badge bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">5</span>
+                                </button>
+                            </div>
+                            <div class="border-l pl-4 border-gray-300 dark:border-gray-600">
+                                <button class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                                        AG
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Admin Gestor</span>
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto bg-gray-50 dark:bg-dark-bg p-4 sm:p-6 lg:p-8">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Visão geral da cadeia de suprimentos</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="card bg-white dark:bg-dark-card rounded-xl shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Pedidos Pendentes</h3>
+                            <div class="bg-orange-100 dark:bg-orange-900/30 p-2 rounded-lg">
+                                <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline">
+                            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">42</h2>
+                            <span class="ml-2 text-green-500 text-sm font-medium flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                </svg>
+                                12%
+                            </span>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Desde o último mês</p>
+                    </div>
+
+                    <div class="card bg-white dark:bg-dark-card rounded-xl shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nível de Estoque</h3>
+                            <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline">
+                            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">78%</h2>
+                            <span class="ml-2 text-red-500 text-sm font-medium flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                </svg>
+                                5%
+                            </span>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Capacidade total</p>
+                    </div>
+
+                    <div class="card bg-white dark:bg-dark-card rounded-xl shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Entregas no Prazo</h3>
+                            <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
+                                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline">
+                            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">94%</h2>
+                            <span class="ml-2 text-green-500 text-sm font-medium flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                                </svg>
+                                3%
+                            </span>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Últimos 30 dias</p>
+                    </div>
+
+                    <div class="card bg-white dark:bg-dark-card rounded-xl shadow p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Custo Logístico</h3>
+                            <div class="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg">
+                                <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline">
+                            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">R$87K</h2>
+                            <span class="ml-2 text-red-500 text-sm font-medium flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                </svg>
+                                8%
+                            </span>
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Comparado ao mês anterior</p>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white dark:bg-dark-card rounded-xl shadow p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Movimentação de Estoque</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 rounded-md">Diário</button>
+                                <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 rounded-md">Semanal</button>
+                                <button class="px-3 py-1 text-sm text-gray-500 dark:text-gray-400 rounded-md">Mensal</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="inventoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-dark-card rounded-xl shadow p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Desempenho de Fornecedores</h3>
+                            <div>
+                                <select class="text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500">
+                                    <option>Último Trimestre</option>
+                                    <option>Último Semestre</option>
+                                    <option>Último Ano</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="supplierChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders and Shipments -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white dark:bg-dark-card rounded-xl shadow overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Pedidos Recentes</h3>
+                                <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">Ver Todos</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-800">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cliente</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Valor</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-gray-700">
+                                    <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-7892</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Tech Solutions Ltda</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">R$ 12.450,00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                                Entregue
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">23/05/2023</td>
+                                    </tr>
+                                    <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-7891</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Indústrias Globo</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">R$ 8.320,00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
+                                                Em Trânsito
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">22/05/2023</td>
+                                    </tr>
+                                    <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-7890</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Comércio Rápido S.A.</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">R$ 5.670,00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                                Processando
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">21/05/2023</td>
+                                    </tr>
+                                    <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-7889</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Distribuidora Norte</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">R$ 14.980,00</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
+                                                Atrasado
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">20/05/2023</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-dark-card rounded-xl shadow overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Remessas em Trânsito</h3>
+                                <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">Ver Todas</button>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-md bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-gray-900 dark:text-white">Remessa #SHP-4532</h4>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400">Há 2 horas</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-gray-500 dark:text-gray-400">São Paulo → Rio de Janeiro</span>
+                                                <span class="font-medium text-blue-600 dark:text-blue-400">75%</span>
+                                            </div>
+                                            <div class="mt-2 progress-bar bg-gray-200 dark:bg-gray-700">
+                                                <div class="progress-fill bg-blue-500" style="width: 75%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-md bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-gray-900 dark:text-white">Remessa #SHP-4531</h4>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400">Há 5 horas</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-gray-500 dark:text-gray-400">Curitiba → Porto Alegre</span>
+                                                <span class="font-medium text-green-600 dark:text-green-400">90%</span>
+                                            </div>
+                                            <div class="mt-2 progress-bar bg-gray-200 dark:bg-gray-700">
+                                                <div class="progress-fill bg-green-500" style="width: 90%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-md bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-gray-900 dark:text-white">Remessa #SHP-4530</h4>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400">Há 8 horas</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-gray-500 dark:text-gray-400">Belo Horizonte → Brasília</span>
+                                                <span class="font-medium text-yellow-600 dark:text-yellow-400">45%</span>
+                                            </div>
+                                            <div class="mt-2 progress-bar bg-gray-200 dark:bg-gray-700">
+                                                <div class="progress-fill bg-yellow-500" style="width: 45%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-md bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-gray-900 dark:text-white">Remessa #SHP-4529</h4>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400">Há 12 horas</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <div class="flex items-center justify-between text-sm">
+                                                <span class="text-gray-500 dark:text-gray-400">Salvador → Recife</span>
+                                                <span class="font-medium text-red-600 dark:text-red-400">Atrasado</span>
+                                            </div>
+                                            <div class="mt-2 progress-bar bg-gray-200 dark:bg-gray-700">
+                                                <div class="progress-fill bg-red-500" style="width: 30%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Status and Supplier Performance -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-dark-card rounded-xl shadow col-span-1">
+                        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Status de Inventário</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Matéria-prima</span>
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">68%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200 dark:bg-gray-700">
+                                        <div class="progress-fill bg-yellow-500" style="width: 68%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Produtos em processamento</span>
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">45%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200 dark:bg-gray-700">
+                                        <div class="progress-fill bg-blue-500" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Produtos acabados</span>
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">92%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200 dark:bg-gray-700">
+                                        <div class="progress-fill bg-red-500" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Embalagens</span>
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">78%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200 dark:bg-gray-700">
+                                        <div class="progress-fill bg-green-500" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Peças de reposição</span>
+                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">35%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200 dark:bg-gray-700">
+                                        <div class="progress-fill bg-purple-500" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <button class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    Gerenciar Inventário
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-dark-card rounded-xl shadow col-span-1 lg:col-span-2">
+                        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Desempenho de Fornecedores</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Fornecedor</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pontualidade</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Qualidade</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                        <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
+                                                        S
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Suprimentos Rápidos</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">98%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">23/25 entregas no prazo</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">95%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">5% de rejeição</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                                    <span class="status-dot green"></span>
+                                                    Excelente
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 font-bold">
+                                                        I
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Indústria Nacional</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">85%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">17/20 entregas no prazo</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">92%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">8% de rejeição</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
+                                                    <span class="status-dot yellow"></span>
+                                                    Bom
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 font-bold">
+                                                        G
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Global Imports</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">72%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">13/18 entregas no prazo</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">88%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">12% de rejeição</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
+                                                    <span class="status-dot red"></span>
+                                                    Atenção
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-row hover:bg-gray-50 dark:hover:bg-gray-800">
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-8 w-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold">
+                                                        T
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Tech Components</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">95%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">19/20 entregas no prazo</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-white">97%</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">3% de rejeição</div>
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                                    <span class="status-dot green"></span>
+                                                    Excelente
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-6 flex justify-end">
+                                <button class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    Relatório Completo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar ícones Feather
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+
+            // Alternância de tema
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+            
+            // Verificar se há preferência salva
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                html.classList.add('dark');
+            }
+            
+            // Função para alternar tema
+            function toggleTheme() {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    updateCharts('light');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    updateCharts('dark');
+                }
+            }
+            
+            // Adicionar evento de clique ao botão de alternância
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Configurações de cores para os gráficos
+            const chartColors = {
+                light: {
+                    gridColor: '#e5e7eb',
+                    textColor: '#6b7280',
+                    blue: '#3b82f6',
+                    red: '#ef4444',
+                    green: '#10b981'
+                },
+                dark: {
+                    gridColor: '#374151',
+                    textColor: '#9ca3af',
+                    blue: '#60a5fa',
+                    red: '#f87171',
+                    green: '#34d399'
+                }
+            };
+            
+            // Gráfico de Movimentação de Estoque
+            let inventoryChart;
+            let supplierChart;
+            
+            function createCharts(mode) {
+                const colors = chartColors[mode];
+                
+                // Configuração comum para os gráficos
+                Chart.defaults.color = colors.textColor;
+                Chart.defaults.scale.grid.color = colors.gridColor;
+                
+                // Gráfico de Movimentação de Estoque
+                const inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
+                inventoryChart = new Chart(inventoryCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Entradas',
+                                data: [65, 59, 80, 81, 56, 55, 70],
+                                fill: false,
+                                borderColor: colors.blue,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Saídas',
+                                data: [28, 48, 40, 19, 86, 27, 90],
+                                fill: false,
+                                borderColor: colors.red,
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    color: colors.textColor
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    color: colors.textColor
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: colors.textColor
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Gráfico de Desempenho de Fornecedores
+                const supplierCtx = document.getElementById('supplierChart').getContext('2d');
+                supplierChart = new Chart(supplierCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Suprimentos Rápidos', 'Indústria Nacional', 'Global Imports', 'Tech Components'],
+                        datasets: [
+                            {
+                                label: 'Pontualidade',
+                                data: [98, 85, 72, 95],
+                                backgroundColor: colors.blue,
+                            },
+                            {
+                                label: 'Qualidade',
+                                data: [95, 92, 88, 97],
+                                backgroundColor: colors.green,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    color: colors.textColor
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: colors.gridColor
+                                },
+                                ticks: {
+                                    color: colors.textColor
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: colors.textColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Atualizar gráficos quando o tema muda
+            function updateCharts(mode) {
+                if (inventoryChart) inventoryChart.destroy();
+                if (supplierChart) supplierChart.destroy();
+                createCharts(mode);
+            }
+            
+            // Inicializar gráficos com o tema atual
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            createCharts(currentTheme);
+
+            // Toggle sidebar no mobile
+            const sidebarToggle = document.querySelector('button.md\\:hidden');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'952562bb974979a9',t:'MTc1MDM2MDg0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,947 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão de Cadeia de Suprimentos - Notificações</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-blue': '#0A2647',
+                        'medium-blue': '#144272',
+                        'light-blue': '#205295',
+                        'bright-blue': '#2C74B3',
+                        'pale-blue': '#E5F0FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .notification-item:hover {
+            background-color: rgba(44, 116, 179, 0.05);
+        }
+        
+        .notification-item.unread {
+            border-left: 4px solid #2C74B3;
+        }
+        
+        .notification-item.urgent {
+            border-left: 4px solid #EF4444;
+        }
+        
+        .badge-alta {
+            background-color: #EF4444;
+        }
+        
+        .badge-media {
+            background-color: #F59E0B;
+        }
+        
+        .badge-baixa {
+            background-color: #10B981;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #2C74B3;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #205295;
+        }
+        
+        .filter-active {
+            background-color: #205295;
+            color: white;
+        }
+        
+        .tab-active {
+            color: #0A2647;
+            border-bottom: 3px solid #2C74B3;
+            font-weight: 600;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            z-index: 50;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-dark-blue text-white">
+                <div class="flex items-center justify-center h-16 px-4 bg-medium-blue">
+                    <h1 class="text-xl font-bold">SupplyChain Pro</h1>
+                </div>
+                <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-2">
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-home mr-3"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm bg-medium-blue rounded-md">
+                            <i class="fas fa-bell mr-3"></i>
+                            <span>Notificações</span>
+                            <span class="ml-auto bg-bright-blue text-white text-xs px-2 py-1 rounded-full">24</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-box mr-3"></i>
+                            <span>Pedidos</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-warehouse mr-3"></i>
+                            <span>Estoque</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-truck mr-3"></i>
+                            <span>Logística</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-file-invoice-dollar mr-3"></i>
+                            <span>Financeiro</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-users mr-3"></i>
+                            <span>Parceiros</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            <span>Relatórios</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm rounded-md hover:bg-medium-blue">
+                            <i class="fas fa-cog mr-3"></i>
+                            <span>Configurações</span>
+                        </a>
+                    </nav>
+                </div>
+                <div class="p-4 bg-medium-blue">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Ccircle cx='12' cy='7' r='5' fill='%232C74B3'/%3E%3Cpath d='M17 14h.352a3 3 0 0 1 2.976 2.628l.391 3.124A2 2 0 0 1 18.734 22H5.266a2 2 0 0 1-1.985-2.248l.39-3.124A3 3 0 0 1 6.649 14H7' fill='%232C74B3'/%3E%3C/svg%3E" alt="User">
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium">Ana Silva</p>
+                            <p class="text-xs text-gray-300">Gerente de Operações</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top navbar -->
+            <header class="bg-white shadow-sm">
+                <div class="flex items-center justify-between h-16 px-6">
+                    <div class="flex items-center">
+                        <button class="md:hidden text-gray-500 focus:outline-none">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="ml-4 text-xl font-semibold text-dark-blue">Notificações</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Buscar notificações..." class="w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bright-blue">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                        <button class="p-2 rounded-full text-gray-500 hover:bg-gray-100">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <div class="relative">
+                            <button class="p-2 rounded-full text-gray-500 hover:bg-gray-100 relative">
+                                <i class="fas fa-bell"></i>
+                                <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main content area -->
+            <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Filter sidebar -->
+                    <div class="lg:w-1/4">
+                        <div class="bg-white rounded-lg shadow p-5">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-lg font-semibold text-dark-blue">Filtros</h2>
+                                <button class="text-sm text-bright-blue hover:underline">Limpar filtros</button>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <h3 class="text-sm font-medium text-gray-700 mb-2">Por categoria</h3>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input id="cat-all" name="category" type="radio" checked class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-all" class="ml-2 text-sm text-gray-700">Todas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-operational" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-operational" class="ml-2 text-sm text-gray-700">Operacional</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-stock" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-stock" class="ml-2 text-sm text-gray-700">Estoque</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-financial" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-financial" class="ml-2 text-sm text-gray-700">Financeira</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-logistics" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-logistics" class="ml-2 text-sm text-gray-700">Logística</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-compliance" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-compliance" class="ml-2 text-sm text-gray-700">Compliance</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-system" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-system" class="ml-2 text-sm text-gray-700">Sistema</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="cat-collaboration" name="category" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="cat-collaboration" class="ml-2 text-sm text-gray-700">Colaboração</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <h3 class="text-sm font-medium text-gray-700 mb-2">Por status</h3>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input id="status-all" name="status" type="radio" checked class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="status-all" class="ml-2 text-sm text-gray-700">Todas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="status-unread" name="status" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="status-unread" class="ml-2 text-sm text-gray-700">Não lidas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="status-read" name="status" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="status-read" class="ml-2 text-sm text-gray-700">Lidas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="status-urgent" name="status" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="status-urgent" class="ml-2 text-sm text-gray-700">Urgentes</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="status-resolved" name="status" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="status-resolved" class="ml-2 text-sm text-gray-700">Resolvidas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="status-pending" name="status" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="status-pending" class="ml-2 text-sm text-gray-700">Pendente de ação</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <h3 class="text-sm font-medium text-gray-700 mb-2">Por data</h3>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input id="date-all" name="date" type="radio" checked class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="date-all" class="ml-2 text-sm text-gray-700">Todas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="date-today" name="date" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="date-today" class="ml-2 text-sm text-gray-700">Hoje</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="date-24h" name="date" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="date-24h" class="ml-2 text-sm text-gray-700">Últimas 24h</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="date-7days" name="date" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="date-7days" class="ml-2 text-sm text-gray-700">Últimos 7 dias</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="date-custom" name="date" type="radio" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="date-custom" class="ml-2 text-sm text-gray-700">Período personalizado</label>
+                                    </div>
+                                    <div class="mt-2 hidden" id="custom-date-range">
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div>
+                                                <label class="text-xs text-gray-500">De</label>
+                                                <input type="date" class="w-full text-sm border border-gray-300 rounded px-2 py-1">
+                                            </div>
+                                            <div>
+                                                <label class="text-xs text-gray-500">Até</label>
+                                                <input type="date" class="w-full text-sm border border-gray-300 rounded px-2 py-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <h3 class="text-sm font-medium text-gray-700 mb-2">Por prioridade</h3>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input id="priority-all" name="priority" type="checkbox" checked class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="priority-all" class="ml-2 text-sm text-gray-700">Todas</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="priority-high" name="priority" type="checkbox" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="priority-high" class="ml-2 text-sm text-gray-700">Alta</label>
+                                        <span class="ml-2 inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="priority-medium" name="priority" type="checkbox" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="priority-medium" class="ml-2 text-sm text-gray-700">Média</label>
+                                        <span class="ml-2 inline-block w-3 h-3 rounded-full bg-yellow-500"></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="priority-low" name="priority" type="checkbox" class="h-4 w-4 text-bright-blue focus:ring-bright-blue">
+                                        <label for="priority-low" class="ml-2 text-sm text-gray-700">Baixa</label>
+                                        <span class="ml-2 inline-block w-3 h-3 rounded-full bg-green-500"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <h3 class="text-sm font-medium text-gray-700 mb-2">Por responsável</h3>
+                                <select class="w-full text-sm border border-gray-300 rounded px-3 py-2">
+                                    <option>Todos</option>
+                                    <option>Usuário atual</option>
+                                    <option>Equipe de Logística</option>
+                                    <option>Equipe de Estoque</option>
+                                    <option>Equipe Financeira</option>
+                                    <option>Fornecedor ABC</option>
+                                    <option>Transportadora XYZ</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-5">
+                                <h3 class="text-sm font-medium text-gray-700 mb-2">Por entidade relacionada</h3>
+                                <select class="w-full text-sm border border-gray-300 rounded px-3 py-2">
+                                    <option>Todas</option>
+                                    <option>Pedido</option>
+                                    <option>Produto</option>
+                                    <option>Transportadora</option>
+                                    <option>Cliente</option>
+                                    <option>Fornecedor</option>
+                                </select>
+                            </div>
+                            
+                            <button class="w-full bg-bright-blue hover:bg-light-blue text-white py-2 px-4 rounded-md transition duration-200">
+                                Aplicar Filtros
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications list -->
+                    <div class="lg:w-3/4">
+                        <div class="bg-white rounded-lg shadow">
+                            <!-- Notification actions -->
+                            <div class="p-4 border-b border-gray-200 flex flex-wrap justify-between items-center">
+                                <div class="flex space-x-2 mb-2 sm:mb-0">
+                                    <button class="px-3 py-1.5 text-sm bg-bright-blue text-white rounded-md hover:bg-light-blue transition duration-200">
+                                        <i class="fas fa-check-double mr-1"></i> Marcar todas como lidas
+                                    </button>
+                                    <div class="dropdown relative">
+                                        <button class="px-3 py-1.5 text-sm bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200">
+                                            <i class="fas fa-ellipsis-h mr-1"></i> Ações <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                        </button>
+                                        <div class="dropdown-menu mt-1 py-1 bg-white border border-gray-200 rounded-md shadow-lg w-48">
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Arquivar selecionadas</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Exportar notificações</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurar alertas</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm text-gray-500">Exibindo 24 notificações</span>
+                                    <select class="text-sm border border-gray-300 rounded px-2 py-1">
+                                        <option>10 por página</option>
+                                        <option selected>25 por página</option>
+                                        <option>50 por página</option>
+                                        <option>100 por página</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Notification tabs -->
+                            <div class="flex border-b border-gray-200">
+                                <button class="flex-1 py-3 px-4 text-center text-sm tab-active">
+                                    Todas (24)
+                                </button>
+                                <button class="flex-1 py-3 px-4 text-center text-sm text-gray-500 hover:text-gray-700">
+                                    Não lidas (12)
+                                </button>
+                                <button class="flex-1 py-3 px-4 text-center text-sm text-gray-500 hover:text-gray-700">
+                                    Urgentes (5)
+                                </button>
+                                <button class="flex-1 py-3 px-4 text-center text-sm text-gray-500 hover:text-gray-700">
+                                    Pendentes (8)
+                                </button>
+                            </div>
+                            
+                            <!-- Notification list -->
+                            <div class="overflow-y-auto max-h-[calc(100vh-320px)]">
+                                <!-- Notification item - Urgent -->
+                                <div class="notification-item urgent p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-red-100 text-red-500">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Estoque de produto abaixo do nível mínimo</p>
+                                                <span class="badge-alta text-xs text-white px-2 py-1 rounded-full">Alta</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">O produto "Válvula Hidráulica XP-200" está com apenas 3 unidades em estoque (mínimo: 10).</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-tag mr-1"></i> Estoque
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">Hoje, 09:45</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-shopping-cart mr-1"></i> Fazer pedido
+                                                    </button>
+                                                    <button class="text-xs text-gray-500 hover:text-gray-700">
+                                                        <i class="fas fa-check mr-1"></i> Marcar como lida
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item - Unread -->
+                                <div class="notification-item unread p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-500">
+                                                <i class="fas fa-truck"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Pedido enviado / transportadora coletou</p>
+                                                <span class="badge-media text-xs text-white px-2 py-1 rounded-full">Média</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">O pedido #12458 para o cliente "Indústrias Mecânicas Ltda" foi coletado pela transportadora.</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-box mr-1"></i> Operacional
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">Hoje, 11:23</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-eye mr-1"></i> Ver detalhes
+                                                    </button>
+                                                    <button class="text-xs text-gray-500 hover:text-gray-700">
+                                                        <i class="fas fa-check mr-1"></i> Marcar como lida
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item - Unread -->
+                                <div class="notification-item unread p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-500">
+                                                <i class="fas fa-dollar-sign"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Pagamento recebido</p>
+                                                <span class="badge-baixa text-xs text-white px-2 py-1 rounded-full">Baixa</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">Pagamento de R$ 12.450,00 referente à fatura #INV-2023-089 foi confirmado.</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-file-invoice-dollar mr-1"></i> Financeira
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">Hoje, 14:05</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-file-pdf mr-1"></i> Ver comprovante
+                                                    </button>
+                                                    <button class="text-xs text-gray-500 hover:text-gray-700">
+                                                        <i class="fas fa-check mr-1"></i> Marcar como lida
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item - Urgent -->
+                                <div class="notification-item urgent p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-red-100 text-red-500">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Pedido atrasado ou fora do prazo</p>
+                                                <span class="badge-alta text-xs text-white px-2 py-1 rounded-full">Alta</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">O pedido #12389 para "Construtora Horizonte" está 2 dias atrasado para entrega.</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-box mr-1"></i> Operacional
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">Ontem, 16:30</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-phone-alt mr-1"></i> Contatar cliente
+                                                    </button>
+                                                    <button class="text-xs text-gray-500 hover:text-gray-700">
+                                                        <i class="fas fa-check mr-1"></i> Marcar como lida
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item -->
+                                <div class="notification-item p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-yellow-100 text-yellow-500">
+                                                <i class="fas fa-clock"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Produto próximo da validade</p>
+                                                <span class="badge-media text-xs text-white px-2 py-1 rounded-full">Média</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">O lote "L2023-05-B" do produto "Selante Industrial X-40" vence em 15 dias.</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-tag mr-1"></i> Estoque
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">Ontem, 10:15</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-tag mr-1"></i> Aplicar desconto
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item -->
+                                <div class="notification-item p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-purple-100 text-purple-500">
+                                                <i class="fas fa-file-alt"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Documento fiscal pendente</p>
+                                                <span class="badge-media text-xs text-white px-2 py-1 rounded-full">Média</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">Nota fiscal do pedido #12445 precisa ser emitida até amanhã.</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-balance-scale mr-1"></i> Compliance
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">2 dias atrás</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-file-invoice mr-1"></i> Emitir nota
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item -->
+                                <div class="notification-item p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-500">
+                                                <i class="fas fa-route"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Rota de transporte alterada</p>
+                                                <span class="badge-baixa text-xs text-white px-2 py-1 rounded-full">Baixa</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">A rota para entrega dos pedidos #12450, #12451 e #12452 foi alterada devido a obras na rodovia BR-101.</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-truck mr-1"></i> Logística
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">2 dias atrás</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-map-marked-alt mr-1"></i> Ver nova rota
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Notification item -->
+                                <div class="notification-item p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-500">
+                                                <i class="fas fa-box-open"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900">Novo lote de produto disponível</p>
+                                                <span class="badge-baixa text-xs text-white px-2 py-1 rounded-full">Baixa</span>
+                                            </div>
+                                            <div class="mt-1">
+                                                <p class="text-sm text-gray-600">O lote "L2023-08-A" do produto "Rolamento Industrial 5000" foi recebido e está disponível em estoque (50 unidades).</p>
+                                            </div>
+                                            <div class="mt-2 flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center text-xs text-gray-500">
+                                                        <i class="fas fa-tag mr-1"></i> Estoque
+                                                    </span>
+                                                    <span class="mx-2 text-gray-300">•</span>
+                                                    <span class="text-xs text-gray-500">3 dias atrás</span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button class="text-xs text-bright-blue hover:text-light-blue">
+                                                        <i class="fas fa-clipboard-list mr-1"></i> Ver detalhes
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="px-4 py-3 border-t border-gray-200 flex items-center justify-between">
+                                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-700">
+                                            Mostrando <span class="font-medium">1</span> a <span class="font-medium">8</span> de <span class="font-medium">24</span> resultados
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                                <span class="sr-only">Anterior</span>
+                                                <i class="fas fa-chevron-left"></i>
+                                            </a>
+                                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-bright-blue text-sm font-medium text-white">
+                                                1
+                                            </a>
+                                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                                2
+                                            </a>
+                                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                                3
+                                            </a>
+                                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                                <span class="sr-only">Próxima</span>
+                                                <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Notification detail modal -->
+    <div id="notification-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-dark-blue">Detalhes da Notificação</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="flex items-start mb-4">
+                    <div class="flex-shrink-0">
+                        <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-red-100 text-red-500">
+                            <i class="fas fa-exclamation-triangle text-lg"></i>
+                        </span>
+                    </div>
+                    <div class="ml-4">
+                        <h4 class="text-lg font-medium text-gray-900">Estoque de produto abaixo do nível mínimo</h4>
+                        <div class="mt-1 flex items-center">
+                            <span class="badge-alta text-xs text-white px-2 py-1 rounded-full">Alta prioridade</span>
+                            <span class="mx-2 text-gray-300">•</span>
+                            <span class="text-sm text-gray-500">Hoje, 09:45</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <p class="text-gray-700">O produto "Válvula Hidráulica XP-200" está com apenas 3 unidades em estoque, abaixo do nível mínimo configurado (10 unidades).</p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="text-sm font-medium text-gray-700 mb-2">Informações adicionais</h5>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-gray-500">Código do produto</p>
+                            <p class="text-sm font-medium">PRD-5678</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Categoria</p>
+                            <p class="text-sm font-medium">Estoque</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Fornecedor</p>
+                            <p class="text-sm font-medium">Hidráulica Industrial S.A.</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Tempo de reposição</p>
+                            <p class="text-sm font-medium">5 dias úteis</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="text-sm font-medium text-gray-700 mb-2">Histórico de estoque</h5>
+                    <div class="h-32 bg-gray-50 rounded-lg p-2">
+                        <svg class="w-full h-full" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0,80 L20,75 L40,78 L60,70 L80,65 L100,60 L120,55 L140,50 L160,40 L180,35 L200,25 L220,20 L240,15 L260,10 L280,5 L300,0" stroke="#2C74B3" stroke-width="2" fill="none"/>
+                            <line x1="0" y1="50" x2="300" y2="50" stroke="#EF4444" stroke-width="1" stroke-dasharray="2"/>
+                            <text x="305" y="50" font-size="8" fill="#EF4444">Mínimo</text>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4">
+                    <div class="flex justify-between">
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-bright-blue text-white rounded-md hover:bg-light-blue transition duration-200">
+                                <i class="fas fa-shopping-cart mr-1"></i> Fazer pedido
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition duration-200">
+                                <i class="fas fa-check mr-1"></i> Marcar como resolvida
+                            </button>
+                        </div>
+                        <div>
+                            <button class="px-4 py-2 text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle custom date range
+        document.getElementById('date-custom').addEventListener('change', function() {
+            const customDateRange = document.getElementById('custom-date-range');
+            if (this.checked) {
+                customDateRange.classList.remove('hidden');
+            } else {
+                customDateRange.classList.add('hidden');
+            }
+        });
+        
+        // Show notification modal when clicking on a notification
+        const notificationItems = document.querySelectorAll('.notification-item');
+        const notificationModal = document.getElementById('notification-modal');
+        const closeModal = document.getElementById('close-modal');
+        
+        notificationItems.forEach(item => {
+            item.addEventListener('click', () => {
+                notificationModal.classList.remove('hidden');
+            });
+        });
+        
+        closeModal.addEventListener('click', () => {
+            notificationModal.classList.add('hidden');
+        });
+        
+        // Close modal when clicking outside
+        notificationModal.addEventListener('click', (e) => {
+            if (e.target === notificationModal) {
+                notificationModal.classList.add('hidden');
+            }
+        });
+        
+        // Priority filter toggle
+        document.getElementById('priority-all').addEventListener('change', function() {
+            const priorityCheckboxes = document.querySelectorAll('input[name="priority"]');
+            priorityCheckboxes.forEach(checkbox => {
+                if (checkbox.id !== 'priority-all') {
+                    checkbox.checked = false;
+                    checkbox.disabled = this.checked;
+                }
+            });
+        });
+        
+        // Simulate real-time notification
+        setTimeout(() => {
+            const notificationsList = document.querySelector('.overflow-y-auto');
+            const newNotification = document.createElement('div');
+            newNotification.className = 'notification-item unread p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer';
+            newNotification.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 pt-1">
+                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-500">
+                            <i class="fas fa-comment-alt"></i>
+                        </span>
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-900">Nova mensagem de fornecedor</p>
+                            <span class="badge-media text-xs text-white px-2 py-1 rounded-full">Média</span>
+                        </div>
+                        <div class="mt-1">
+                            <p class="text-sm text-gray-600">Fornecedor "Metalúrgica Precision" enviou uma mensagem sobre o pedido #12460.</p>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-users mr-1"></i> Colaboração
+                                </span>
+                                <span class="mx-2 text-gray-300">•</span>
+                                <span class="text-xs text-gray-500">Agora mesmo</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="text-xs text-bright-blue hover:text-light-blue">
+                                    <i class="fas fa-reply mr-1"></i> Responder
+                                </button>
+                                <button class="text-xs text-gray-500 hover:text-gray-700">
+                                    <i class="fas fa-check mr-1"></i> Marcar como lida
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            notificationsList.insertBefore(newNotification, notificationsList.firstChild);
+            
+            // Update notification count
+            const notificationCount = document.querySelector('.tab-active');
+            notificationCount.textContent = 'Todas (25)';
+            
+            // Show notification toast
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 flex items-start max-w-sm z-50 border-l-4 border-bright-blue';
+            toast.innerHTML = `
+                <div class="flex-shrink-0 pt-1">
+                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-500">
+                        <i class="fas fa-comment-alt"></i>
+                    </span>
+                </div>
+                <div class="ml-3 flex-1">
+                    <p class="text-sm font-medium text-gray-900">Nova mensagem de fornecedor</p>
+                    <p class="text-sm text-gray-600 mt-1">Fornecedor "Metalúrgica Precision" enviou uma mensagem sobre o pedido #12460.</p>
+                </div>
+                <button class="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Remove toast after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 500);
+            }, 5000);
+            
+            // Add click event to new notification
+            newNotification.addEventListener('click', () => {
+                notificationModal.classList.remove('hidden');
+            });
+            
+        }, 10000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'990082e19633f610',t:'MTc2MDcxMTYwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

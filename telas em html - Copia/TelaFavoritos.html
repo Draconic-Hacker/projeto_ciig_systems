@@ -1,0 +1,1544 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos - CIIG System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'ciig-blue': '#1e40af',
+                        'ciig-light-blue': '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo e Navegação -->
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-ciig-blue rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">C</span>
+                        </div>
+                        <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white">CIIG System</span>
+                    </div>
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="#" onclick="goToHome()" class="text-gray-600 dark:text-gray-300 hover:text-ciig-blue dark:hover:text-ciig-light-blue transition-colors">Início</a>
+                        <a href="#" onclick="goToDiscounts()" class="text-gray-600 dark:text-gray-300 hover:text-ciig-blue dark:hover:text-ciig-light-blue transition-colors">Descontos</a>
+                        <a href="#" class="text-ciig-blue dark:text-ciig-light-blue font-medium">Favoritos</a>
+                        <div class="relative group">
+                            <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-ciig-blue dark:hover:text-ciig-light-blue transition-colors flex items-center">
+                                Categorias
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <!-- Dropdown de Categorias -->
+                            <div class="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Todas as Categorias</h3>
+                                    <div class="space-y-2">
+                                        <a href="#" onclick="goToCategory('eletrônicos')" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                            <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">Eletrônicos</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Smartphones, TVs, Tablets</p>
+                                            </div>
+                                        </a>
+                                        <a href="#" onclick="goToCategory('informática')" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                            <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">Informática</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Notebooks, PCs, Periféricos</p>
+                                            </div>
+                                        </a>
+                                        <a href="#" onclick="goToCategory('acessórios')" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                            <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v6.114a4 4 0 10.2 7.684 1 1 0 00.8-.8V6.28l8-1.6v4.434a4 4 0 101-7.114V3z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">Acessórios</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Fones, Capas, Carregadores</p>
+                                            </div>
+                                        </a>
+                                        <a href="#" onclick="goToCategory('casa')" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                            <div class="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">Casa & Jardim</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Decoração, Móveis, Plantas</p>
+                                            </div>
+                                        </a>
+                                        <a href="#" onclick="goToCategory('moda')" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                            <div class="w-8 h-8 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">Moda</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Roupas, Calçados, Bolsas</p>
+                                            </div>
+                                        </a>
+                                        <a href="#" onclick="goToCategory('esportes')" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                            <div class="w-8 h-8 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mr-3">
+                                                <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900 dark:text-white">Esportes</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Fitness, Outdoor, Equipamentos</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                        <a href="#" onclick="goToAllCategories()" class="block text-center text-ciig-blue dark:text-ciig-light-blue hover:underline font-medium">
+                                            Ver Todas as Categorias →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Controles do Header -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notificações -->
+                    <button onclick="toggleNotifications()" class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-ciig-blue dark:hover:text-ciig-light-blue transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM11 19H6.5a2.5 2.5 0 010-5H11m0 5a2 2 0 01-2-2V9a2 2 0 012-2m0 10V9m0 0V6a2 2 0 012-2h2a2 2 0 012 2v3m-6 0h6"></path>
+                        </svg>
+                        <span id="notification-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </button>
+
+                    <!-- Chat com Lojista -->
+                    <button onclick="toggleChat()" class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-ciig-blue dark:hover:text-ciig-light-blue transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <span id="chat-badge" class="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">1</span>
+                    </button>
+
+                    <!-- Toggle Tema -->
+                    <button onclick="toggleTheme()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <svg id="sun-icon" class="w-5 h-5 text-gray-600 dark:text-gray-300 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Carrinho -->
+                    <button onclick="toggleCart()" class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-ciig-blue dark:hover:text-ciig-light-blue transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H17M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
+                        </svg>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Barra de Busca -->
+        <div class="mb-6">
+            <div class="relative max-w-md">
+                <input type="text" id="search-input" placeholder="Buscar nos favoritos..." class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent" onkeyup="searchProducts()">
+                <svg class="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Título e Filtros -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Meus Favoritos</h1>
+                <p id="favorites-count" class="text-gray-600 dark:text-gray-400">7 produtos salvos</p>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
+                <!-- Filtro de Categoria -->
+                <select id="category-filter" onchange="filterByCategory()" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                    <option value="">Todas Categorias</option>
+                    <option value="eletrônicos">Eletrônicos</option>
+                    <option value="acessórios">Acessórios</option>
+                    <option value="informática">Informática</option>
+                </select>
+
+                <!-- Filtro de Preço -->
+                <select id="price-filter" onchange="filterByPrice()" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                    <option value="">Todos os Preços</option>
+                    <option value="0-300">Até R$ 300</option>
+                    <option value="300-1000">R$ 300 - R$ 1.000</option>
+                    <option value="1000-3000">R$ 1.000 - R$ 3.000</option>
+                    <option value="3000+">Acima de R$ 3.000</option>
+                </select>
+
+                <!-- Filtro de Ordenação -->
+                <select id="sort-filter" onchange="sortProducts()" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                    <option value="recent">Mais Recentes</option>
+                    <option value="price-low">Menor Preço</option>
+                    <option value="price-high">Maior Preço</option>
+                    <option value="rating">Melhor Avaliação</option>
+                    <option value="discount">Maior Desconto</option>
+                </select>
+
+                <!-- Visualização -->
+                <div class="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                    <button onclick="setGridView()" id="grid-btn" class="p-2 rounded-md bg-white dark:bg-gray-600 shadow-sm">
+                        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="setListView()" id="list-btn" class="p-2 rounded-md">
+                        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid de Produtos -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Produto 1 -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Smartphone Premium 128GB" data-category="eletrônicos" data-price="899.90" data-rating="4.8" data-discount="25">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-blue-500 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">-25%</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Smartphone Premium 128GB</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.8)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 899,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 1.199,90</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Smartphone Premium 128GB', 899.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Smartphone Premium 128GB', 899.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 2 -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Fone Bluetooth Wireless Pro" data-category="acessórios" data-price="249.90" data-rating="4.2" data-discount="15">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v6.114a4 4 0 10.2 7.684 1 1 0 00.8-.8V6.28l8-1.6v4.434a4 4 0 101-7.114V3z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">-15%</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Fone Bluetooth Wireless Pro</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.2)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 249,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 299,90</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Fone Bluetooth Wireless Pro', 249.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Fone Bluetooth Wireless Pro', 249.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 3 -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Notebook Gamer RGB 16GB" data-category="informática" data-price="2799.90" data-rating="4.9" data-discount="30">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-purple-500 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-medium">-30%</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Notebook Gamer RGB 16GB</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.9)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 2.799,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 3.999,90</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Notebook Gamer RGB 16GB', 2799.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Notebook Gamer RGB 16GB', 2799.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 4 -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Smartwatch Fitness Tracker" data-category="acessórios" data-price="399.90" data-rating="4.5" data-discount="20">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-orange-500 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">-20%</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Smartwatch Fitness Tracker</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.5)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 399,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 499,90</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Smartwatch Fitness Tracker', 399.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Smartwatch Fitness Tracker', 399.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 5 - Camiseta Premium -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Camiseta Premium Algodão" data-category="moda" data-price="89.90" data-rating="4.7" data-discount="35">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900 dark:to-pink-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-pink-500 dark:text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM5 8a1 1 0 000 2h8a1 1 0 100-2H5z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-pink-500 text-white px-2 py-1 rounded-full text-xs font-medium">-35%</div>
+                    <div class="absolute bottom-3 left-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">NOVO</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Camiseta Premium Algodão</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.7)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 89,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 139,90</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Tamanhos: P, M, G, GG</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Cores: Branco, Preto, Azul</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Camiseta Premium Algodão', 89.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Camiseta Premium Algodão', 89.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 6 - Jeans Skinny -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Calça Jeans Skinny Feminina" data-category="moda" data-price="159.90" data-rating="4.6" data-discount="40">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900 dark:to-indigo-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-indigo-500 dark:text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-indigo-500 text-white px-2 py-1 rounded-full text-xs font-medium">-40%</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Calça Jeans Skinny Feminina</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.6)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 159,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 269,90</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Tamanhos: 36, 38, 40, 42, 44</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Cor: Azul Escuro</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Calça Jeans Skinny Feminina', 159.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Calça Jeans Skinny Feminina', 159.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 7 - Tênis Esportivo -->
+            <div class="product-card bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700" data-name="Tênis Esportivo Running Pro" data-category="moda" data-price="299.90" data-rating="4.8" data-discount="25">
+                <div class="relative">
+                    <div class="aspect-square bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900 dark:to-red-800 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-red-500 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
+                        </svg>
+                    </div>
+                    <button onclick="removeFavorite(this)" class="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:bg-red-50 dark:hover:bg-red-900 transition-colors">
+                        <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">-25%</div>
+                    <div class="absolute bottom-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-medium">⚡ FRETE GRÁTIS</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">Tênis Esportivo Running Pro</h3>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">(4.8)</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span class="text-lg font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 299,90</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">R$ 399,90</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Tamanhos: 35-44</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Cores: Preto, Branco, Azul</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addToCart('Tênis Esportivo Running Pro', 299.90)" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm">
+                            + Carrinho
+                        </button>
+                        <button onclick="buyNow('Tênis Esportivo Running Pro', 299.90)" class="flex-1 bg-ciig-blue hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm">
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado Vazio (oculto por padrão) -->
+        <div id="empty-state" class="hidden text-center py-16">
+            <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Nenhum favorito ainda</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Explore nossos produtos e adicione seus favoritos aqui!</p>
+            <button onclick="goToDiscounts()" class="bg-ciig-blue hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors">
+                Ver Descontos
+            </button>
+        </div>
+    </main>
+
+    <!-- Carrinho Lateral -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-96 bg-white dark:bg-gray-800 shadow-2xl transform translate-x-full transition-transform duration-300 z-50 border-l border-gray-200 dark:border-gray-700">
+        <div class="flex flex-col h-full">
+            <!-- Header do Carrinho -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Meu Carrinho</h2>
+                <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Itens do Carrinho -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+                <div id="cart-empty" class="text-center py-12">
+                    <svg class="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H17M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-400">Seu carrinho está vazio</p>
+                </div>
+                <div id="cart-products" class="space-y-4 hidden"></div>
+            </div>
+
+            <!-- Footer do Carrinho -->
+            <div id="cart-footer" class="border-t border-gray-200 dark:border-gray-700 p-6 hidden">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-semibold text-gray-900 dark:text-white">Total:</span>
+                        <span id="cart-total" class="text-xl font-bold text-ciig-blue dark:text-ciig-light-blue">R$ 0,00</span>
+                    </div>
+                    <button onclick="proceedToCheckout()" class="w-full bg-ciig-blue hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                        Finalizar Compra
+                    </button>
+                    <button onclick="clearCart()" class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        Limpar Carrinho
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay do Carrinho -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleCart()"></div>
+
+    <!-- Painel de Notificações -->
+    <div id="notifications-panel" class="fixed top-16 right-4 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 hidden z-50 max-h-96 overflow-hidden">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 dark:text-white">Notificações</h3>
+                <button onclick="clearAllNotifications()" class="text-sm text-ciig-blue dark:text-ciig-light-blue hover:underline">
+                    Limpar todas
+                </button>
+            </div>
+        </div>
+        <div class="max-h-80 overflow-y-auto">
+            <div class="p-4 space-y-3">
+                <div class="flex items-start space-x-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-l-4 border-blue-500">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Desconto especial!</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Seus favoritos têm 20% OFF hoje</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">2 horas atrás</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border-l-4 border-green-500">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Produto disponível</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Notebook Gamer RGB voltou ao estoque</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">5 horas atrás</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border-l-4 border-yellow-500">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.51-1.31c-.562-.649-1.413-1.076-2.353-1.253V5z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Queda de preço</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Smartphone Premium agora por R$ 799,90</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">1 dia atrás</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat com Lojista -->
+    <div id="chat-panel" class="fixed bottom-4 right-4 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 hidden z-50">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-ciig-blue rounded-t-lg">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-ciig-blue" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white">Suporte CIIG</h3>
+                        <p class="text-xs text-blue-100">Online agora</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-white hover:text-blue-200 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="chat-messages" class="h-64 overflow-y-auto p-4 space-y-3">
+            <div class="flex items-start space-x-2">
+                <div class="w-6 h-6 bg-ciig-blue rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                    </svg>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 max-w-xs">
+                    <p class="text-sm text-gray-900 dark:text-white">Olá! Como posso ajudá-lo hoje? 😊</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Agora mesmo</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex space-x-2">
+                <input type="text" id="chat-input" placeholder="Digite sua mensagem..." class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-ciig-blue focus:border-transparent" onkeypress="handleChatKeyPress(event)">
+                <button onclick="sendChatMessage()" class="bg-ciig-blue hover:bg-blue-700 text-white p-2 rounded-lg transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Pagamento -->
+    <div id="checkout-screen" class="fixed inset-0 bg-gray-50 dark:bg-gray-900 hidden z-50 overflow-y-auto">
+        <div class="min-h-screen py-8">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Header do Checkout -->
+                <div class="flex items-center justify-between mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Finalizar Compra</h1>
+                    <button onclick="closeCheckout()" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                        <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Formulário de Pagamento -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Informações de Pagamento</h2>
+                        
+                        <form id="payment-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome Completo</label>
+                                <input type="text" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                <input type="email" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Telefone</label>
+                                <input type="tel" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Endereço</label>
+                                <input type="text" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cidade</label>
+                                    <input type="text" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CEP</label>
+                                    <input type="text" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Método de Pagamento</label>
+                                <select id="payment-method" required onchange="togglePaymentMethod()" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                                    <option value="">Selecione...</option>
+                                    <option value="credit">Cartão de Crédito</option>
+                                    <option value="debit">Cartão de Débito</option>
+                                    <option value="pix">PIX</option>
+                                    <option value="boleto">Boleto</option>
+                                </select>
+                            </div>
+
+                            <!-- Campos do Cartão -->
+                            <div id="card-fields" class="hidden space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Número do Cartão</label>
+                                    <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Validade</label>
+                                        <input type="text" placeholder="MM/AA" maxlength="5" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CVV</label>
+                                        <input type="text" placeholder="000" maxlength="4" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-ciig-blue focus:border-transparent">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- QR Code PIX -->
+                            <div id="pix-section" class="hidden">
+                                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 text-center">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pagamento via PIX</h3>
+                                    
+                                    <!-- QR Code -->
+                                    <div class="bg-white p-4 rounded-lg inline-block mb-4">
+                                        <div id="qr-code" class="w-48 h-48 mx-auto"></div>
+                                    </div>
+                                    
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Escaneie o QR Code com seu app do banco ou copie o código PIX</p>
+                                    
+                                    <!-- Código PIX -->
+                                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-3 mb-4">
+                                        <div class="flex items-center justify-between">
+                                            <span id="pix-code" class="text-xs font-mono text-gray-600 dark:text-gray-400 break-all">00020126580014BR.GOV.BCB.PIX013636c4b8c4-4c4c-4c4c-4c4c-4c4c4c4c4c4c52040000530398654041549.905802BR5925CIIG SYSTEM LTDA6009SAO PAULO62070503***6304A1B2</span>
+                                            <button onclick="copyPixCode()" class="ml-2 p-2 bg-ciig-blue hover:bg-blue-700 text-white rounded-lg transition-colors">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                                        <p class="mb-2">⏱️ Tempo limite: <span id="pix-timer" class="font-semibold text-ciig-blue dark:text-ciig-light-blue">15:00</span></p>
+                                        <p>💡 Após o pagamento, sua compra será confirmada automaticamente</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-ciig-blue hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors mt-6">
+                                Confirmar Pagamento
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Resumo do Pedido -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Resumo do Pedido</h2>
+                        
+                        <div id="checkout-items" class="space-y-4 mb-6"></div>
+                        
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Subtotal:</span>
+                                <span id="checkout-subtotal" class="text-gray-900 dark:text-white">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Frete:</span>
+                                <span class="text-gray-900 dark:text-white">Grátis</span>
+                            </div>
+                            <div class="flex justify-between text-lg font-semibold">
+                                <span class="text-gray-900 dark:text-white">Total:</span>
+                                <span id="checkout-total" class="text-ciig-blue dark:text-ciig-light-blue">R$ 0,00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Sucesso -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 text-center">
+            <div class="w-20 h-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Compra Realizada!</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Seu pedido foi processado com sucesso. Você receberá um email de confirmação em breve.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-ciig-blue hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                Continuar Comprando
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Estado global
+        let cart = [];
+        let currentView = 'grid';
+
+        // Gerenciamento de tema
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Carregar tema salvo
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        // Navegação
+        function goToHome() {
+            showNotification('Redirecionando para a tela inicial...', 'info');
+            setTimeout(() => {
+                window.location.href = '#home';
+            }, 1000);
+        }
+
+        function goToDiscounts() {
+            showNotification('Redirecionando para descontos...', 'info');
+            setTimeout(() => {
+                window.location.href = '#discounts';
+            }, 1000);
+        }
+
+        function goToCategory(category) {
+            showNotification(`Abrindo categoria: ${category}`, 'info');
+            setTimeout(() => {
+                window.location.href = `#category/${category}`;
+            }, 1000);
+        }
+
+        function goToAllCategories() {
+            showNotification('Abrindo todas as categorias...', 'info');
+            setTimeout(() => {
+                window.location.href = '#categories';
+            }, 1000);
+        }
+
+        // Visualização em grid/lista
+        function setGridView() {
+            currentView = 'grid';
+            document.getElementById('grid-btn').classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm');
+            document.getElementById('list-btn').classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm');
+            document.getElementById('products-grid').className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6';
+        }
+
+        function setListView() {
+            currentView = 'list';
+            document.getElementById('list-btn').classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm');
+            document.getElementById('grid-btn').classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm');
+            document.getElementById('products-grid').className = 'grid grid-cols-1 gap-4';
+        }
+
+        // Busca de produtos
+        function searchProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                const productName = product.dataset.name.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+            
+            updateVisibleCount();
+        }
+
+        // Filtros
+        function filterByCategory() {
+            const category = document.getElementById('category-filter').value;
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                if (!category || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+            
+            updateVisibleCount();
+        }
+
+        function filterByPrice() {
+            const priceRange = document.getElementById('price-filter').value;
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                const price = parseFloat(product.dataset.price);
+                let show = true;
+                
+                if (priceRange === '0-300') {
+                    show = price <= 300;
+                } else if (priceRange === '300-1000') {
+                    show = price > 300 && price <= 1000;
+                } else if (priceRange === '1000-3000') {
+                    show = price > 1000 && price <= 3000;
+                } else if (priceRange === '3000+') {
+                    show = price > 3000;
+                }
+                
+                product.style.display = show ? 'block' : 'none';
+            });
+            
+            updateVisibleCount();
+        }
+
+        function sortProducts() {
+            const sortBy = document.getElementById('sort-filter').value;
+            const grid = document.getElementById('products-grid');
+            const products = Array.from(grid.children);
+            
+            products.sort((a, b) => {
+                switch (sortBy) {
+                    case 'price-low':
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    case 'price-high':
+                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    case 'rating':
+                        return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                    case 'discount':
+                        return parseFloat(b.dataset.discount) - parseFloat(a.dataset.discount);
+                    default:
+                        return 0;
+                }
+            });
+            
+            products.forEach(product => grid.appendChild(product));
+        }
+
+        function updateVisibleCount() {
+            const visibleProducts = document.querySelectorAll('.product-card[style*="display: block"], .product-card:not([style*="display: none"])').length;
+            document.getElementById('favorites-count').textContent = `${visibleProducts} produtos encontrados`;
+        }
+
+        // Remover favorito
+        function removeFavorite(button) {
+            const productCard = button.closest('.product-card');
+            productCard.style.transform = 'scale(0.95)';
+            productCard.style.opacity = '0';
+            
+            setTimeout(() => {
+                productCard.remove();
+                updateFavoriteCount();
+                checkEmptyState();
+            }, 300);
+        }
+
+        // Atualizar contador de favoritos
+        function updateFavoriteCount() {
+            const remainingProducts = document.querySelectorAll('.product-card').length;
+            document.getElementById('favorites-count').textContent = `${remainingProducts} produtos salvos`;
+        }
+
+        // Gerenciamento de notificações
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            const isVisible = !panel.classList.contains('hidden');
+            
+            if (isVisible) {
+                panel.classList.add('hidden');
+            } else {
+                panel.classList.remove('hidden');
+                // Fechar chat se estiver aberto
+                document.getElementById('chat-panel').classList.add('hidden');
+            }
+        }
+
+        function clearAllNotifications() {
+            document.getElementById('notification-badge').textContent = '0';
+            document.getElementById('notifications-panel').innerHTML = `
+                <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Notificações</h3>
+                        <button onclick="clearAllNotifications()" class="text-sm text-ciig-blue dark:text-ciig-light-blue hover:underline">
+                            Limpar todas
+                        </button>
+                    </div>
+                </div>
+                <div class="p-8 text-center">
+                    <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM11 19H6.5a2.5 2.5 0 010-5H11m0 5a2 2 0 01-2-2V9a2 2 0 012-2m0 10V9m0 0V6a2 2 0 012-2h2a2 2 0 012 2v3m-6 0h6"></path>
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-400">Nenhuma notificação</p>
+                </div>
+            `;
+            showNotification('Notificações limpas!', 'success');
+        }
+
+        // Gerenciamento do chat
+        function toggleChat() {
+            const panel = document.getElementById('chat-panel');
+            const isVisible = !panel.classList.contains('hidden');
+            
+            if (isVisible) {
+                panel.classList.add('hidden');
+            } else {
+                panel.classList.remove('hidden');
+                // Fechar notificações se estiver aberto
+                document.getElementById('notifications-panel').classList.add('hidden');
+                // Marcar como lida
+                document.getElementById('chat-badge').textContent = '0';
+                // Focar no input
+                setTimeout(() => {
+                    document.getElementById('chat-input').focus();
+                }, 100);
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            // Adicionar mensagem do usuário
+            const userMessage = document.createElement('div');
+            userMessage.className = 'flex items-start space-x-2 justify-end';
+            userMessage.innerHTML = `
+                <div class="bg-ciig-blue text-white rounded-lg p-3 max-w-xs">
+                    <p class="text-sm">${message}</p>
+                    <p class="text-xs text-blue-100 mt-1">Agora mesmo</p>
+                </div>
+                <div class="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-3 h-3 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                    </svg>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(userMessage);
+            input.value = '';
+            
+            // Scroll para baixo
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Simular resposta do atendente
+            setTimeout(() => {
+                const responses = [
+                    'Obrigado pela sua mensagem! Vou verificar isso para você.',
+                    'Entendi! Posso ajudá-lo com mais informações sobre esse produto.',
+                    'Ótima pergunta! Deixe-me consultar nosso estoque.',
+                    'Claro! Vou encaminhar sua solicitação para nossa equipe.',
+                    'Perfeito! Você gostaria de mais detalhes sobre algum produto específico?'
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                const botMessage = document.createElement('div');
+                botMessage.className = 'flex items-start space-x-2';
+                botMessage.innerHTML = `
+                    <div class="w-6 h-6 bg-ciig-blue rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                        </svg>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 max-w-xs">
+                        <p class="text-sm text-gray-900 dark:text-white">${randomResponse}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Agora mesmo</p>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(botMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000 + Math.random() * 2000);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // Verificar estado vazio
+        function checkEmptyState() {
+            const productsGrid = document.getElementById('products-grid');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (productsGrid.children.length === 0) {
+                productsGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            }
+        }
+
+        // Gerenciamento do carrinho
+        function addToCart(productName, price) {
+            const existingItem = cart.find(item => item.name === productName);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: productName,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartUI();
+            showCartNotification(`${productName} adicionado ao carrinho!`);
+        }
+
+        function removeFromCart(productName) {
+            cart = cart.filter(item => item.name !== productName);
+            updateCartUI();
+        }
+
+        function updateCartQuantity(productName, newQuantity) {
+            const item = cart.find(item => item.name === productName);
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(productName);
+                } else {
+                    item.quantity = newQuantity;
+                    updateCartUI();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            const cartBadge = document.getElementById('cart-badge');
+            const cartEmpty = document.getElementById('cart-empty');
+            const cartProducts = document.getElementById('cart-products');
+            const cartFooter = document.getElementById('cart-footer');
+            const cartTotal = document.getElementById('cart-total');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartBadge.textContent = totalItems;
+            cartTotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            
+            if (cart.length === 0) {
+                cartEmpty.classList.remove('hidden');
+                cartProducts.classList.add('hidden');
+                cartFooter.classList.add('hidden');
+            } else {
+                cartEmpty.classList.add('hidden');
+                cartProducts.classList.remove('hidden');
+                cartFooter.classList.remove('hidden');
+                
+                cartProducts.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-900 dark:text-white text-sm">${item.name}</h4>
+                            <p class="text-ciig-blue dark:text-ciig-light-blue font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateCartQuantity('${item.name}', ${item.quantity - 1})" class="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                                <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </button>
+                            <span class="w-8 text-center text-gray-900 dark:text-white font-medium">${item.quantity}</span>
+                            <button onclick="updateCartQuantity('${item.name}', ${item.quantity + 1})" class="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                                <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+            showCartNotification('Carrinho limpo!');
+        }
+
+        function showCartNotification(message) {
+            showNotification(message, 'success');
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Funções PIX
+        let pixTimer;
+        let pixTimeLeft = 900; // 15 minutos em segundos
+
+        function togglePaymentMethod() {
+            const paymentMethod = document.getElementById('payment-method').value;
+            const cardFields = document.getElementById('card-fields');
+            const pixSection = document.getElementById('pix-section');
+            
+            // Esconder todos os campos específicos
+            cardFields.classList.add('hidden');
+            pixSection.classList.add('hidden');
+            
+            if (paymentMethod === 'credit' || paymentMethod === 'debit') {
+                cardFields.classList.remove('hidden');
+            } else if (paymentMethod === 'pix') {
+                pixSection.classList.remove('hidden');
+                generatePixCode();
+                startPixTimer();
+            }
+        }
+
+        function generatePixCode() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const pixCode = `00020126580014BR.GOV.BCB.PIX013636c4b8c4-4c4c-4c4c-4c4c-4c4c4c4c4c4c5204000053039865404${total.toFixed(2).replace('.', '')}5802BR5925CIIG SYSTEM LTDA6009SAO PAULO62070503***6304A1B2`;
+            
+            document.getElementById('pix-code').textContent = pixCode;
+            generateQRCode(pixCode);
+        }
+
+        function generateQRCode(text) {
+            const qrContainer = document.getElementById('qr-code');
+            qrContainer.innerHTML = '';
+            
+            // Criar QR Code simples usando CSS
+            const qrSize = 192; // 48 * 4 = 192px
+            const cellSize = 4;
+            const gridSize = qrSize / cellSize;
+            
+            qrContainer.style.width = qrSize + 'px';
+            qrContainer.style.height = qrSize + 'px';
+            qrContainer.style.position = 'relative';
+            qrContainer.style.backgroundColor = '#000';
+            
+            // Padrão simples de QR Code (simulado)
+            const pattern = [
+                [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
+                [1,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,1],
+                [1,0,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1],
+                [1,0,1,1,1,0,1,0,0,1,1,0,1,1,1,0,1],
+                [1,0,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1],
+                [1,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,1],
+                [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
+                [0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],
+                [1,0,1,0,1,1,1,1,0,0,1,1,0,1,0,1,1],
+                [0,1,0,1,0,0,0,0,1,1,0,0,1,0,1,0,0],
+                [1,1,1,0,1,1,1,1,0,0,1,1,0,1,0,1,1],
+                [0,0,0,1,0,0,0,0,1,1,0,0,1,0,1,0,0],
+                [1,1,1,1,1,1,1,0,0,0,1,1,0,1,0,1,1],
+                [1,0,0,0,0,0,1,0,1,1,0,0,1,0,1,0,0],
+                [1,0,1,1,1,0,1,0,0,0,1,1,0,1,0,1,1],
+                [1,0,1,1,1,0,1,0,1,1,0,0,1,0,1,0,0],
+                [1,1,1,1,1,1,1,0,0,0,1,1,0,1,0,1,1]
+            ];
+            
+            for (let row = 0; row < Math.min(pattern.length, gridSize); row++) {
+                for (let col = 0; col < Math.min(pattern[row].length, gridSize); col++) {
+                    if (pattern[row][col]) {
+                        const cell = document.createElement('div');
+                        cell.style.position = 'absolute';
+                        cell.style.width = cellSize + 'px';
+                        cell.style.height = cellSize + 'px';
+                        cell.style.backgroundColor = '#fff';
+                        cell.style.left = (col * cellSize) + 'px';
+                        cell.style.top = (row * cellSize) + 'px';
+                        qrContainer.appendChild(cell);
+                    }
+                }
+            }
+        }
+
+        function startPixTimer() {
+            pixTimeLeft = 900; // Reset para 15 minutos
+            clearInterval(pixTimer);
+            
+            pixTimer = setInterval(() => {
+                pixTimeLeft--;
+                const minutes = Math.floor(pixTimeLeft / 60);
+                const seconds = pixTimeLeft % 60;
+                
+                document.getElementById('pix-timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (pixTimeLeft <= 0) {
+                    clearInterval(pixTimer);
+                    showNotification('Tempo do PIX expirado. Gere um novo código.', 'error');
+                }
+            }, 1000);
+        }
+
+        function copyPixCode() {
+            const pixCode = document.getElementById('pix-code').textContent;
+            navigator.clipboard.writeText(pixCode).then(() => {
+                showNotification('Código PIX copiado!', 'success');
+            }).catch(() => {
+                // Fallback para navegadores mais antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = pixCode;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Código PIX copiado!', 'success');
+            });
+        }
+
+        // Comprar agora (vai direto para checkout)
+        function buyNow(productName, price) {
+            // Adicionar ao carrinho temporariamente
+            addToCart(productName, price);
+            // Ir para checkout
+            proceedToCheckout();
+        }
+
+        // Checkout
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            
+            const checkoutScreen = document.getElementById('checkout-screen');
+            const checkoutItems = document.getElementById('checkout-items');
+            const checkoutSubtotal = document.getElementById('checkout-subtotal');
+            const checkoutTotal = document.getElementById('checkout-total');
+            
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            checkoutItems.innerHTML = cart.map(item => `
+                <div class="flex justify-between items-center py-2">
+                    <div>
+                        <h4 class="font-medium text-gray-900 dark:text-white">${item.name}</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Quantidade: ${item.quantity}</p>
+                    </div>
+                    <span class="font-semibold text-gray-900 dark:text-white">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+                </div>
+            `).join('');
+            
+            checkoutSubtotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            checkoutTotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            
+            checkoutScreen.classList.remove('hidden');
+            toggleCart(); // Fechar carrinho
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-screen').classList.add('hidden');
+        }
+
+        // Processar pagamento
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simular processamento
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Processando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                closeCheckout();
+                showSuccessModal();
+                cart = []; // Limpar carrinho
+                updateCartUI();
+                
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                e.target.reset();
+            }, 2000);
+        });
+
+        function showSuccessModal() {
+            document.getElementById('success-modal').classList.remove('hidden');
+            document.getElementById('success-modal').classList.add('flex');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            document.getElementById('success-modal').classList.remove('flex');
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+            updateCartUI();
+        });
+
+        // Fechar modais ao clicar fora
+        document.getElementById('success-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessModal();
+            }
+        });
+
+        // Fechar painéis ao clicar fora
+        document.addEventListener('click', function(e) {
+            const notificationsPanel = document.getElementById('notifications-panel');
+            const chatPanel = document.getElementById('chat-panel');
+            const notificationBtn = e.target.closest('button[onclick="toggleNotifications()"]');
+            const chatBtn = e.target.closest('button[onclick="toggleChat()"]');
+            
+            if (!notificationBtn && !notificationsPanel.contains(e.target)) {
+                notificationsPanel.classList.add('hidden');
+            }
+            
+            if (!chatBtn && !chatPanel.contains(e.target)) {
+                chatPanel.classList.add('hidden');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974cf0b0b40079ab',t:'MTc1NjE0NDMxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

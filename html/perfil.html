@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIIG System - Perfil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .sidebar-item {
+            transition: all 0.2s;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #60a5fa;
+        }
+        
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #60a5fa;
+        }
+        
+        .profile-section {
+            transition: all 0.3s ease;
+        }
+        
+        .profile-section:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark .profile-section:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #2563eb;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex flex-col w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white">
+            <div class="p-4 flex items-center justify-center border-b border-blue-700">
+                <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H21M3 12H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 3L16 7L12 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 13L8 17L12 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h1 class="text-xl font-bold">CIIG System</h1>
+            </div>
+            
+            <div class="overflow-y-auto flex-grow">
+                <div class="px-4 py-6">
+                    <h2 class="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-3">Menu Principal</h2>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-boxes w-5 h-5 mr-3"></i>
+                                <span>Inventário</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-truck w-5 h-5 mr-3"></i>
+                                <span>Logística</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-chart-line w-5 h-5 mr-3"></i>
+                                <span>Relatórios</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-users w-5 h-5 mr-3"></i>
+                                <span>Fornecedores</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="px-4 py-6 border-t border-blue-700">
+                    <h2 class="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-3">Filtros</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Status</label>
+                            <select class="w-full bg-blue-700 text-white rounded px-3 py-2 text-sm">
+                                <option>Todos</option>
+                                <option>Em andamento</option>
+                                <option>Concluído</option>
+                                <option>Pendente</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Categoria</label>
+                            <select class="w-full bg-blue-700 text-white rounded px-3 py-2 text-sm">
+                                <option>Todas</option>
+                                <option>Matéria-prima</option>
+                                <option>Produtos acabados</option>
+                                <option>Embalagens</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Período</label>
+                            <select class="w-full bg-blue-700 text-white rounded px-3 py-2 text-sm">
+                                <option>Último mês</option>
+                                <option>Últimos 3 meses</option>
+                                <option>Último ano</option>
+                                <option>Personalizado</option>
+                            </select>
+                        </div>
+                        
+                        <button class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition">
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-blue-700">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm">Modo Escuro</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <a href="#" class="sidebar-item active flex items-center px-4 py-3 rounded">
+                    <i class="fas fa-user-circle w-5 h-5 mr-3"></i>
+                    <span>Meu Perfil</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile sidebar toggle -->
+        <div class="md:hidden fixed bottom-4 right-4 z-50">
+            <button id="mobileSidebarToggle" class="bg-blue-600 text-white p-3 rounded-full shadow-lg">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white dark:bg-gray-800 shadow-sm">
+                <div class="px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <button id="sidebarToggle" class="md:hidden text-gray-500 dark:text-gray-300 mr-4">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Meu Perfil</h1>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button class="text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="notification-badge">3</span>
+                            </button>
+                        </div>
+                        
+                        <div class="relative">
+                            <button class="text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                                <i class="fas fa-envelope text-xl"></i>
+                                <span class="notification-badge">5</span>
+                            </button>
+                        </div>
+                        
+                        <div class="border-l border-gray-300 dark:border-gray-600 h-8 mx-2"></div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold mr-2">
+                                JD
+                            </div>
+                            <div class="hidden md:block">
+                                <p class="text-sm font-medium">João Dias</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Gerente de Suprimentos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
+                <div class="max-w-5xl mx-auto">
+                    <!-- Profile Header -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6 profile-section">
+                        <div class="flex flex-col md:flex-row items-center md:items-start">
+                            <div class="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center text-white text-4xl font-bold mb-4 md:mb-0 md:mr-6">
+                                JD
+                            </div>
+                            
+                            <div class="flex-1 text-center md:text-left">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                                    <div>
+                                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">João Dias</h2>
+                                        <p class="text-gray-600 dark:text-gray-300">Gerente de Suprimentos</p>
+                                    </div>
+                                    
+                                    <button class="mt-3 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition flex items-center justify-center">
+                                        <i class="fas fa-edit mr-2"></i> Editar Perfil
+                                    </button>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-md">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                                        <p class="font-medium">joao.dias@ciig.com.br</p>
+                                    </div>
+                                    
+                                    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-md">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Telefone</p>
+                                        <p class="font-medium">(11) 98765-4321</p>
+                                    </div>
+                                    
+                                    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-md">
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Departamento</p>
+                                        <p class="font-medium">Logística e Suprimentos</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Gestão de Estoque</span>
+                                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Logística</span>
+                                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Planejamento</span>
+                                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-medium px-2.5 py-0.5 rounded">Compras</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left Column -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Personal Information -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 profile-section">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Informações Pessoais</h3>
+                                    <button class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Nome Completo</p>
+                                        <p class="font-medium">João Carlos Dias</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Data de Nascimento</p>
+                                        <p class="font-medium">15/04/1985</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Endereço</p>
+                                        <p class="font-medium">Av. Paulista, 1000, São Paulo - SP</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Idiomas</p>
+                                        <p class="font-medium">Português, Inglês, Espanhol</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Professional Information -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 profile-section">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Informações Profissionais</h3>
+                                    <button class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Cargo Atual</p>
+                                        <p class="font-medium">Gerente de Suprimentos</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tempo na Empresa</p>
+                                        <p class="font-medium">4 anos e 7 meses</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Formação</p>
+                                        <p class="font-medium">MBA em Gestão de Cadeia de Suprimentos - USP</p>
+                                        <p class="font-medium">Engenharia de Produção - UFRJ</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Certificações</p>
+                                        <div class="flex flex-wrap gap-2 mt-1">
+                                            <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">CSCP (APICS)</span>
+                                            <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">PMP</span>
+                                            <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">Six Sigma Green Belt</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Activity -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 profile-section">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Atividade Recente</h3>
+                                    <button class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                        Ver Tudo
+                                    </button>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 mr-3">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Relatório de Fornecedores Atualizado</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Hoje, 10:45</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start">
+                                        <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 mr-3">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Pedido #45678 Aprovado</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Ontem, 15:30</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start">
+                                        <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 mr-3">
+                                            <i class="fas fa-comment"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Comentário em Projeto de Otimização</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">23/05/2023, 09:15</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- Account Settings -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 profile-section">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Configurações da Conta</h3>
+                                
+                                <div class="space-y-4">
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-lock text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Alterar Senha</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                    
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-bell text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Notificações</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                    
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Privacidade</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                    
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-globe text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Idioma e Região</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Support -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 profile-section">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Suporte</h3>
+                                
+                                <div class="space-y-4">
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-question-circle text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Central de Ajuda</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                    
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-ticket-alt text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Abrir Chamado</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                    
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-book text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Documentação</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                    
+                                    <a href="#" class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-video text-blue-600 dark:text-blue-400 w-5 h-5 mr-3"></i>
+                                            <span>Tutoriais em Vídeo</span>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- System Info -->
+                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 profile-section">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Informações do Sistema</h3>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500 dark:text-gray-400">Versão</span>
+                                        <span class="font-medium">CIIG System v3.5.2</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500 dark:text-gray-400">Última Atualização</span>
+                                        <span class="font-medium">15/05/2023</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500 dark:text-gray-400">Licença</span>
+                                        <span class="font-medium">Enterprise</span>
+                                    </div>
+                                    
+                                    <div class="pt-2">
+                                        <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+                                            Verificar atualizações
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 hidden">
+        <div class="absolute right-0 top-0 h-full w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white transform transition-transform duration-300 translate-x-full">
+            <div class="p-4 flex items-center justify-between border-b border-blue-700">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 6H21M3 12H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 3L16 7L12 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 13L8 17L12 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h1 class="text-xl font-bold">CIIG System</h1>
+                </div>
+                <button id="closeMobileSidebar" class="text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="overflow-y-auto h-full pb-20">
+                <div class="px-4 py-6">
+                    <h2 class="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-3">Menu Principal</h2>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-boxes w-5 h-5 mr-3"></i>
+                                <span>Inventário</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-truck w-5 h-5 mr-3"></i>
+                                <span>Logística</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-chart-line w-5 h-5 mr-3"></i>
+                                <span>Relatórios</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="sidebar-item flex items-center px-4 py-3 rounded">
+                                <i class="fas fa-users w-5 h-5 mr-3"></i>
+                                <span>Fornecedores</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="px-4 py-6 border-t border-blue-700">
+                    <h2 class="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-3">Filtros</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Status</label>
+                            <select class="w-full bg-blue-700 text-white rounded px-3 py-2 text-sm">
+                                <option>Todos</option>
+                                <option>Em andamento</option>
+                                <option>Concluído</option>
+                                <option>Pendente</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Categoria</label>
+                            <select class="w-full bg-blue-700 text-white rounded px-3 py-2 text-sm">
+                                <option>Todas</option>
+                                <option>Matéria-prima</option>
+                                <option>Produtos acabados</option>
+                                <option>Embalagens</option>
+                            </select>
+                        </div>
+                        
+                        <button class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition">
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-6 border-t border-blue-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm">Modo Escuro</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="mobileDarkModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <a href="#" class="sidebar-item active flex items-center px-4 py-3 rounded">
+                        <i class="fas fa-user-circle w-5 h-5 mr-3"></i>
+                        <span>Meu Perfil</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Editar Perfil</h3>
+                    <button id="closeEditProfileModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form>
+                    <div class="space-y-4">
+                        <div class="flex justify-center mb-4">
+                            <div class="relative">
+                                <div class="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                                    JD
+                                </div>
+                                <button class="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 shadow-md">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome</label>
+                                <input type="text" value="João" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sobrenome</label>
+                                <input type="text" value="Dias" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                            <input type="email" value="joao.dias@ciig.com.br" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Telefone</label>
+                            <input type="tel" value="(11) 98765-4321" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cargo</label>
+                            <input type="text" value="Gerente de Suprimentos" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Departamento</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                <option>Logística e Suprimentos</option>
+                                <option>Compras</option>
+                                <option>Planejamento</option>
+                                <option>Operações</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Endereço</label>
+                            <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">Av. Paulista, 1000, São Paulo - SP</textarea>
+                        </div>
+                        
+                        <div class="pt-4 flex justify-end space-x-3">
+                            <button type="button" id="cancelEditProfile" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                Cancelar
+                            </button>
+                            <button type="button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                Salvar Alterações
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            html.classList.add('dark');
+            darkModeToggle.checked = true;
+            mobileDarkModeToggle.checked = true;
+        }
+        
+        function toggleDarkMode() {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                darkModeToggle.checked = false;
+                mobileDarkModeToggle.checked = false;
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeToggle.checked = true;
+                mobileDarkModeToggle.checked = true;
+            }
+        }
+        
+        darkModeToggle.addEventListener('change', toggleDarkMode);
+        mobileDarkModeToggle.addEventListener('change', toggleDarkMode);
+        
+        // Mobile sidebar
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const mobileSidebarContent = mobileSidebar.querySelector('div.absolute');
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+        const closeMobileSidebar = document.getElementById('closeMobileSidebar');
+        
+        function openMobileSidebar() {
+            mobileSidebar.classList.remove('hidden');
+            setTimeout(() => {
+                mobileSidebarContent.classList.remove('translate-x-full');
+            }, 10);
+        }
+        
+        function closeMobileSidebarFunc() {
+            mobileSidebarContent.classList.add('translate-x-full');
+            setTimeout(() => {
+                mobileSidebar.classList.add('hidden');
+            }, 300);
+        }
+        
+        mobileSidebarToggle.addEventListener('click', openMobileSidebar);
+        closeMobileSidebar.addEventListener('click', closeMobileSidebarFunc);
+        mobileSidebar.addEventListener('click', (e) => {
+            if (e.target === mobileSidebar) {
+                closeMobileSidebarFunc();
+            }
+        });
+        
+        // Edit Profile Modal
+        const editProfileModal = document.getElementById('editProfileModal');
+        const editProfileBtn = document.querySelector('button.bg-blue-600');
+        const closeEditProfileModal = document.getElementById('closeEditProfileModal');
+        const cancelEditProfile = document.getElementById('cancelEditProfile');
+        
+        function openEditProfileModal() {
+            editProfileModal.classList.remove('hidden');
+        }
+        
+        function closeEditProfileModalFunc() {
+            editProfileModal.classList.add('hidden');
+        }
+        
+        editProfileBtn.addEventListener('click', openEditProfileModal);
+        closeEditProfileModal.addEventListener('click', closeEditProfileModalFunc);
+        cancelEditProfile.addEventListener('click', closeEditProfileModalFunc);
+        editProfileModal.addEventListener('click', (e) => {
+            if (e.target === editProfileModal) {
+                closeEditProfileModalFunc();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'951dad01129879a8',t:'MTc1MDI4MDAwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

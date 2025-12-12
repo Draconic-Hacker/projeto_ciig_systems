@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup Form</title>
+    <link rel="stylesheet" href="../css/SignUp-LogIn-Form.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+  <body>
+      <div class="container">
+
+          <div class="form-box login">
+
+              <form action="#">
+                
+                  <h1>Login</h1>
+
+                  <div class="input-box">
+                      <input type="text" placeholder="Nome de Usuário" id="username" required>
+                      <i class='bx bxs-user cor-icon'></i>
+                  </div>
+
+                  <div class="input-box">
+                      <input type="password" placeholder="Senha" id="password" required>
+                      <i class='bx bxs-lock-alt cor-icon'></i>
+                  </div>
+
+                  <div class="error-msg" id="error-msg"></div>
+
+                  <div class="forgot-link">
+                      <a href="#">Esqueceu a sua Senha?</a>
+                  </div>
+
+                  <button type="button" class="btn" id="btnLogin">Login</button>
+                  <p>ou faça login com plataformas sociais</p>
+
+                  <div class="social-icons">
+                      <a href="#"><i class='bx bxl-google' ></i></a>
+                      <a href="#"><i class='bx bxl-facebook' ></i></a>
+                      <a href="#"><i class='bx bxl-github' ></i></a>
+                      <a href="#"><i class='bx bxl-linkedin' ></i></a>
+                  </div>
+
+              </form>
+
+          </div>
+
+          <div class="form-box register">
+
+              <form action="#">
+
+                  <h1>Cadastro</h1>
+
+                  <div class="input-box">
+                      <input type="text" placeholder="Nome de Usuário" id="username2" required>
+                      <i class='bx bxs-user cor-icon'></i>
+                  </div>
+
+                  <div class="input-box">
+                      <input type="email" placeholder="Email" id="email" required>
+                      <i class='bx bxs-envelope cor-icon'></i>
+                  </div>
+
+                  <div class="input-box">
+                    <input type="password" placeholder="Senha" id="password2" required>
+                      <i class='bx bxs-lock-alt cor-icon'></i>
+                  </div>
+
+                  <div class="error-msg" id="error-msg2"></div>
+
+                  <button type="button" class="btn" id="btnRegister">Cadastrar-se</button>
+                  
+                  <div class="social-icons">
+                      <a href="#"><i class='bx bxl-google' ></i></a>
+                      <a href="#"><i class='bx bxl-facebook' ></i></a>
+                      <a href="#"><i class='bx bxl-github' ></i></a>
+                      <a href="#"><i class='bx bxl-linkedin' ></i></a>
+                  </div>
+
+              </form>
+
+          </div>
+
+          <div class="toggle-box">
+
+              <div class="toggle-panel toggle-left">
+                  <h1>Olá, seja bem-vindo!</h1>
+                  <p>Não tem uma conta?</p>
+                  <button class="btn register-btn">Registrar</button>
+              </div>
+
+              <div class="toggle-panel toggle-right">
+                  <h1>Bem vindo de volta!</h1>
+                  <p>Já tem uma conta?</p>
+                  <button class="btn login-btn">Conecte-se</button>
+              </div>
+
+          </div>
+
+      </div>
+
+      <script type="module" src="../js/mains/main-login.js"></script>
+
+  </body>
+</html>

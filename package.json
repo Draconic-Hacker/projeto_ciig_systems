@@ -1,0 +1,45 @@
+{
+  "name": "template_startup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:cadastro": "node --experimental-vm-modules node_modules/jest/bin/jest.js __tests__/cadastro.test.js",
+    "test:login": "node --experimental-vm-modules node_modules/jest/bin/jest.js __tests__/login.test.js",
+    "test:telalogin": "node --experimental-vm-modules node_modules/jest/bin/jest.js __tests__/TelaLogin.test.js",
+    "cy:open": "cypress open"
+  },
+  "keywords": [],
+  "author": "CIIG - SOC GLOBAL",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.27.2",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitest/ui": "^3.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "cypress": "^14.3.2",
+    "jsdom": "^26.1.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.vue$": "vue-jest",
+      "^.+\\.js$": "babel-jest"
+    },
+    "testEnvironment": "jsdom"
+  }
+}

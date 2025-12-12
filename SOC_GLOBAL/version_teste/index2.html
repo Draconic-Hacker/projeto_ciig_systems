@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CIIG SYSTEMS - Login</title>
+  <link rel="stylesheet" href="index2.css">
+</head>
+<body>
+  <div class="title">
+    <h1>CIIG SYSTEMS</h1>
+    <p>Portal de Acesso ao Sistema</p>
+  </div>
+  
+  <div class="login-box">
+    <input type="text" id="username" placeholder="Usuário" />
+    <input type="password" id="password" placeholder="Senha" />
+    <button class="login-btn" onclick="login()">Entrar</button>
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <script>
+    // "Banco de dados" simulado
+    const users = [
+      { username: "admin", password: "1234" },
+      { username: "usuario1", password: "senha1" },
+      { username: "comprador", password: "compras2024" }
+    ];
+
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("error-msg");
+
+      const userFound = users.find(user => user.username === username && user.password === password);
+
+      if (userFound) {
+        // Login válido: redirecionar para a próxima página
+        window.location.href = "pag2.html";
+      } else {
+        // Login inválido: mostrar erro
+        errorMsg.textContent = "Usuário ou senha incorretos.";
+      }
+    }
+  </script>
+</body>
+</html>
