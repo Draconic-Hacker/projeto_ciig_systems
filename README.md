@@ -1,4 +1,6 @@
-# para rodar testes e2e
+
+
+<!-- # para rodar testes e2e
 npx cypress open --e2e
 
 # para rodar testes de componente
@@ -78,4 +80,4 @@ mensagem de confirmação no terminal para não acarretar em erros ou bugs futur
 # Considerações Finais
 Caso você não precise de realizar nem um teste ou não é seu objetivo não nescessita da utilização destes comandos,
 isto é apenas para quando nescessário a realização dos testes jest e cypress.
-Atenciosamente: Equipe CIIG Systems
+Atenciosamente: Equipe CIIG Systems -->
