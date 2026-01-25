@@ -16,22 +16,9 @@ Dito isto, peçamos que haja acima de tudo: **respeito, dignidade e humildade**.
 
 `Este trabalho como outros deste perfil e de outros perfis, merecem mesmo que não sejam profissionais, respeito e valorização.`
 
-# 1.0 Version
-## Reestruturação do Front-End
+# 1.0 Version: Reestruturação do Front-End
 
 Dado aos commits passados, irei recomeçar o projeto tudo do "zero" novamente, desta vez utilizando o fremwork Bootstrap.
-
-### Adicionais: Back-End
-
-Agora também, ao mesmo tempo que for sendo desenvolvido o front, também irei conectando com o back-end.
-Para o Back-end estarei utilizando:
-
-- **MySQL de Database**
-- **Express**
-- **Nodemoon**
-- **Dotenv**
-- **cors**
-- **mysql2**
 
 ## Depêndencias
 ### Front-End

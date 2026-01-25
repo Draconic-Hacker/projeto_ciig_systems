@@ -1,4 +1,31 @@
+## *Atenção*
 
+**Para cada alteração, atualização ou adição de novas coisas, serão relatadas em cada respectivo Readme, ou seja, alterações feitas na pasta do Front-end, serão relatadas somente em seu readme respectivo o que diz respeito àquela pasta, assim por diante a pasta Back-end também.**
+
+No **readme principal** do diretório, serão relatados:
+- Novas Versões (incluindo subversões oficiais e não oficiais)
+- Breves Resumos do que foi feito naquela versão, incluindo data
+
+Dito isto, peçamos que haja acima de tudo: **respeito, dignidade e humildade**.
+
+`Este trabalho como outros deste perfil e de outros perfis, merecem mesmo que não sejam profissionais, respeito e valorização.`
+
+# 1.0 Version: front-end
+Dado o nascimento da ***CIIG SYSTEMS***, foi feito a configuração de todo o ambiente dentro das pastas: **_Front-end_** e **_Back-end_**, veja o que foi feito resumidamente:
+
+- criação zerada do projeto Vue e do Back-end
+- instalação das dependencias nescessárias para ambos os ambientes via **_npm_**
+- criação do **README** para cada área específica
+- reutilização dos componentes: **TelaDeEntrada.vue** e **TelaLogin.vue**
+- ajustes minimos tanto nos arquivos .vue quanto nos arquivos .css
+- configuração do **router** e criação das duas primeiras rotas da aplicação
+- correção de nomeclatura das imagens presentes nas patas `public` e `src\assets`
+- feito a correção de bug ao tentar inicializar a aplicação, adicionando a configuração do alias `@` no `vite.config.js`
+- feito também a criação do Banco de Dados ainda vazio no MySQL
+
+Para informaçõs mais detalhadas, entre nas pastas <a href="frontend">frontend</a> e <a href="backend">backend</a> e veja seus respectivos **README.md**
+
+Atenciosamente: Draconic-Hacker
 
 <!-- # para rodar testes e2e
 npx cypress open --e2e
