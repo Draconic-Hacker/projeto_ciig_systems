@@ -24,12 +24,16 @@ Para o Back-end estarei utilizando as seguintes ferramentas:
 
 **Obs: Utilize este comando para baixar tudo em uma vez só**
 
-```npm install express dotenv cors mysql2```
+```
+npm install express dotenv cors mysql2
+```
 
 ## **Atenção**
 **Para que o projeto seja renderizado corretamente, você também precisa adicionar o Nodemon como devDependencies**
 
-```npm install --save-dev nodemon```
+```
+npm install --save-dev nodemon
+```
 
 *O que cada um faz:*
 
