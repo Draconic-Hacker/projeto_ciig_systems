@@ -57,13 +57,15 @@ Para o Front-End, instalei as seguintes dependencias nessa primeira versão do p
 ## *update 1: app.vue*
 Ajustado o App.vue, para que ele utilize o vue-vouter corretamente, excluindo o conteúdo que veio por padrão ao criar o projeto vue `npm create vite .` e substituindo pela versão atual:
 
-`<template>`
-`  <router-view />`
-`</template>`
+```
+<template>
+  <router-view />
+</template>
 
-`<script setup>`
-`import { ref, provide } from 'vue'`
-`</script>`
+<script setup>
+import { ref, provide } from 'vue'
+</script>
+```
 
 ## *update 2: main.js*
 Ajustado o main.js da aplicação, para que seja imporado e renderizado a aplicação corretamente.
