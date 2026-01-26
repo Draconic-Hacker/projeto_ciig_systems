@@ -91,12 +91,15 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '@/api'
+
 const router = useRouter()
 
 const showPassword = ref(false)
 const showPasswordRegister = ref(false)
 
 const isRegisterActive = ref(false)
+const isLoading = ref(false)
 
 const login = ref({
     username: '',
@@ -109,60 +112,87 @@ const register = ref({
 })
 
 // Função de login
-function handleLogin() {
-    const users = JSON.parse(localStorage.getItem("users")) || []
-    const userFound = users.find(user =>
-        (user.username === login.value.username || user.email === login.value.username) &&
-        user.password === login.value.password
-    )
-    if (userFound) {
-        // Login válido
+async function handleLogin() {
+    try {
+        // Validação básica
+        if (!login.value.username || !login.value.password) {
+            alert('Preencha todos os campos.')
+            return
+        }
+
+        isLoading.value = true
+
+        // Faz requisição para o backend
+        const response = await api.post('/api/login', {
+            username: login.value.username,
+            password: login.value.password
+        })
+
+        // Se chegou aqui, o login foi bem-sucedido
         alert('Login realizado com sucesso!')
+        
+        // Salva os dados do usuário (opcional)
+        localStorage.setItem('user', JSON.stringify(response.data))
+        
         isRegisterActive.value = false
+        // Limpa campos
+        login.value.username = ''
+        login.value.password = ''
+        
         router.push('/sucesso')
-    } else {
-    alert('Usuário ou senha incorretos.')
-}
+    } catch (error) {
+        if (error.response?.data?.message) {
+            alert(error.response.data.message)
+        } else {
+            alert('Erro ao fazer login. Tente novamente.')
+        }
+    } finally {
+        isLoading.value = false
+    }
 }
 
 // Função de cadastro
-function handleRegister() {
-    const users = JSON.parse(localStorage.getItem("users")) || []
+async function handleRegister() {
+    try {
+        // Validação básica
+        if (!register.value.username || !register.value.email || !register.value.password) {
+            alert('Preencha todos os campos.')
+            return
+        }
 
-    // Validação básica
-    if (!register.value.username || !register.value.email || !register.value.password) {
-        alert('Preencha todos os campos.')
-        return
+        // Validação de email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailPattern.test(register.value.email)) {
+            alert('Por favor, insira um email válido.')
+            return
+        }
+
+        isLoading.value = true
+
+        // Faz requisição para o backend
+        const response = await api.post('/api/register', {
+            username: register.value.username,
+            email: register.value.email,
+            password: register.value.password
+        })
+
+        // Se chegou aqui, o cadastro foi bem-sucedido
+        alert('Cadastro realizado com sucesso!')
+        isRegisterActive.value = false
+        
+        // Limpa campos
+        register.value.username = ''
+        register.value.email = ''
+        register.value.password = ''
+    } catch (error) {
+        if (error.response?.data?.message) {
+            alert(error.response.data.message)
+        } else {
+            alert('Erro ao fazer cadastro. Tente novamente.')
+        }
+    } finally {
+        isLoading.value = false
     }
-    // Validação de email
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailPattern.test(register.value.email)) {
-        alert('Por favor, insira um email válido.')
-        return
-    }
-    // Usuário já existe
-    if (users.some(user => user.username.toLowerCase() === register.value.username.toLowerCase())) {
-        alert('Usuário já cadastrado.')
-        return
-    }
-    // Email já existe
-    if (users.some(user => user.email.toLowerCase() === register.value.email.toLowerCase())) {
-        alert('Email já cadastrado')
-        return
-    }
-    // Salva usuário
-    users.push({
-        username: register.value.username,
-        email: register.value.email,
-        password: register.value.password
-    })
-    localStorage.setItem("users", JSON.stringify(users))
-    alert('Cadastro realizado com sucesso!')
-    isRegisterActive.value = false
-    // Limpa campos
-    register.value.username = ''
-    register.value.email = ''
-    register.value.password = ''
 }
 </script>
 
