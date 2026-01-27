@@ -10,6 +10,8 @@ Dito isto, peçamos que haja acima de tudo: **respeito, dignidade e humildade**.
 
 `Este trabalho como outros deste perfil e de outros perfis, merecem mesmo que não sejam profissionais, respeito e valorização.`
 
+Para informaçõs mais detalhadas, entre nas pastas <a href="frontend">frontend</a> e <a href="backend">backend</a> e veja seus respectivos **README.md**
+
 # 1.0 Version: start
 Dado o nascimento da ***CIIG SYSTEMS***, foi feito a configuração de todo o ambiente dentro das pastas: **_Front-end_** e **_Back-end_**, veja o que foi feito resumidamente:
 
@@ -23,9 +25,11 @@ Dado o nascimento da ***CIIG SYSTEMS***, foi feito a configuração de todo o am
 - feito a correção de bug ao tentar inicializar a aplicação, adicionando a configuração do alias `@` no `vite.config.js`
 - feito também a criação do Banco de Dados ainda vazio no MySQL
 
-# 1.1 version: 
+# 1.1 version: Conexão
 
-Para informaçõs mais detalhadas, entre nas pastas <a href="frontend">frontend</a> e <a href="backend">backend</a> e veja seus respectivos **README.md**
+
+
+
 
 Atenciosamente: Draconic-Hacker
 
