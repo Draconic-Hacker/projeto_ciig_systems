@@ -23,6 +23,8 @@ Dado o nascimento da ***CIIG SYSTEMS***, foi feito a configuração de todo o am
 - feito a correção de bug ao tentar inicializar a aplicação, adicionando a configuração do alias `@` no `vite.config.js`
 - feito também a criação do Banco de Dados ainda vazio no MySQL
 
+# 1.1 version: 
+
 Para informaçõs mais detalhadas, entre nas pastas <a href="frontend">frontend</a> e <a href="backend">backend</a> e veja seus respectivos **README.md**
 
 Atenciosamente: Draconic-Hacker

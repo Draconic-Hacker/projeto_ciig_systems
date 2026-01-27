@@ -31,7 +31,9 @@ Para o Front-End, instalei as seguintes dependencias nessa primeira versão do p
 
 **Obs: Utilize este comando para baixar tudo e uma vez só caso queira baixar as dependencias em seu proprio projeto**
 
-`npm install axios vue-router@4 bootstrap @popperjs/core @fortawesome/fontawesome-free`
+```
+npm install axios vue-router@4 bootstrap @popperjs/core @fortawesome/fontawesome-free
+```
 
 *O que cada um faz nesse comando:*
 
@@ -59,17 +61,21 @@ Ajustado o main.js da aplicação, para que seja imporado e renderizado a aplica
 
 Foram adicionadas novas linhas, sendo estas:
 
-`import 'bootstrap/dist/css/bootstrap.min.css'`
+```
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-`import 'bootstrap/dist/js/bootstrap.bundle.min.js'`
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+```
 
 para serem utilizados componentes e funcionalidades do framework Bootstrap.
 
 Feito também a importação do Router, já que a aplicação utilizará a "mobilidade" desta ferramenta, ficando a construção do app:
 
-`const app = createApp(App)
+```
+const app = createApp(App)
 app.use(router)
-app.mount('#app')`
+app.mount('#app')
+```
 
 ## *update 3: style.css*
 Desabilitado momentaneamente o css global da aplicação `frontend/src/style.css`.
@@ -106,7 +112,17 @@ na **tela de entrada** apenas fiz mudar o nome da imagem para `logo_ciig.png`, j
 ## *update 8: vite.config*
 Ocorreu um bug ao tentar inicar a aplicação, dando problema de importação no index.js do router, pois o arquivo `vite.config.js` não estava com a configuração do alias `@`, então resolvi o problema adicionando as seguintes linhas:
 
-`import path from 'path'`
+```
+import path from 'path'
 
-`resolve: { alias: { '@': path.resolve(__dirname, './src'), },`
+resolve: { alias: { '@': path.resolve(__dirname, './src'), },
+```
 
+### 1.1 version: adição da API
+nesta versão do front-end, foi feita a primeira implementação e conexão bem sucedida com o back-end e DataBase. diferente da versão anterior, o cadastro de novos usuários guardava as informações localmente no navegador do usuário, ou seja, utilizando o `localstorage` do navegador onde ele acessou a aplicação.
+
+pensando nisso, foi adicionado dentro da pasta do front-end o arquivo `api.js` sendo a ponte de ligação entre ambos os servidores:
+- servidor do front-end (ligado pelo framework Vuejs)
+- servidor do back-end (ligado pelo Nodejs)
+
+sendo então a ponte, utilizando o endereço local do Nodejs para chamar todas as requisições configuradas no `index.js`.
