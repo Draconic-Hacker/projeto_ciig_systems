@@ -19,9 +19,11 @@
                 >
                 <i class='bx bxs-lock-alt cor-icon'></i>
             </div>
+
             <div class="forgot-link"> <!-- link para recuperar senha -->
                 <a href="#">Esqueceu a sua Senha?</a>
             </div>
+
             <div class="show-password"> <!-- input para mostrar a senha -->
                 <input type="checkbox" id="showPass" v-model="showPassword">
                 <label for="showPass">Mostrar senha</label>
