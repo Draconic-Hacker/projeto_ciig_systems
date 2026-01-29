@@ -3,6 +3,8 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const db = require("./db");
+const { gerarESalvarCodigo } = require('./GenerationAndSave'); 
+const { enviarCodigoRecuperacao } = require('./SendEmail'); 
 
 const app = express();
 app.use(cors());
@@ -10,6 +12,7 @@ app.use(express.json());
 
 const SALT_ROUNDS = 10; // Número de rounds para o hash (maior = mais seguro mas mais lento)
 
+// Rota de registro de usuário
 app.post('/api/register', async (req, res) => {
     try {
         // 1. Recebe os dados do Vue
@@ -48,6 +51,7 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
+// Rota de login de usuário
 app.post('/api/login', async (req, res) => {
     try {
         // 1. Recebe os dados do Vue
@@ -93,6 +97,30 @@ app.post('/api/login', async (req, res) => {
     } catch (error) {
         console.error('Erro no login:', error);
         res.status(500).json({ message: 'Erro interno.' });
+    }
+});
+
+// Rota para solicitar código de recuperação de senha
+app.post('/api/esqueci-senha', async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: "O e-mail é obrigatório!" });
+    }
+
+    try {
+        // 1. Gera e salva o código no MySQL
+        const codigo = await gerarESalvarCodigo(email);
+
+        // 2. Dispara o e-mail com o código
+        await enviarCodigoRecuperacao(email, codigo);
+
+        // 3. Responde ao Front-end
+        res.status(200).json({ message: "Código enviado com sucesso!" });
+
+    } catch (error) {
+        console.error("Erro no processo de recuperação:", error);
+        res.status(500).json({ message: "Erro interno no servidor ao enviar código." });
     }
 });
 

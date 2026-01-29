@@ -46,12 +46,16 @@
             <div class="modal-content">
                 <!-- Header -->
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Insira o código de validação:</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- Body -->
                 <div class="modal-body">
-                    stap 2
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="ValidationFloatingInputGroup1"
+                            placeholder="Código de validação" aria-describedby="inputGroupPrepend1" required>
+                        <label for="ValidationFloatingInputGroup1">Código de validação</label>
+                    </div>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
@@ -73,17 +77,36 @@
             <div class="modal-content">
                 <!-- Header -->
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Redefinição de senha</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- Body -->
                 <div class="modal-body">
-                    Hide this modal and show the first with the button below.
+                    <!-- Entry for new password -->
+                    <div class="form-floating mb-3">
+                        <input :type="showPassword ? 'text' : 'password'" class="form-control" id="floatingNewPassword"
+                            placeholder="New Password">
+                        <label for="floatingNewPassword">Nova senha <i class='bx bxs-lock-alt'></i></label>
+                    </div>
+                    <!-- Entry for password confirmation -->
+                    <div class="form-floating mb-3">
+                        <input :type="showPassword ? 'text' : 'password'" class="form-control"
+                            id="floatingPasswordConfirmmation" placeholder="Password Confirmation">
+                        <label for="floatingPasswordConfirmation">Confirme a senha <i
+                                class='bx bxs-lock-alt'></i></label>
+                    </div>
+                    <!-- Show password -->
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" v-model="showPassword" id="checkDefault">
+                        <label class="form-check-label" for="checkDefault">
+                            Mostrar senha
+                        </label>
+                    </div>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-target="#staticBackdrop2" data-bs-toggle="modal">Back to
-                        first</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -92,7 +115,8 @@
 </template>
 
 <script setup>
-
+import { ref } from 'vue'
+const showPassword = ref(false)
 </script>
 
 <style scoped></style>
