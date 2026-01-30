@@ -3,8 +3,8 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const db = require("./db");
-const { gerarESalvarCodigo } = require('./GenerationAndSave'); 
-const { enviarCodigoRecuperacao } = require('./SendEmail'); 
+const { gerarESalvarCodigo } = require("./GenerationAndSave"); 
+const { enviarCodigoRecuperacao } = require("./SendEmail"); 
 
 const app = express();
 app.use(cors());
@@ -109,18 +109,87 @@ app.post('/api/esqueci-senha', async (req, res) => {
     }
 
     try {
-        // 1. Gera e salva o código no MySQL
+        // 1. Verifica se o email existe no banco
+        const sqlCheckEmail = 'SELECT * FROM `user` WHERE email = ?';
+        const [rowsEmail] = await db.query(sqlCheckEmail, [email]);
+        if (rowsEmail.length === 0) {
+            return res.status(400).json({ message: 'E-mail não encontrado no banco de dados' });
+        }
+
+        // 2. Gera e salva o código no MySQL
         const codigo = await gerarESalvarCodigo(email);
 
-        // 2. Dispara o e-mail com o código
+        // 3. Dispara o e-mail com o código
         await enviarCodigoRecuperacao(email, codigo);
 
-        // 3. Responde ao Front-end
+        // 4. Responde ao Front-end
         res.status(200).json({ message: "Código enviado com sucesso!" });
 
     } catch (error) {
         console.error("Erro no processo de recuperação:", error);
         res.status(500).json({ message: "Erro interno no servidor ao enviar código." });
+    }
+});
+
+// Rota para validar o código de recuperação de senha
+app.post('/api/validar-codigo', async (req, res) => {
+    const { email, codigo } = req.body;
+
+    try {
+        // Busca o código no banco verificando se ainda é válido (tempo)
+        const query = `
+            SELECT * FROM password_resets 
+            WHERE email = ? AND codigo = ? AND expira_em > NOW()
+        `;
+        
+        const [results] = await db.execute(query, [email, codigo]);
+
+        if (results.length > 0) {
+            // Código válido!
+            res.status(200).json({ message: "Código validado com sucesso!" });
+        } else {
+            // Código errado ou expirado
+            res.status(400).json({ message: "Código inválido ou expirado. Tente novamente." });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao validar código." });
+    }
+});
+
+// Rota para atualizar a senha
+app.post('/api/atualizar-senha', async (req, res) => {
+    const { email, codigo, novaSenha } = req.body;
+    const saltRounds = 10;
+
+    try {
+        // 1. Verificação final: o código existe para este email?
+        // (Já foi validado com tempo na rota /api/validar-codigo)
+        const [validacao] = await db.execute(
+            "SELECT * FROM password_resets WHERE email = ? AND codigo = ?",
+            [email, codigo]
+        );
+
+        if (validacao.length === 0) {
+            return res.status(403).json({ message: "Código inválido ou sessão expirada. Comece o processo novamente." });
+        }
+
+        // 2. Hash da nova senha com Bcrypt
+        const hash = await bcrypt.hash(novaSenha, saltRounds);
+
+        // 3. Atualiza na tabela de USUÁRIOS
+        await db.execute(
+            "UPDATE `user` SET `password` = ? WHERE email = ?",
+            [hash, email]
+        );
+
+        // 4. Limpa o código usado para que não seja usado de novo
+        await db.execute("DELETE FROM password_resets WHERE email = ?", [email]);
+
+        res.status(200).json({ message: "Senha atualizada com sucesso!" });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao atualizar a senha." });
     }
 });
 

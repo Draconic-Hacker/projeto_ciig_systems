@@ -20,9 +20,8 @@
                 <i class='bx bxs-lock-alt cor-icon'></i>
             </div>
 
-            <div class="forgot-link"> <!-- link para recuperar senha -->
-                <a href="#">Esqueceu a sua Senha?</a>
-            </div>
+            <!-- botão para redefinir a senha -->
+            <ModalPassowrd /> <br><br>
 
             <div class="show-password"> <!-- input para mostrar a senha -->
                 <input type="checkbox" id="showPass" v-model="showPassword">
@@ -94,6 +93,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/services/api'
+import ModalPassowrd from '@/components/common/ModalPassowrd.vue'
 
 const router = useRouter()
 
