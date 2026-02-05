@@ -289,12 +289,12 @@ const limparEstados = () => {
 </script>
 
 <style scoped>
-/* Aumenta o z-index para trazer o modal para frente, acima do toggle-box (z-index: 2) */
-/* :deep(.modal) {
-    z-index: 10000 !important;
+/* Aumenta o z-index para trazer o modal para frente */
+:deep(.modal) {
+    z-index: 9999 !important;
 }
 
 :deep(.modal-backdrop) {
-    z-index: 9999 !important;
-} */
+    z-index: 9998 !important;
+}
 </style>

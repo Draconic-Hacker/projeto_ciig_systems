@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import TelaDeEntrada from '@/views/TelaDeEntrada.vue'
 import TelaLogin from '@/views/TelaLogin.vue'
 import teste from '@/views/teste.vue'
+import teste2 from '@/views/teste2.vue'
 
 const routes = [
     { path: '/', component: TelaDeEntrada },
     { path: '/login', component: TelaLogin },
-    { path: '/sucesso', component: teste },
+    { path: '/teste', component: teste },
+    { path: '/teste2', component: teste2 },
     { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 

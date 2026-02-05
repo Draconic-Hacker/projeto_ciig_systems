@@ -1,0 +1,573 @@
+
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CiiG SYSTEMS - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Orbitron:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .brand-font {
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    @keyframes gradientDance {
+      0% {
+        background-position: 0% 50%;
+      }
+      25% {
+        background-position: 100% 50%;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      75% {
+        background-position: 0% 100%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    
+    .animated-gradient {
+      background: linear-gradient(135deg, #000000, #1a1a8c, #2b2bb2, #0d0d5c, #000000);
+      background-size: 400% 400%;
+      animation: gradientDance 15s ease infinite;
+    }
+    
+    @keyframes floatOrbs {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+      }
+      25% {
+        transform: translate(30px, -30px) scale(1.1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: translate(-20px, 20px) scale(0.9);
+        opacity: 0.4;
+      }
+      75% {
+        transform: translate(20px, 10px) scale(1.05);
+        opacity: 0.35;
+      }
+    }
+    
+    .floating-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    
+    .orb-1 {
+      width: 300px;
+      height: 300px;
+      background: #2b2bb2;
+      top: 10%;
+      left: 10%;
+      animation: floatOrbs 12s ease-in-out infinite;
+    }
+    
+    .orb-2 {
+      width: 250px;
+      height: 250px;
+      background: #1a1a8c;
+      bottom: 20%;
+      right: 10%;
+      animation: floatOrbs 15s ease-in-out infinite reverse;
+    }
+    
+    .orb-3 {
+      width: 200px;
+      height: 200px;
+      background: #3d3dd4;
+      top: 50%;
+      left: 30%;
+      animation: floatOrbs 18s ease-in-out infinite 2s;
+    }
+    
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: #d1d5db;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    .switch.active {
+      background: #2b2bb2;
+    }
+    
+    .switch::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .switch.active::after {
+      transform: translateX(20px);
+    }
+    
+    .dark .switch {
+      background: #4b5563;
+    }
+    
+    .dark .switch.active {
+      background: #4d4dff;
+    }
+    
+    .slide-container {
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .slide-right {
+      transform: translateX(100%);
+    }
+    
+    .form-container {
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    
+    .form-hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      position: absolute;
+    }
+    
+    .form-visible {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #2b2bb2;
+      box-shadow: 0 0 0 3px rgba(43, 43, 178, 0.1);
+    }
+    
+    .dark input:focus {
+      border-color: #4d4dff;
+      box-shadow: 0 0 0 3px rgba(77, 77, 255, 0.2);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #2b2bb2, #1a1a8c);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3d3dd4, #2b2bb2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(43, 43, 178, 0.3);
+    }
+    
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    .text-content {
+      transition: opacity 0.3s ease;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto bg-gray-100 dark:bg-gray-900 transition-colors duration-300"><!-- Theme Toggle --> <button id="themeToggle" class="theme-toggle p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300">
+   <svg id="sunIcon" class="w-6 h-6 text-yellow-500 hidden" fill="currentColor" viewbox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+   </svg>
+   <svg id="moonIcon" class="w-6 h-6 text-gray-700" fill="currentColor" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+   </svg></button>
+  <div class="h-full w-full flex"><!-- Main Container -->
+   <div class="w-full h-full flex relative overflow-hidden"><!-- Left Side - Animated Background with Text -->
+    <div id="leftPanel" class="slide-container w-1/2 h-full animated-gradient relative flex flex-col justify-center items-center p-12 z-10"><!-- Floating Orbs -->
+     <div class="floating-orb orb-1"></div>
+     <div class="floating-orb orb-2"></div>
+     <div class="floating-orb orb-3"></div><!-- Brand Logo -->
+     <div class="absolute top-8 left-8 z-20">
+      <h1 id="brandName" class="brand-font text-2xl font-bold text-white tracking-wider">CiiG SYSTEMS</h1>
+      <p id="brandTagline" class="text-xs text-blue-300 tracking-widest mt-1">Central de Inteligência Integrada Global</p>
+     </div><!-- Text Content -->
+     <div class="text-content relative z-20 max-w-md text-center"><!-- Login Text -->
+      <div id="loginText" class="fade-in">
+       <h2 id="loginTitle" class="text-4xl font-bold text-white mb-4">Bem-vindo de volta!</h2>
+       <p id="loginSubtitle" class="text-xl text-blue-200 mb-8">Acesse sua conta e continue sua jornada conosco.</p>
+       <div class="mt-12 pt-8 border-t border-blue-400/30">
+        <p class="text-blue-300 mb-4">Novo por aqui?</p><button id="goToRegister" class="text-white font-semibold hover:text-blue-300 transition-colors duration-300 flex items-center justify-center gap-2 mx-auto group"> <span>Cadastre-se em nossa plataforma</span>
+         <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+         </svg></button>
+       </div>
+      </div><!-- Register Text -->
+      <div id="registerText" class="fade-in form-hidden">
+       <h2 id="registerTitle" class="text-4xl font-bold text-white mb-4">Junte-se a nós!</h2>
+       <p id="registerSubtitle" class="text-xl text-blue-200 mb-8">Crie sua conta e faça parte da nossa comunidade global.</p>
+       <div class="mt-12 pt-8 border-t border-blue-400/30">
+        <p class="text-blue-300 mb-4">Já possui uma conta?</p><button id="goToLogin" class="text-white font-semibold hover:text-blue-300 transition-colors duration-300 flex items-center justify-center gap-2 mx-auto group">
+         <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+         </svg><span>Faça seu Login</span> </button>
+       </div>
+      </div>
+     </div>
+    </div><!-- Right Side - Forms -->
+    <div class="w-1/2 h-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-8 transition-colors duration-300">
+     <div class="w-full max-w-md relative"><!-- Login Form -->
+      <form id="loginForm" class="form-container form-visible bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-colors duration-300" onsubmit="event.preventDefault(); handleLogin();">
+       <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Efetue o Login</h3>
+       <p class="text-gray-500 dark:text-gray-400 mb-8">Insira suas credenciais para acessar</p><!-- Username/Email -->
+       <div class="mb-5"><label for="loginEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Usuário ou E-mail </label> <input type="text" id="loginEmail" placeholder="Digite seu usuário ou e-mail" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300">
+       </div><!-- Password -->
+       <div class="mb-5"><label for="loginPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Senha </label>
+        <div class="relative"><input type="password" id="loginPassword" placeholder="Digite sua senha" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300">
+        </div>
+       </div><!-- Show Password Toggle -->
+       <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+         <div id="showPasswordToggle" class="switch" onclick="toggleShowPassword()"></div><span class="text-sm text-gray-600 dark:text-gray-400">Mostrar senha</span>
+        </div>
+       </div><!-- Remember Me & Forgot Password -->
+       <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-3">
+         <div id="rememberMeToggle" class="switch" onclick="toggleRememberMe()"></div><span class="text-sm text-gray-600 dark:text-gray-400">Lembrar de mim</span>
+        </div><button type="button" class="text-sm text-blue-600 dark:text-blue-400 hover:underline"> Esqueceu a senha? </button>
+       </div><!-- Login Button --> <button type="submit" class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-lg"> Entrar </button> <!-- Mobile Register Link -->
+       <div class="mt-6 text-center lg:hidden">
+        <p class="text-gray-500 dark:text-gray-400 text-sm">Novo por aqui?</p><button type="button" onclick="showRegister()" class="text-blue-600 dark:text-blue-400 font-medium hover:underline"> Cadastre-se agora </button>
+       </div>
+      </form><!-- Register Form -->
+      <form id="registerForm" class="form-container form-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-colors duration-300" onsubmit="event.preventDefault(); handleRegister();">
+       <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Criar Conta</h3>
+       <p class="text-gray-500 dark:text-gray-400 mb-6">Preencha seus dados para se registrar</p><!-- Username -->
+       <div class="mb-4"><label for="regUsername" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Nome de Usuário </label> <input type="text" id="regUsername" placeholder="Seu nome público na plataforma" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+       </div><!-- Full Name -->
+       <div class="grid grid-cols-2 gap-3 mb-4">
+        <div><label for="regFirstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Nome </label> <input type="text" id="regFirstName" placeholder="Seu nome" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+        </div>
+        <div><label for="regLastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Sobrenome </label> <input type="text" id="regLastName" placeholder="Seu sobrenome" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+        </div>
+       </div><!-- Phone -->
+       <div class="mb-4"><label for="regPhone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Telefone </label>
+        <div class="flex gap-2"><select id="regCountryCode" class="w-24 px-2 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300 text-sm"> <option value="+55">🇧🇷 +55</option> <option value="+1">🇺🇸 +1</option> <option value="+351">🇵🇹 +351</option> <option value="+44">🇬🇧 +44</option> </select> <input type="tel" id="regPhone" placeholder="(00) 00000-0000" class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+        </div>
+       </div><!-- Email -->
+       <div class="mb-4"><label for="regEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> E-mail </label> <input type="email" id="regEmail" placeholder="seu@email.com" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+       </div><!-- Passwords -->
+       <div class="grid grid-cols-2 gap-3 mb-4">
+        <div><label for="regPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Senha </label> <input type="password" id="regPassword" placeholder="Crie uma senha" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+        </div>
+        <div><label for="regConfirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"> Confirmar </label> <input type="password" id="regConfirmPassword" placeholder="Confirme a senha" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300 text-sm">
+        </div>
+       </div><!-- Show Password Toggle -->
+       <div class="flex items-center gap-3 mb-4">
+        <div id="showRegPasswordToggle" class="switch" onclick="toggleShowRegPassword()"></div><span class="text-sm text-gray-600 dark:text-gray-400">Mostrar senhas</span>
+       </div><!-- Terms -->
+       <div class="flex items-start gap-3 mb-6">
+        <div id="termsToggle" class="switch flex-shrink-0 mt-0.5" onclick="toggleTerms()"></div><span class="text-sm text-gray-600 dark:text-gray-400"> Li e concordo com os <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Termos de Uso</a> e <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Política de Privacidade</a> </span>
+       </div><!-- Register Button --> <button type="submit" class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-lg"> Criar Conta </button> <!-- Mobile Login Link -->
+       <div class="mt-6 text-center lg:hidden">
+        <p class="text-gray-500 dark:text-gray-400 text-sm">Já tem uma conta?</p><button type="button" onclick="showLogin()" class="text-blue-600 dark:text-blue-400 font-medium hover:underline"> Faça seu login </button>
+       </div>
+      </form>
+     </div>
+    </div>
+   </div>
+  </div><!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 dark:bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"><span id="toastMessage"></span>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      company_name: 'CiiG SYSTEMS',
+      company_tagline: 'Central de Inteligência Integrada Global',
+      login_title: 'Bem-vindo de volta!',
+      login_subtitle: 'Acesse sua conta e continue sua jornada conosco.',
+      register_title: 'Junte-se a nós!',
+      register_subtitle: 'Crie sua conta e faça parte da nossa comunidade global.',
+      background_color: '#f3f4f6',
+      surface_color: '#ffffff',
+      text_color: '#1f2937',
+      primary_action_color: '#2b2bb2',
+      secondary_action_color: '#3b82f6'
+    };
+
+    let config = { ...defaultConfig };
+    
+    // State
+    let showPassword = false;
+    let showRegPassword = false;
+    let rememberMe = false;
+    let termsAccepted = false;
+    let isRegisterView = false;
+    let isDarkMode = false;
+
+    // Element SDK initialization
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = { ...defaultConfig, ...newConfig };
+          updateUI();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => cfg.background_color || defaultConfig.background_color,
+              set: (value) => {
+                cfg.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => cfg.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                cfg.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => cfg.text_color || defaultConfig.text_color,
+              set: (value) => {
+                cfg.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => cfg.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                cfg.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                cfg.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['company_name', cfg.company_name || defaultConfig.company_name],
+          ['company_tagline', cfg.company_tagline || defaultConfig.company_tagline],
+          ['login_title', cfg.login_title || defaultConfig.login_title],
+          ['login_subtitle', cfg.login_subtitle || defaultConfig.login_subtitle],
+          ['register_title', cfg.register_title || defaultConfig.register_title],
+          ['register_subtitle', cfg.register_subtitle || defaultConfig.register_subtitle]
+        ])
+      });
+    }
+
+    function updateUI() {
+      document.getElementById('brandName').textContent = config.company_name || defaultConfig.company_name;
+      document.getElementById('brandTagline').textContent = config.company_tagline || defaultConfig.company_tagline;
+      document.getElementById('loginTitle').textContent = config.login_title || defaultConfig.login_title;
+      document.getElementById('loginSubtitle').textContent = config.login_subtitle || defaultConfig.login_subtitle;
+      document.getElementById('registerTitle').textContent = config.register_title || defaultConfig.register_title;
+      document.getElementById('registerSubtitle').textContent = config.register_subtitle || defaultConfig.register_subtitle;
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      document.documentElement.classList.toggle('dark', isDarkMode);
+      document.getElementById('sunIcon').classList.toggle('hidden', !isDarkMode);
+      document.getElementById('moonIcon').classList.toggle('hidden', isDarkMode);
+    }
+
+    // Toggle functions for switches
+    function toggleShowPassword() {
+      showPassword = !showPassword;
+      document.getElementById('showPasswordToggle').classList.toggle('active', showPassword);
+      document.getElementById('loginPassword').type = showPassword ? 'text' : 'password';
+    }
+
+    function toggleShowRegPassword() {
+      showRegPassword = !showRegPassword;
+      document.getElementById('showRegPasswordToggle').classList.toggle('active', showRegPassword);
+      document.getElementById('regPassword').type = showRegPassword ? 'text' : 'password';
+      document.getElementById('regConfirmPassword').type = showRegPassword ? 'text' : 'password';
+    }
+
+    function toggleRememberMe() {
+      rememberMe = !rememberMe;
+      document.getElementById('rememberMeToggle').classList.toggle('active', rememberMe);
+    }
+
+    function toggleTerms() {
+      termsAccepted = !termsAccepted;
+      document.getElementById('termsToggle').classList.toggle('active', termsAccepted);
+    }
+
+    // View switching
+    function showRegister() {
+      isRegisterView = true;
+      
+      // Slide panel
+      document.getElementById('leftPanel').classList.add('slide-right');
+      
+      // Switch text content
+      document.getElementById('loginText').classList.add('form-hidden');
+      document.getElementById('loginText').classList.remove('form-visible');
+      
+      setTimeout(() => {
+        document.getElementById('registerText').classList.remove('form-hidden');
+        document.getElementById('registerText').classList.add('form-visible');
+      }, 200);
+      
+      // Switch forms
+      document.getElementById('loginForm').classList.add('form-hidden');
+      document.getElementById('loginForm').classList.remove('form-visible');
+      
+      setTimeout(() => {
+        document.getElementById('registerForm').classList.remove('form-hidden');
+        document.getElementById('registerForm').classList.add('form-visible');
+      }, 200);
+    }
+
+    function showLogin() {
+      isRegisterView = false;
+      
+      // Slide panel back
+      document.getElementById('leftPanel').classList.remove('slide-right');
+      
+      // Switch text content
+      document.getElementById('registerText').classList.add('form-hidden');
+      document.getElementById('registerText').classList.remove('form-visible');
+      
+      setTimeout(() => {
+        document.getElementById('loginText').classList.remove('form-hidden');
+        document.getElementById('loginText').classList.add('form-visible');
+      }, 200);
+      
+      // Switch forms
+      document.getElementById('registerForm').classList.add('form-hidden');
+      document.getElementById('registerForm').classList.remove('form-visible');
+      
+      setTimeout(() => {
+        document.getElementById('loginForm').classList.remove('form-hidden');
+        document.getElementById('loginForm').classList.add('form-visible');
+      }, 200);
+    }
+
+    // Toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = message;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 3000);
+    }
+
+    // Form handlers
+    function handleLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!email || !password) {
+        showToast('Por favor, preencha todos os campos.');
+        return;
+      }
+      
+      showToast('Login realizado com sucesso! ✓');
+    }
+
+    function handleRegister() {
+      const username = document.getElementById('regUsername').value;
+      const firstName = document.getElementById('regFirstName').value;
+      const lastName = document.getElementById('regLastName').value;
+      const phone = document.getElementById('regPhone').value;
+      const email = document.getElementById('regEmail').value;
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+      
+      if (!username || !firstName || !lastName || !phone || !email || !password || !confirmPassword) {
+        showToast('Por favor, preencha todos os campos.');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showToast('As senhas não coincidem.');
+        return;
+      }
+      
+      if (!termsAccepted) {
+        showToast('Você precisa aceitar os termos de uso.');
+        return;
+      }
+      
+      showToast('Conta criada com sucesso! ✓');
+    }
+
+    // Phone input formatting
+    document.getElementById('regPhone').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) value = value.slice(0, 11);
+      
+      if (value.length > 7) {
+        value = `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7)}`;
+      } else if (value.length > 2) {
+        value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+      } else if (value.length > 0) {
+        value = `(${value}`;
+      }
+      
+      e.target.value = value;
+    });
+
+    // Event listeners
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('goToRegister').addEventListener('click', showRegister);
+    document.getElementById('goToLogin').addEventListener('click', showLogin);
+
+    // Initial UI update
+    updateUI();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c8403b67372d070',t:'MTc3MDE0MzU4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
