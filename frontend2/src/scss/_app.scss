@@ -1,0 +1,21 @@
+// _app.scss
+
+// 1. Funções essenciais
+@import "bootstrap/scss/functions";
+
+// 2. Suas variáveis customizadas entram AQUI (antes das variáveis do Bootstrap)
+
+// 3. O resto do Bootstrap (Variáveis, Mixins e Mapas são obrigatórios para não dar erro)
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+
+// 4. Opcional: Utilitários e Grid (se você quiser usar classes como .row e .container)
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/grid";
+
+// 5. Suas variáveis próprias
+$red: red;
+$green: $gray-600; // Exemplo de uso de variável do Bootstrap
