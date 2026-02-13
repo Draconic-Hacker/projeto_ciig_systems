@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CiiG - System Initialization</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@300;400;500;600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --deep-space: #0b0e14;
+        --blue-systems: #0077ff;
+        --green-games: #00ff41;
+        --cyan-ciig: #00f5ff;
+        --text-color: #e1e8ed;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "JetBrains Mono", monospace;
+        background: var(--deep-space);
+        color: var(--text-color);
+        overflow: hidden;
+      }
+
+      .main-wrapper {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        position: relative;
+      }
+
+      /* Noise texture overlay */
+      .noise-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        z-index: 1;
+      }
+
+      /* Grid pattern */
+      .grid-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+      }
+
+      /* Scanlines */
+      .scanlines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 245, 255, 0.01) 2px,
+          rgba(0, 245, 255, 0.01) 4px
+        );
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .font-orbitron {
+        font-family: "Orbitron", sans-serif;
+      }
+
+      .font-mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* Cyan glow effects */
+      .glow-cyan {
+        text-shadow:
+          0 0 10px var(--cyan-ciig),
+          0 0 20px var(--cyan-ciig),
+          0 0 40px rgba(0, 245, 255, 0.5);
+      }
+
+      .glow-cyan-subtle {
+        text-shadow:
+          0 0 5px var(--cyan-ciig),
+          0 0 10px rgba(0, 245, 255, 0.5);
+      }
+
+      /* Progress bar styles */
+      .progress-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        height: 4px;
+        background: rgba(0, 245, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--blue-systems),
+          var(--cyan-ciig),
+          var(--green-games)
+        );
+        border-radius: 2px;
+        position: relative;
+        box-shadow:
+          0 0 20px var(--cyan-ciig),
+          0 0 40px rgba(0, 245, 255, 0.5);
+        transition: width 0.1s ease-out;
+      }
+
+      .progress-bar::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        animation: scan 1.5s linear infinite;
+      }
+
+      @keyframes scan {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      .progress-glow {
+        position: absolute;
+        top: -10px;
+        left: 0;
+        right: 0;
+        bottom: -10px;
+        background: linear-gradient(
+          90deg,
+          var(--blue-systems),
+          var(--cyan-ciig),
+          var(--green-games)
+        );
+        filter: blur(15px);
+        opacity: 0.5;
+        border-radius: 10px;
+      }
+
+      /* HUD corner elements */
+      .hud-corner {
+        position: fixed;
+        opacity: 0.2;
+        font-size: 10px;
+        letter-spacing: 1px;
+        z-index: 10;
+      }
+
+      .hud-corner.top-left {
+        top: 20px;
+        left: 20px;
+      }
+
+      .hud-corner.top-right {
+        top: 20px;
+        right: 20px;
+        text-align: right;
+      }
+
+      .hud-corner.bottom-left {
+        bottom: 20px;
+        left: 20px;
+      }
+
+      .hud-corner.bottom-right {
+        bottom: 20px;
+        right: 20px;
+        text-align: right;
+      }
+
+      /* Geometric decorations */
+      .geo-line {
+        position: absolute;
+        background: var(--cyan-ciig);
+        opacity: 0.15;
+      }
+
+      .geo-circle {
+        position: absolute;
+        border: 1px solid var(--cyan-ciig);
+        border-radius: 50%;
+        opacity: 0.1;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.98);
+        }
+      }
+
+      @keyframes typewriter {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.15;
+        }
+        50% {
+          opacity: 0.25;
+        }
+      }
+
+      @keyframes glitch {
+        0%,
+        90%,
+        100% {
+          transform: translate(0);
+        }
+        92% {
+          transform: translate(-2px, 1px);
+        }
+        94% {
+          transform: translate(2px, -1px);
+        }
+        96% {
+          transform: translate(-1px, 2px);
+        }
+        98% {
+          transform: translate(1px, -2px);
+        }
+      }
+
+      @keyframes dataStream {
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+
+      .animate-fade-out {
+        animation: fadeOut 0.6s ease-out forwards;
+      }
+
+      .animate-pulse-subtle {
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .animate-glitch {
+        animation: glitch 3s ease-in-out infinite;
+      }
+
+      .delay-100 {
+        animation-delay: 0.1s;
+      }
+      .delay-200 {
+        animation-delay: 0.2s;
+      }
+      .delay-300 {
+        animation-delay: 0.3s;
+      }
+      .delay-400 {
+        animation-delay: 0.4s;
+      }
+      .delay-500 {
+        animation-delay: 0.5s;
+      }
+
+      /* Percentage counter */
+      .percentage-display {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Final message typing effect */
+      .typing-container {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1.2em;
+        background: var(--cyan-ciig);
+        margin-left: 5px;
+        animation: blink 0.8s step-end infinite;
+        vertical-align: middle;
+        box-shadow: 0 0 10px var(--cyan-ciig);
+      }
+
+      /* White screen transition */
+      .white-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        opacity: 0;
+        z-index: 100;
+        pointer-events: none;
+        transition: opacity 0.8s ease-out;
+      }
+
+      .white-screen.active {
+        opacity: 1;
+      }
+
+      /* Data particles */
+      .data-particle {
+        position: absolute;
+        width: 2px;
+        height: 20px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--cyan-ciig),
+          transparent
+        );
+        opacity: 0.3;
+      }
+
+      /* Status indicators */
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--cyan-ciig);
+        box-shadow: 0 0 10px var(--cyan-ciig);
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 640px) {
+        .hud-corner {
+          font-size: 8px;
+        }
+
+        .hud-corner.top-left,
+        .hud-corner.top-right,
+        .hud-corner.bottom-left,
+        .hud-corner.bottom-right {
+          padding: 10px;
+        }
+
+        .progress-container {
+          max-width: 85%;
+        }
+      }
+
+      /* Hidden state for initial load */
+      .initially-hidden {
+        opacity: 0;
+      }
+    </style>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+  <body class="h-full">
+    <div class="main-wrapper">
+      <!-- Background layers -->
+      <div class="grid-pattern"></div>
+      <div class="noise-overlay"></div>
+      <div class="scanlines"></div>
+      <!-- White screen for final transition -->
+      <div class="white-screen" id="whiteScreen"></div>
+      <!-- HUD Corner Elements -->
+      <div
+        class="hud-corner top-left font-mono initially-hidden"
+        id="hudTopLeft"
+      >
+        <div class="animate-pulse-subtle">
+          <span style="color: var(--cyan-ciig)">■</span> CiiG SYSTEM v3.0.1<br /><span
+            id="headerText"
+            >Central de Inteligência Integrada Global</span
+          ><br /><span style="color: var(--blue-systems)">◆</span> Systems
+          <span style="color: var(--green-games)">◆</span> Games
+        </div>
+      </div>
+      <div
+        class="hud-corner top-right font-mono initially-hidden"
+        id="hudTopRight"
+      >
+        <div class="animate-pulse-subtle">
+          STATUS: <span style="color: var(--green-games)">ONLINE</span><br />
+          NODE: PRIMARY<br />
+          SECURE: <span style="color: var(--cyan-ciig)">■■■■■</span>
+        </div>
+      </div>
+      <div
+        class="hud-corner bottom-left font-mono initially-hidden"
+        id="hudBottomLeft"
+      >
+        <div class="animate-glitch">
+          LAT: <span id="lat">-23.5505</span><br />
+          LNG: <span id="lng">-46.6333</span><br />
+          ALT: <span id="alt">760</span>m
+        </div>
+      </div>
+      <div
+        class="hud-corner bottom-right font-mono initially-hidden"
+        id="hudBottomRight"
+      >
+        <div class="animate-pulse-subtle">
+          <span id="timestamp">2025.06.21</span><br /><span id="timeDisplay"
+            >00:00:00</span
+          ><br />
+          PING: <span id="ping">12</span>ms
+        </div>
+      </div>
+      <!-- Geometric decorations -->
+      <div
+        class="geo-circle initially-hidden"
+        id="geo1"
+        style="width: 300px; height: 300px; top: -100px; right: -100px"
+      ></div>
+      <div
+        class="geo-circle initially-hidden"
+        id="geo2"
+        style="width: 200px; height: 200px; bottom: -50px; left: -50px"
+      ></div>
+      <div
+        class="geo-line initially-hidden"
+        id="geo3"
+        style="width: 100px; height: 1px; top: 30%; left: 5%"
+      ></div>
+      <div
+        class="geo-line initially-hidden"
+        id="geo4"
+        style="width: 1px; height: 80px; bottom: 20%; right: 8%"
+      ></div>
+      <!-- Main content -->
+      <main
+        class="relative z-10 flex flex-col items-center justify-center h-full px-4 sm:px-8"
+        id="mainContent"
+      >
+        <!-- Logo/Brand area -->
+        <div
+          class="mb-8 sm:mb-12 text-center initially-hidden"
+          id="brandArea"
+          style="opacity: 0"
+        >
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <!-- CiiG Logo SVG -->
+            <svg
+              width="48"
+              height="48"
+              viewbox="0 0 48 48"
+              class="animate-pulse-subtle"
+              style="filter: drop-shadow(0 0 10px var(--cyan-ciig))"
+            >
+              <circle
+                cx="24"
+                cy="24"
+                r="20"
+                fill="none"
+                stroke="var(--cyan-ciig)"
+                stroke-width="1"
+                opacity="0.3"
+              />
+              <circle
+                cx="24"
+                cy="24"
+                r="15"
+                fill="none"
+                stroke="var(--cyan-ciig)"
+                stroke-width="1"
+                opacity="0.5"
+              />
+              <circle
+                cx="24"
+                cy="24"
+                r="8"
+                fill="var(--cyan-ciig)"
+                opacity="0.8"
+              />
+              <path
+                d="M24 4 L24 10 M24 38 L24 44 M4 24 L10 24 M38 24 L44 24"
+                stroke="var(--cyan-ciig)"
+                stroke-width="1"
+                opacity="0.6"
+              />
+              <path
+                d="M10 10 L14 14 M34 34 L38 38 M10 38 L14 34 M34 14 L38 10"
+                stroke="var(--cyan-ciig)"
+                stroke-width="1"
+                opacity="0.4"
+              />
+            </svg>
+          </div>
+          <h1
+            class="font-orbitron text-xl sm:text-2xl md:text-3xl tracking-widest glow-cyan-subtle"
+            style="color: var(--cyan-ciig)"
+            id="mainTitle"
+          >
+            CiiG
+          </h1>
+          <p
+            class="font-mono text-xs sm:text-sm mt-2 tracking-wider opacity-60"
+            id="subtitleText"
+          >
+            SYSTEM INITIALIZATION
+          </p>
+        </div>
+        <!-- Status message -->
+        <div
+          class="h-8 mb-6 sm:mb-8 text-center initially-hidden"
+          id="statusArea"
+          style="opacity: 0"
+        >
+          <p
+            class="font-mono text-sm sm:text-base tracking-wide"
+            style="color: var(--cyan-ciig)"
+            id="statusMessage"
+          >
+            Inicializando sistema...
+          </p>
+        </div>
+        <!-- Progress bar area -->
+        <div
+          class="w-full max-w-lg px-4 initially-hidden"
+          id="progressArea"
+          style="opacity: 0"
+        >
+          <div class="progress-container mx-auto">
+            <div class="progress-glow" id="progressGlow"></div>
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+          </div>
+          <!-- Percentage display -->
+          <div
+            class="flex justify-between items-center mt-4 font-mono text-xs sm:text-sm"
+          >
+            <span class="opacity-50">LOADING</span>
+            <span
+              class="percentage-display glow-cyan text-lg sm:text-xl font-orbitron"
+              style="color: var(--cyan-ciig)"
+              id="percentageDisplay"
+              >000%</span
+            >
+            <span class="opacity-50">COMPLETE</span>
+          </div>
+        </div>
+        <!-- Module status indicators -->
+        <div
+          class="mt-8 sm:mt-12 grid grid-cols-2 gap-x-8 sm:gap-x-16 gap-y-2 font-mono text-xs initially-hidden"
+          id="moduleArea"
+          style="opacity: 0"
+        >
+          <div class="flex items-center gap-2">
+            <div
+              class="status-dot"
+              id="sysDot"
+              style="
+                background: var(--blue-systems);
+                box-shadow: 0 0 10px var(--blue-systems);
+              "
+            ></div>
+            <span class="opacity-60">SYSTEMS</span>
+            <span id="sysStatus" style="color: var(--blue-systems)">SYNC</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div
+              class="status-dot"
+              id="gameDot"
+              style="
+                background: var(--green-games);
+                box-shadow: 0 0 10px var(--green-games);
+              "
+            ></div>
+            <span class="opacity-60">GAMES</span>
+            <span id="gameStatus" style="color: var(--green-games)">SYNC</span>
+          </div>
+        </div>
+        <!-- Final message container (hidden initially) -->
+        <div class="text-center hidden" id="finalMessage">
+          <h1
+            class="font-orbitron text-2xl sm:text-3xl md:text-4xl tracking-wider glow-cyan"
+            style="color: var(--cyan-ciig)"
+          >
+            <span class="typing-container" id="finalText"></span
+            ><span class="cursor"></span>
+          </h1>
+        </div>
+      </main>
+      <!-- Data stream particles -->
+      <div
+        class="fixed inset-0 pointer-events-none overflow-hidden z-5"
+        id="particleContainer"
+      ></div>
+    </div>
+    <script>
+      // Default configuration
+      const defaultConfig = {
+        main_title: "CiiG Systems and Games",
+        subtitle: "Central de Inteligência Integrada Global",
+        background_color: "#0B0E14",
+        primary_color: "#00F5FF",
+        text_color: "#E1E8ED",
+        accent_blue: "#0077FF",
+        accent_green: "#00FF41",
+      };
+
+      // Status messages array
+      const statusMessages = [
+        "Sincronizando servidores...",
+        "Limpando o cache dos joysticks...",
+        "Compilando café...",
+        "Carregando módulos Systems...",
+        "Inicializando Games Engine...",
+        "Estabelecendo conexão global...",
+        "Validando protocolos de segurança...",
+        "Otimizando neural networks...",
+        "Calibrando interfaces...",
+        "Preparando ambiente virtual...",
+        "Conectando ao mainframe...",
+        "Processando dados criptografados...",
+        "Ativando sistemas de backup...",
+        "Verificando integridade...",
+        "Carregando assets gráficos...",
+        "Iniciando núcleo de processamento...",
+      ];
+
+      let currentProgress = 0;
+      let isComplete = false;
+      let messageIndex = 0;
+      let animationFrameId = null;
+
+      // Initialize Element SDK
+      const elementApi = {
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update header text
+          const headerText = document.getElementById("headerText");
+          if (headerText) {
+            headerText.textContent = config.subtitle || defaultConfig.subtitle;
+          }
+
+          // Update colors
+          document.documentElement.style.setProperty(
+            "--cyan-ciig",
+            config.primary_color || defaultConfig.primary_color,
+          );
+          document.documentElement.style.setProperty(
+            "--text-color",
+            config.text_color || defaultConfig.text_color,
+          );
+          document.documentElement.style.setProperty(
+            "--deep-space",
+            config.background_color || defaultConfig.background_color,
+          );
+          document.documentElement.style.setProperty(
+            "--blue-systems",
+            config.accent_blue || defaultConfig.accent_blue,
+          );
+          document.documentElement.style.setProperty(
+            "--green-games",
+            config.accent_green || defaultConfig.accent_green,
+          );
+
+          document.body.style.background =
+            config.background_color || defaultConfig.background_color;
+          document.body.style.color =
+            config.text_color || defaultConfig.text_color;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () =>
+                config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              },
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              },
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              },
+            },
+            {
+              get: () => config.accent_blue || defaultConfig.accent_blue,
+              set: (value) => {
+                config.accent_blue = value;
+                window.elementSdk.setConfig({ accent_blue: value });
+              },
+            },
+            {
+              get: () => config.accent_green || defaultConfig.accent_green,
+              set: (value) => {
+                config.accent_green = value;
+                window.elementSdk.setConfig({ accent_green: value });
+              },
+            },
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined,
+        }),
+        mapToEditPanelValues: (config) =>
+          new Map([
+            ["main_title", config.main_title || defaultConfig.main_title],
+            ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ]),
+      };
+
+      // Initialize SDK
+      if (window.elementSdk) {
+        window.elementSdk.init(elementApi);
+      }
+
+      // Update time display
+      function updateTime() {
+        const now = new Date();
+        const timeStr = now.toTimeString().split(" ")[0];
+        const dateStr = now.toISOString().split("T")[0].replace(/-/g, ".");
+
+        const timeDisplay = document.getElementById("timeDisplay");
+        const timestamp = document.getElementById("timestamp");
+
+        if (timeDisplay) timeDisplay.textContent = timeStr;
+        if (timestamp) timestamp.textContent = dateStr;
+      }
+
+      // Update coordinates randomly
+      function updateCoordinates() {
+        const lat = document.getElementById("lat");
+        const lng = document.getElementById("lng");
+        const alt = document.getElementById("alt");
+        const ping = document.getElementById("ping");
+
+        if (lat)
+          lat.textContent = (-23.5505 + (Math.random() - 0.5) * 0.001).toFixed(
+            4,
+          );
+        if (lng)
+          lng.textContent = (-46.6333 + (Math.random() - 0.5) * 0.001).toFixed(
+            4,
+          );
+        if (alt) alt.textContent = Math.floor(760 + Math.random() * 5);
+        if (ping) ping.textContent = Math.floor(8 + Math.random() * 15);
+      }
+
+      // Create data particles
+      function createParticle() {
+        if (isComplete) return;
+
+        const container = document.getElementById("particleContainer");
+        if (!container) return;
+
+        const particle = document.createElement("div");
+        particle.className = "data-particle";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDuration = 2 + Math.random() * 3 + "s";
+        particle.style.animation = `dataStream ${2 + Math.random() * 3}s linear forwards`;
+
+        container.appendChild(particle);
+
+        setTimeout(() => {
+          if (particle.parentNode) {
+            particle.remove();
+          }
+        }, 5000);
+      }
+
+      // Update status message
+      function updateStatusMessage() {
+        if (isComplete) return;
+
+        const statusElement = document.getElementById("statusMessage");
+        if (!statusElement) return;
+
+        messageIndex = (messageIndex + 1) % statusMessages.length;
+        statusElement.style.opacity = "0";
+
+        setTimeout(() => {
+          statusElement.textContent = statusMessages[messageIndex];
+          statusElement.style.opacity = "1";
+        }, 200);
+      }
+
+      // Update progress
+      function updateProgress() {
+        if (isComplete) return;
+
+        const increment = Math.random() * 2 + 0.5;
+        currentProgress = Math.min(currentProgress + increment, 100);
+
+        const progressBar = document.getElementById("progressBar");
+        const percentageDisplay = document.getElementById("percentageDisplay");
+
+        if (progressBar) {
+          progressBar.style.width = currentProgress + "%";
+        }
+
+        if (percentageDisplay) {
+          percentageDisplay.textContent =
+            String(Math.floor(currentProgress)).padStart(3, "0") + "%";
+        }
+
+        // Update module statuses
+        if (currentProgress > 30) {
+          const sysStatus = document.getElementById("sysStatus");
+          if (sysStatus) sysStatus.textContent = "READY";
+        }
+        if (currentProgress > 60) {
+          const gameStatus = document.getElementById("gameStatus");
+          if (gameStatus) gameStatus.textContent = "READY";
+        }
+
+        if (currentProgress >= 100) {
+          completeLoading();
+        }
+      }
+
+      // Complete loading sequence
+      function completeLoading() {
+        isComplete = true;
+
+        // Fade out all elements
+        const elementsToFade = [
+          "brandArea",
+          "statusArea",
+          "progressArea",
+          "moduleArea",
+          "hudTopLeft",
+          "hudTopRight",
+          "hudBottomLeft",
+          "hudBottomRight",
+          "geo1",
+          "geo2",
+          "geo3",
+          "geo4",
+        ];
+
+        elementsToFade.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.classList.add("animate-fade-out");
+          }
+        });
+
+        // Show final message after fade out
+        setTimeout(() => {
+          elementsToFade.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "none";
+          });
+
+          const finalMessage = document.getElementById("finalMessage");
+          if (finalMessage) {
+            finalMessage.classList.remove("hidden");
+            finalMessage.classList.add("animate-fade-in-up");
+
+            // Type out the final text
+            const config = window.elementSdk?.config || defaultConfig;
+            const finalText = config.main_title || defaultConfig.main_title;
+            typeText(finalText);
+          }
+        }, 800);
+      }
+
+      // Type text animation
+      function typeText(text) {
+        const element = document.getElementById("finalText");
+        if (!element) return;
+
+        let index = 0;
+        element.textContent = "";
+
+        function type() {
+          if (index < text.length) {
+            element.textContent += text[index];
+            index++;
+            setTimeout(type, 80);
+          } else {
+            // Trigger white screen transition after typing
+            setTimeout(() => {
+              const whiteScreen = document.getElementById("whiteScreen");
+              if (whiteScreen) {
+                whiteScreen.classList.add("active");
+              }
+            }, 1500);
+          }
+        }
+
+        type();
+      }
+
+      // Animate elements on load
+      function animateIn() {
+        const elements = [
+          { id: "brandArea", delay: 0 },
+          { id: "statusArea", delay: 200 },
+          { id: "progressArea", delay: 400 },
+          { id: "moduleArea", delay: 600 },
+          { id: "hudTopLeft", delay: 100 },
+          { id: "hudTopRight", delay: 200 },
+          { id: "hudBottomLeft", delay: 300 },
+          { id: "hudBottomRight", delay: 400 },
+          { id: "geo1", delay: 500 },
+          { id: "geo2", delay: 600 },
+          { id: "geo3", delay: 700 },
+          { id: "geo4", delay: 800 },
+        ];
+
+        elements.forEach(({ id, delay }) => {
+          setTimeout(() => {
+            const el = document.getElementById(id);
+            if (el) {
+              el.classList.remove("initially-hidden");
+              el.classList.add("animate-fade-in-up");
+              el.style.opacity = "1";
+            }
+          }, delay);
+        });
+      }
+
+      // Main initialization
+      function init() {
+        // Start animations
+        animateIn();
+
+        // Update time every second
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Update coordinates every 500ms
+        setInterval(updateCoordinates, 500);
+
+        // Create particles periodically
+        setInterval(createParticle, 300);
+
+        // Update status message every 2 seconds
+        setInterval(updateStatusMessage, 2000);
+
+        // Update progress every 100ms
+        setInterval(updateProgress, 100);
+      }
+
+      // Start when DOM is ready
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9ccfcfe9d1c2273d',t:'MTc3MDkzODM4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
